@@ -236,50 +236,24 @@ class Keys extends StatelessWidget {
                   children: [
                     Clikbottom(
                       BottomModel(
-                          titel: '7',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '7',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                     Clikbottom(
                       BottomModel(
-                          titel: '8',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '8',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                     Clikbottom(
                       BottomModel(
-                          titel: '9',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Clikbottom(
-                      BottomModel(
-                          titel: '4',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
-                    ),
-                    Clikbottom(
-                      BottomModel(
-                          titel: '5',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
-                    ),
-                    Clikbottom(
-                      BottomModel(
-                          titel: '6',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '9',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                   ],
                 ),
@@ -288,24 +262,24 @@ class Keys extends StatelessWidget {
                   children: [
                     Clikbottom(
                       BottomModel(
-                          titel: '1',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '4',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                     Clikbottom(
                       BottomModel(
-                          titel: '2',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '5',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                     Clikbottom(
                       BottomModel(
-                          titel: '3',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '6',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                   ],
                 ),
@@ -314,24 +288,50 @@ class Keys extends StatelessWidget {
                   children: [
                     Clikbottom(
                       BottomModel(
-                          titel: '00',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '1',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                     Clikbottom(
                       BottomModel(
-                          titel: '0',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '2',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                     Clikbottom(
                       BottomModel(
-                          titel: '.',
-                          titelcolor: Colors.white,
-                          bottomcolor: Colors.grey.shade800,
-                          fontsize: fontsize),
+                        titel: '3',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Clikbottom(
+                      BottomModel(
+                        titel: '00',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
+                    ),
+                    Clikbottom(
+                      BottomModel(
+                        titel: '0',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
+                    ),
+                    Clikbottom(
+                      BottomModel(
+                        titel: '.',
+                        titelcolor: Colors.white,
+                        bottomcolor: Colors.grey.shade800,
+                      ),
                     ),
                   ],
                 ),
@@ -342,24 +342,24 @@ class Keys extends StatelessWidget {
           children: [
             Clikbottom(
               BottomModel(
-                  titel: 'AC',
-                  titelcolor: AppColor.brightorange,
-                  bottomcolor: AppColor.bottomcolor,
-                  fontsize: fontsize),
+                titel: 'AC',
+                titelcolor: AppColor.brightorange,
+                bottomcolor: AppColor.bottomcolor,
+              ),
             ),
             Clikbottom(
               BottomModel(
-                  titel: 'CE',
-                  titelcolor: AppColor.brightorange,
-                  bottomcolor: AppColor.bottomcolor,
-                  fontsize: fontsize),
+                titel: 'CE',
+                titelcolor: AppColor.brightorange,
+                bottomcolor: AppColor.bottomcolor,
+              ),
             ),
             Clikbottom(
               BottomModel(
-                  titel: '⇌',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: AppColor.customorange,
-                  fontsize: fontsize),
+                titel: '⇌',
+                titelcolor: AppColor.bottomtitel,
+                bottomcolor: AppColor.customorange,
+              ),
             ),
           ],
         )

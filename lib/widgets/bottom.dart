@@ -8,7 +8,8 @@ class Bottom extends StatelessWidget {
   BottomModel property;
   @override
   Widget build(BuildContext context) {
-    double keysize = MediaQuery.of(context).size.height / 12;
+    double keysize = MediaQuery.of(context).size.height % 91.5;
+    double keytitelsize = MediaQuery.of(context).size.height % 130;
     return Container(
       height: keysize,
       width: keysize,
@@ -25,7 +26,7 @@ class Bottom extends StatelessWidget {
                 property.titel,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: property.fontsize,
+                    fontSize: keytitelsize,
                     color: property.titelcolor,
                     fontWeight: FontWeight.bold),
               ),

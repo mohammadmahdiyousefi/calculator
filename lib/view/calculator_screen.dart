@@ -108,7 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: 'AC',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.customorange,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -116,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: 'CE',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.customorange,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -124,7 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: 'x²',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -132,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '!',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
         ],
@@ -146,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '(',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -154,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: ')',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -162,7 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '%',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -170,7 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '÷',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
         ],
@@ -184,7 +176,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '7',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -192,7 +183,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '8',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -200,7 +190,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '9',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -208,7 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '×',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
         ],
@@ -222,7 +210,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '4',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -230,7 +217,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '5',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -238,7 +224,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '6',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -246,7 +231,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '-',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
         ],
@@ -260,7 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '1',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -268,7 +251,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '2',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -276,7 +258,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '3',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -284,7 +265,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '+',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
-              fontsize: fontsize,
             ),
           ),
         ],
@@ -298,7 +278,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '00',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -306,7 +285,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '0',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -314,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '.',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.numberbottomcolor,
-              fontsize: fontsize,
             ),
           ),
           Clikbottom(
@@ -322,7 +299,6 @@ class _HomeScreenState extends State<HomeScreen> {
               titel: '=',
               titelcolor: AppColor.bottomtitel,
               bottomcolor: AppColor.customorange,
-              fontsize: fontsize,
             ),
           ),
         ],

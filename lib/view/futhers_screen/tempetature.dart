@@ -95,14 +95,18 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is TempetatureState
-                                        ? state.value
-                                        : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: AppColor.brightorange),
+                                    textAlign: TextAlign.end,
+                                    controller: state is TempetatureState
+                                        ? state.value
+                                        : TextEditingController(),
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
@@ -168,14 +172,18 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is TempetatureState
-                                        ? state.result.toString()
-                                        : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: Colors.grey.shade700),
+                                    textAlign: TextAlign.end,
+                                    controller: state is TempetatureState
+                                        ? state.result
+                                        : TextEditingController(),
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(

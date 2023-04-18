@@ -93,12 +93,18 @@ class _LengthScreenState extends State<LengthScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is LengthState ? state.value : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: AppColor.brightorange),
+                                    textAlign: TextAlign.end,
+                                    controller: state is LengthState
+                                        ? state.value
+                                        : TextEditingController(),
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
@@ -162,14 +168,18 @@ class _LengthScreenState extends State<LengthScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is LengthState
-                                        ? state.result.toString()
-                                        : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: Colors.grey.shade700),
+                                    textAlign: TextAlign.end,
+                                    controller: state is LengthState
+                                        ? state.result
+                                        : TextEditingController(),
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(

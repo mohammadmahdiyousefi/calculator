@@ -54,31 +54,49 @@ void main() {
     BlocProvider(
       create: (context) {
         return StorageBloc(StorageState(
-            '0', StorageApi().getdata()[0], StorageApi().getdata()[0], 0));
+          TextEditingController(text: '0'),
+          StorageApi().getdata()[0],
+          StorageApi().getdata()[0],
+          TextEditingController(text: '0'),
+        ));
       },
     ),
     BlocProvider(
       create: (context) {
         return SpeedBloc(SpeedState(
-            '0', SpeedApi().getdata()[0], SpeedApi().getdata()[0], 0));
+            TextEditingController(text: '0'),
+            SpeedApi().getdata()[0],
+            SpeedApi().getdata()[0],
+            TextEditingController(text: '0')));
       },
     ),
     BlocProvider(
       create: (context) {
         return LengthBloc(LengthState(
-            '0', LengthApi().getdata()[0], LengthApi().getdata()[0], 0));
+          TextEditingController(text: '0'),
+          LengthApi().getdata()[0],
+          LengthApi().getdata()[0],
+          TextEditingController(text: '0'),
+        ));
       },
     ),
     BlocProvider(
       create: (context) {
-        return TimeBloc(
-            TimeState('0', TimeApi().getdata()[0], TimeApi().getdata()[0], 0));
+        return TimeBloc(TimeState(
+            TextEditingController(text: '0'),
+            TimeApi().getdata()[0],
+            TimeApi().getdata()[0],
+            TextEditingController(text: '0')));
       },
     ),
     BlocProvider(
       create: (context) {
-        return TempetatureBloc(TempetatureState('0',
-            TempetatureApi().getdata()[0], TempetatureApi().getdata()[0], 0));
+        return TempetatureBloc(TempetatureState(
+          TextEditingController(text: '0'),
+          TempetatureApi().getdata()[0],
+          TempetatureApi().getdata()[0],
+          TextEditingController(text: '0'),
+        ));
       },
     ),
     BlocProvider(

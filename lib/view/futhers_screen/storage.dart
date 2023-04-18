@@ -94,12 +94,18 @@ class _StorageScreenState extends State<StorageScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is StorageState ? state.value : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: AppColor.brightorange),
+                                    textAlign: TextAlign.end,
+                                    controller: state is StorageState
+                                        ? state.value
+                                        : TextEditingController(),
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
@@ -165,14 +171,18 @@ class _StorageScreenState extends State<StorageScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is StorageState
-                                        ? state.result.toString()
-                                        : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: Colors.grey.shade700),
+                                    textAlign: TextAlign.end,
+                                    controller: state is StorageState
+                                        ? state.value
+                                        : TextEditingController(),
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(

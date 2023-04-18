@@ -1,15 +1,16 @@
 import 'package:calculator/bloc/tempetature/tempetature_event.dart';
 import 'package:calculator/bloc/tempetature/tempetature_state.dart';
 import 'package:calculator/service/local/Tempetature_local)api.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/capabilities.dart';
 
 class TempetatureBloc extends Bloc<ITempetatureEvent, ITempetatureState> {
 //-----amount is used to hold the input value-----------------------------------
-  String amount = '0';
+  TextEditingController amount = TextEditingController(text: '0');
 //------result is used to store the answer--------------------------------------
-  double result = 0;
+  TextEditingController result = TextEditingController(text: '0');
 //------The item is used to keep the unit---------------------------------------
   Capabilities item = TempetatureApi().getdata()[0];
   Capabilities item1 = TempetatureApi().getdata()[0];
@@ -19,17 +20,17 @@ class TempetatureBloc extends Bloc<ITempetatureEvent, ITempetatureState> {
 //----------Clear all-----------------------------------------------------------
 
       if (event.value == 'AC') {
-        result = 0;
-        amount = '0';
+        result.text = '0';
+        amount.text = '0';
         emit(TempetatureState(amount, item, item1, result));
       }
 
 //-------Clear each one---------------------------------------------------------
 
       else if (event.value == 'CE') {
-        amount = amount.substring(0, amount.length - 1);
-        if (amount.isEmpty) {
-          amount = '0';
+        amount.text = amount.text.substring(0, amount.text.length - 1);
+        if (amount.text.isEmpty) {
+          amount.text = '0';
         } else {}
         claculateresult();
         emit(TempetatureState(amount, item, item1, result));
@@ -48,8 +49,8 @@ class TempetatureBloc extends Bloc<ITempetatureEvent, ITempetatureState> {
 //--------point conditions------------------------------------------------------
 
       else if (event.value == '.') {
-        if (amount.contains(event.value) == false) {
-          amount = amount + event.value;
+        if (amount.text.contains(event.value) == false) {
+          amount.text = amount.text + event.value;
         } else {}
 
         claculateresult();
@@ -59,11 +60,11 @@ class TempetatureBloc extends Bloc<ITempetatureEvent, ITempetatureState> {
 //---------Add number-----------------------------------------------------------
 
       else {
-        if (amount == '0') {
-          amount = '';
-          amount = amount + event.value;
+        if (amount.text == '0') {
+          amount.text = '';
+          amount.text = amount.text + event.value;
         } else {
-          amount = amount + event.value;
+          amount.text = amount.text + event.value;
         }
         claculateresult();
         emit(TempetatureState(amount, item, item1, result));
@@ -86,25 +87,25 @@ class TempetatureBloc extends Bloc<ITempetatureEvent, ITempetatureState> {
 
 //--------Calculation function--------------------------------------------------
   claculateresult() {
-    if (amount != '') {
+    if (amount.text != '') {
       if (item.parameter == item1.parameter) {
-        result = double.parse(amount);
+        result.text = (double.parse(amount.text)).toString();
       } else if (item.parameter == 'Celsius' &&
           item1.parameter == 'Fahrenheit') {
-        result = (double.parse(amount) * 9 / 5) + 32;
+        result.text = ((double.parse(amount.text) * 9 / 5) + 32).toString();
       } else if (item.parameter == 'Celsius' && item1.parameter == 'Kelvin') {
-        result = (double.parse(amount) + 273.15);
+        result.text = ((double.parse(amount.text) + 273.15)).toString();
       } else if (item.parameter == 'Fahrenheit' &&
           item1.parameter == 'Celsius') {
-        result = (double.parse(amount) - 32) * 5 / 9;
+        result.text = ((double.parse(amount.text) - 32) * 5 / 9).toString();
       } else if (item.parameter == 'Fahrenheit' &&
           item1.parameter == 'Kelvin') {
-        result = (double.parse(amount) + 459.67) * 5 / 9;
+        result.text = ((double.parse(amount.text) + 459.67) * 5 / 9).toString();
       } else if (item.parameter == 'Kelvin' && item1.parameter == 'Celsius') {
-        result = (double.parse(amount) - 273.15);
+        result.text = ((double.parse(amount.text) - 273.15)).toString();
       } else if (item.parameter == 'Kelvin' &&
           item1.parameter == 'Fahrenheit') {
-        result = (double.parse(amount) * 9 / 5) - 459.67;
+        result.text = ((double.parse(amount.text) * 9 / 5) - 459.67).toString();
       }
     }
     return result;

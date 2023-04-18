@@ -7,9 +7,9 @@ import 'area_state.dart';
 
 class AreaBloc extends Bloc<IAreaEvent, IAreaState> {
 //-----amount is used to hold the input value-----------------------------------
-  TextEditingController amount = TextEditingController();
+  TextEditingController amount = TextEditingController(text: '0');
 //------result is used to store the answer--------------------------------------
-  TextEditingController result = TextEditingController();
+  TextEditingController result = TextEditingController(text: '0');
 //------The item is used to keep the unit---------------------------------------
   Capabilities item = AreaApi().getdata()[0];
   Capabilities item1 = AreaApi().getdata()[0];

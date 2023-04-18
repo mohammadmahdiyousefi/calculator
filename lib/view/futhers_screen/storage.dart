@@ -1,3 +1,4 @@
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/Storage/Storage_event.dart';
 import 'package:calculator/service/local/Storage_local_api.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,13 @@ class _StorageScreenState extends State<StorageScreen> {
 //--------------Getting values ​​from local api-----------------------------------
   var items = StorageApi().getdata();
 //------------------------------------------------------------------------------
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _showInterstitial();
+  }
+
   @override
   Widget build(BuildContext context) {
 //-------------------Getting the width of the phone screen----------------------
@@ -219,6 +227,18 @@ class _StorageScreenState extends State<StorageScreen> {
         ],
       )),
     );
+  }
+
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
   }
 }
 

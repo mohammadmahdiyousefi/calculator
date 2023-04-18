@@ -1,3 +1,4 @@
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/tempetature/tempetature_bloc.dart';
 import 'package:calculator/bloc/tempetature/tempetature_event.dart';
 import 'package:calculator/bloc/tempetature/tempetature_state.dart';
@@ -26,6 +27,13 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
 //--------------Getting values ​​from local api-----------------------------------
   var items = TempetatureApi().getdata();
 //------------------------------------------------------------------------------
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _showInterstitial();
+  }
+
   @override
   Widget build(BuildContext context) {
 //-------------------Getting the width of the phone screen----------------------
@@ -220,6 +228,18 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
         ],
       )),
     );
+  }
+
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
   }
 }
 

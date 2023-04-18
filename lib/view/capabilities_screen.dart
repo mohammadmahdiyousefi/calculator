@@ -9,8 +9,6 @@ import 'package:calculator/view/futhers_screen/tempetature.dart';
 import 'package:calculator/view/futhers_screen/time.dart';
 import 'package:calculator/widgets/property_container.dart';
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart';
-
 import 'futhers_screen/storage.dart';
 
 class SecoundScreen extends StatefulWidget {
@@ -22,6 +20,7 @@ class SecoundScreen extends StatefulWidget {
 
 class _SecoundScreenState extends State<SecoundScreen> {
   BannerAd? _ads;
+
   void nextpage(Widget newpage) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return newpage;
@@ -148,6 +147,18 @@ class _SecoundScreenState extends State<SecoundScreen> {
         ),
       ),
     );
+  }
+
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
   }
 
   void creatabannerad() {

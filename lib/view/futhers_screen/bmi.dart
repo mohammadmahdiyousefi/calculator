@@ -1,3 +1,4 @@
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_event.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
@@ -23,6 +24,12 @@ class _BmiScreenState extends State<BmiScreen> {
   bool weight = false;
   String result = '0.0';
   Color resultcolor = Colors.grey.shade600;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _showInterstitial();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -300,6 +307,18 @@ class _BmiScreenState extends State<BmiScreen> {
         ],
       )),
     );
+  }
+
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
   }
 }
 

@@ -31,6 +31,7 @@ import 'bloc/speed/speed_bloc.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AdiveryPlugin.initialize('8da5622e-3eb1-4bb7-9bcc-4e722d63c5e9');
+  AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MultiBlocProvider(providers: [

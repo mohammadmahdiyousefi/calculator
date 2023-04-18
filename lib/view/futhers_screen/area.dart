@@ -1,3 +1,4 @@
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/area/area_bloc.dart';
 import 'package:calculator/bloc/area/area_event.dart';
 import 'package:calculator/bloc/area/area_state.dart';
@@ -27,6 +28,13 @@ class _AreaScreenState extends State<AreaScreen> {
 //--------------Getting values ​​from local api-----------------------------------
   var items = AreaApi().getdata();
 //------------------------------------------------------------------------------
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _showInterstitial();
+  }
+
   @override
   Widget build(BuildContext context) {
 //-------------------Getting the width of the phone screen----------------------
@@ -106,13 +114,6 @@ class _AreaScreenState extends State<AreaScreen> {
                                     decoration: InputDecoration(
                                         border: InputBorder.none),
                                   ),
-                                  // child: Text(
-                                  //   state is AreaState ? state.value : '',
-                                  //   textAlign: TextAlign.end,
-                                  //   style: TextStyle(
-                                  //       fontSize: screenw / 15,
-                                  //       color: AppColor.brightorange),
-                                  // ),
                                 ),
                                 Text(
                                   state is AreaState
@@ -188,18 +189,6 @@ class _AreaScreenState extends State<AreaScreen> {
                                     decoration: InputDecoration(
                                         border: InputBorder.none),
                                   ),
-
-                                  // child:
-
-                                  //  Text(
-                                  //   state is AreaState
-                                  //       ? state.result.toString()
-                                  //       : '',
-                                  //   textAlign: TextAlign.end,
-                                  //   style: TextStyle(
-                                  //       fontSize: screenw / 15,
-                                  //       color: Colors.grey.shade700),
-                                  // ),
                                 ),
                                 Text(
                                   state is AreaState
@@ -236,6 +225,18 @@ class _AreaScreenState extends State<AreaScreen> {
         ],
       )),
     );
+  }
+
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
   }
 }
 

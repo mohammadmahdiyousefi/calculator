@@ -36,13 +36,19 @@ void main() {
   runApp(MultiBlocProvider(providers: [
     BlocProvider(
       create: (context) {
-        return CalculatorBloc(CalculatorState('', '0'));
+        return CalculatorBloc(CalculatorState(
+          TextEditingController(text: ''),
+          TextEditingController(text: '0'),
+        ));
       },
     ),
     BlocProvider(
       create: (context) {
-        return AreaBloc(
-            AreaState('0', AreaApi().getdata()[0], AreaApi().getdata()[0], 0));
+        return AreaBloc(AreaState(
+            TextEditingController(text: '0'),
+            AreaApi().getdata()[0],
+            AreaApi().getdata()[0],
+            TextEditingController(text: '0')));
       },
     ),
     BlocProvider(

@@ -18,6 +18,7 @@ class AreaScreen extends StatefulWidget {
 }
 
 class _AreaScreenState extends State<AreaScreen> {
+  TextEditingController text = TextEditingController();
 //--------------------User input------------------------------------------------
   var setinput = TextEditingController();
 //------------------------------------------------------------------------------
@@ -93,13 +94,25 @@ class _AreaScreenState extends State<AreaScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is AreaState ? state.value : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: AppColor.brightorange),
+                                    textAlign: TextAlign.end,
+                                    controller:
+                                        state is AreaState ? state.value : text,
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
+                                  // child: Text(
+                                  //   state is AreaState ? state.value : '',
+                                  //   textAlign: TextAlign.end,
+                                  //   style: TextStyle(
+                                  //       fontSize: screenw / 15,
+                                  //       color: AppColor.brightorange),
+                                  // ),
                                 ),
                                 Text(
                                   state is AreaState
@@ -162,15 +175,31 @@ class _AreaScreenState extends State<AreaScreen> {
                             return Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    state is AreaState
-                                        ? state.result.toString()
-                                        : '',
-                                    textAlign: TextAlign.end,
+                                  child: TextField(
+                                    readOnly: true,
                                     style: TextStyle(
                                         fontSize: screenw / 15,
                                         color: Colors.grey.shade700),
+                                    textAlign: TextAlign.end,
+                                    controller: state is AreaState
+                                        ? state.result
+                                        : text,
+                                    keyboardType: TextInputType.none,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
+
+                                  // child:
+
+                                  //  Text(
+                                  //   state is AreaState
+                                  //       ? state.result.toString()
+                                  //       : '',
+                                  //   textAlign: TextAlign.end,
+                                  //   style: TextStyle(
+                                  //       fontSize: screenw / 15,
+                                  //       color: Colors.grey.shade700),
+                                  // ),
                                 ),
                                 Text(
                                   state is AreaState

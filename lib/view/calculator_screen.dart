@@ -46,10 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: MediaQuery.of(context).size.height / 15,
                           ),
                           if (state is CalculatorState) ...{
-                            Text(
-                              state.calculate,
+                            TextField(
+                              readOnly: true,
                               style: Theme.of(context).textTheme.displayLarge,
                               textAlign: TextAlign.end,
+                              controller: state.calculate,
+                              keyboardType: TextInputType.none,
+                              decoration:
+                                  InputDecoration(border: InputBorder.none),
                             ),
                           } else ...{
                             Text('error',
@@ -60,10 +64,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: MediaQuery.of(context).size.height / 16,
                           ),
                           if (state is CalculatorState) ...{
-                            Text(state.result,
-                                textAlign: TextAlign.end,
-                                style:
-                                    Theme.of(context).textTheme.displayMedium),
+                            TextField(
+                              readOnly: true,
+                              style: Theme.of(context).textTheme.displayMedium,
+                              textAlign: TextAlign.end,
+                              controller: state.result,
+                              keyboardType: TextInputType.none,
+                              decoration:
+                                  InputDecoration(border: InputBorder.none),
+                            ),
                           } else ...{
                             Text(
                               'error',
@@ -83,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: screenw,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),

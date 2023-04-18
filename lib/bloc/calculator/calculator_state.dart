@@ -1,13 +1,15 @@
+import 'package:flutter/material.dart';
+
 abstract class ICalculatorState {}
 
 class CalculatorState extends ICalculatorState {
-  String calculate;
-  String result;
+  TextEditingController calculate;
+  TextEditingController result;
   CalculatorState(this.result, this.calculate);
 }
 
 class CalculatorErrorState extends ICalculatorState {
-  String calculate;
-  String result;
+  TextEditingController calculate;
+  TextEditingController result;
   CalculatorErrorState(this.result, this.calculate);
 }

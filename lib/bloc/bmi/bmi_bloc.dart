@@ -23,7 +23,7 @@ class BmiBloc extends Bloc<IBmiEvent, IBmiState> {
 //-------Clear each one---------------------------------------------------------
 
       else if (event.height == 'CE') {
-        resultcolor = Colors.grey.shade600;
+        resultcolor = Colors.transparent;
         result = 0;
         height = height.substring(0, height.length - 1);
         if (height.isEmpty) {
@@ -108,16 +108,19 @@ class BmiBloc extends Bloc<IBmiEvent, IBmiState> {
     if (height.isNotEmpty && weight.isNotEmpty) {
       result = double.parse((w / (h * h)).toStringAsFixed(2));
 
-      if ((w / (h * h)) < 18.5) {
+      if (result < 18.5) {
         resultcolor = Colors.blue.shade300;
-      } else if ((w / (h * h)) >= 18.5 && (w / (h * h)) < 25) {
+      } else if (result >= 18.5 && (w / (h * h)) < 25) {
         resultcolor = Colors.green;
-      } else if ((w / (h * h)) >= 25 && (w / (h * h)) < 30) {
-        resultcolor = Colors.yellow;
-      } else if ((w / (h * h)) >= 30 && (w / (h * h)) < 35) {
+      } else if (result >= 25 && (w / (h * h)) < 30) {
         resultcolor = Colors.orange;
-      } else if ((w / (h * h)) >= 35) {
+      } else if (result >= 30) {
         resultcolor = Colors.red;
+        if (result > 50) {
+          result = 50;
+        } else {
+          result = result;
+        }
       }
     } else {}
   }

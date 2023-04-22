@@ -65,6 +65,7 @@ class SpeedBloc extends Bloc<ISpeedEvent, ISpeedState> {
         } else {
           amount.text = amount.text + event.value;
         }
+
         claculateresult();
         emit(SpeedState(amount, item, item1, result));
       }

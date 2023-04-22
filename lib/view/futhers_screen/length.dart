@@ -8,6 +8,7 @@ import 'package:calculator/model/capabilities.dart';
 import 'package:calculator/widgets/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../constanc/snackbar_message.dart';
 import '../../service/local/length_local_api.dart';
 import '../../widgets/appbar_widget.dart';
 
@@ -19,7 +20,7 @@ class LengthScreen extends StatefulWidget {
 }
 
 class _LengthScreenState extends State<LengthScreen> {
-  //--------------------User input----------------------------------------------
+  //-------------------- User input --------------------------------------------
   var setinput = TextEditingController();
 //------------------------------------------------------------------------------
   var controller = DraggableScrollableController();
@@ -40,10 +41,12 @@ class _LengthScreenState extends State<LengthScreen> {
     var screenw = MediaQuery.of(context).size.width;
 //------------------------------------------------------------------------------
     return Scaffold(
+//--------------- App Bar ------------------------------------------------------
       appBar: appbarwidget(
         context: context,
         titel: 'Length',
       ),
+//-------------- Length screen body --------------------------------------------
       body: SafeArea(
           child: Column(
         children: [
@@ -82,9 +85,14 @@ class _LengthScreenState extends State<LengthScreen> {
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(state is LengthState
-                                            ? state.item.parameter
-                                            : ''),
+                                        child: Text(
+                                          state is LengthState
+                                              ? state.item.parameter
+                                              : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
                                       );
                                     },
                                   ),
@@ -103,9 +111,8 @@ class _LengthScreenState extends State<LengthScreen> {
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: AppColor.brightorange),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                     textAlign: TextAlign.end,
                                     controller: state is LengthState
                                         ? state.value
@@ -116,14 +123,12 @@ class _LengthScreenState extends State<LengthScreen> {
                                   ),
                                 ),
                                 Text(
-                                  state is LengthState
-                                      ? '${state.item.unit}  '
-                                      : '',
-                                  textDirection: TextDirection.rtl,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
-                                ),
+                                    state is LengthState
+                                        ? '${state.item.unit}  '
+                                        : '',
+                                    textDirection: TextDirection.rtl,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall),
                               ],
                             );
                           })),
@@ -158,6 +163,9 @@ class _LengthScreenState extends State<LengthScreen> {
                                           state is LengthState
                                               ? state.item1.parameter
                                               : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           textAlign: TextAlign.end,
                                         ),
                                       );
@@ -178,27 +186,24 @@ class _LengthScreenState extends State<LengthScreen> {
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: Colors.grey.shade700),
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                     textAlign: TextAlign.end,
                                     controller: state is LengthState
                                         ? state.result
                                         : TextEditingController(),
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
-                                  state is LengthState
-                                      ? '${state.item1.unit}  '
-                                      : '',
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
-                                ),
+                                    state is LengthState
+                                        ? '${state.item1.unit}  '
+                                        : '',
+                                    textAlign: TextAlign.end,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall),
                               ],
                             );
                           })),
@@ -219,7 +224,7 @@ class _LengthScreenState extends State<LengthScreen> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: const Keys()),
+                child: const Buttons()),
           )
         ],
       )),
@@ -239,8 +244,8 @@ class _LengthScreenState extends State<LengthScreen> {
   }
 }
 
-class Keys extends StatelessWidget {
-  const Keys({
+class Buttons extends StatelessWidget {
+  const Buttons({
     super.key,
   });
 
@@ -258,22 +263,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '7',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '8',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '9',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -284,22 +289,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '4',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '5',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '6',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -310,22 +315,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '1',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '2',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '3',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -336,22 +341,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '00',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '0',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '.',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -364,22 +369,22 @@ class Keys extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'AC',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'CE',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: '⇌',
                 titelcolor: AppColor.bottomtitel,
                 bottomcolor: AppColor.customorange,
@@ -392,17 +397,72 @@ class Keys extends StatelessWidget {
   }
 }
 
-class Clikbottom extends StatelessWidget {
-  Clikbottom(this.model, {super.key});
-  BottomModel model;
+class Clikbutton extends StatelessWidget {
+  Clikbutton(this.model, {super.key});
+  ButtonModel model;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        BlocProvider.of<LengthBloc>(context).add(LengthEvent(
-          model.titel,
-        ));
+        if (BlocProvider.of<LengthBloc>(context).amount.text.contains('.') ==
+            true) {
+          if (BlocProvider.of<LengthBloc>(context)
+                  .amount
+                  .text
+                  .substring(BlocProvider.of<LengthBloc>(context)
+                      .amount
+                      .text
+                      .indexOf('.'))
+                  .length <=
+              10) {
+            BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+              model.titel,
+            ));
+          } else if (BlocProvider.of<LengthBloc>(context)
+                      .amount
+                      .text
+                      .substring(BlocProvider.of<LengthBloc>(context)
+                          .amount
+                          .text
+                          .indexOf('.'))
+                      .length >
+                  10 &&
+              model.titel != 'CE' &&
+              model.titel != 'AC' &&
+              model.titel != '⇌') {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackbarMessage.decimalpointmessage);
+          } else {
+            BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+              model.titel,
+            ));
+          }
+        } else {
+          if (model.titel == '.') {
+            BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+              model.titel,
+            ));
+          } else {
+            if (BlocProvider.of<LengthBloc>(context).amount.text.length - 1 <
+                15) {
+              BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+                model.titel,
+              ));
+            } else if (BlocProvider.of<LengthBloc>(context).amount.text.length >
+                    15 &&
+                model.titel != 'CE' &&
+                model.titel != 'AC' &&
+                model.titel != '⇌') {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackbarMessage.message);
+            } else {
+              BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+                model.titel,
+              ));
+            }
+          }
+        }
       },
       child: Bottom(property: model),
     );
@@ -446,12 +506,12 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 12.5, bottom: 12.5),
+                        padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
                         child: Text(
                           'Select unit',
-                          style: TextStyle(fontSize: 16),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -478,7 +538,9 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                    '${item[index].parameter}  (${item[index].unit})')),
+                                  '${item[index].parameter}  (${item[index].unit})',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                )),
                           );
                         },
                       ),

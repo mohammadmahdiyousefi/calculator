@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/Storage/Storage_bloc.dart';
 import '../../bloc/Storage/Storage_state.dart';
 import '../../constanc/app_colors.dart';
+import '../../constanc/snackbar_message.dart';
 import '../../model/bottom_model.dart';
 import '../../model/capabilities.dart';
 import '../../widgets/appbar_widget.dart';
@@ -39,10 +40,12 @@ class _StorageScreenState extends State<StorageScreen> {
 //-------------------Getting the width of the phone screen----------------------
     var screenw = MediaQuery.of(context).size.width;
     return Scaffold(
+//-------------- App Bar -------------------------------------------------------
       appBar: appbarwidget(
         context: context,
         titel: 'Data',
       ),
+//------------------------------------------------------------------------------
       body: SafeArea(
           child: Column(
         children: [
@@ -82,9 +85,14 @@ class _StorageScreenState extends State<StorageScreen> {
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(state is StorageState
-                                            ? state.item.parameter
-                                            : ''),
+                                        child: Text(
+                                          state is StorageState
+                                              ? state.item.parameter
+                                              : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
                                       );
                                     },
                                   ),
@@ -104,15 +112,14 @@ class _StorageScreenState extends State<StorageScreen> {
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: AppColor.brightorange),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                     textAlign: TextAlign.end,
                                     controller: state is StorageState
                                         ? state.value
                                         : TextEditingController(),
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
@@ -121,9 +128,7 @@ class _StorageScreenState extends State<StorageScreen> {
                                       ? '${state.item.unit}  '
                                       : '',
                                   textDirection: TextDirection.rtl,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ],
                             );
@@ -160,6 +165,9 @@ class _StorageScreenState extends State<StorageScreen> {
                                           state is StorageState
                                               ? state.item1.parameter
                                               : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           textAlign: TextAlign.end,
                                         ),
                                       );
@@ -181,15 +189,14 @@ class _StorageScreenState extends State<StorageScreen> {
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: Colors.grey.shade700),
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                     textAlign: TextAlign.end,
                                     controller: state is StorageState
                                         ? state.value
                                         : TextEditingController(),
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
@@ -198,9 +205,7 @@ class _StorageScreenState extends State<StorageScreen> {
                                       ? '${state.item1.unit}  '
                                       : '',
                                   textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ],
                             );
@@ -222,7 +227,7 @@ class _StorageScreenState extends State<StorageScreen> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: const Keys()),
+                child: const Buttons()),
           )
         ],
       )),
@@ -242,8 +247,8 @@ class _StorageScreenState extends State<StorageScreen> {
   }
 }
 
-class Keys extends StatelessWidget {
-  const Keys({
+class Buttons extends StatelessWidget {
+  const Buttons({
     super.key,
   });
 
@@ -261,22 +266,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '7',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '8',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '9',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -287,22 +292,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '4',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '5',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '6',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -313,22 +318,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '1',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '2',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '3',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -339,22 +344,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '00',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '0',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '.',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -367,22 +372,22 @@ class Keys extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'AC',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'CE',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: '⇌',
                 titelcolor: AppColor.bottomtitel,
                 bottomcolor: AppColor.customorange,
@@ -395,17 +400,75 @@ class Keys extends StatelessWidget {
   }
 }
 
-class Clikbottom extends StatelessWidget {
-  Clikbottom(this.model, {super.key});
-  BottomModel model;
+class Clikbutton extends StatelessWidget {
+  Clikbutton(this.model, {super.key});
+  ButtonModel model;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        BlocProvider.of<StorageBloc>(context).add(StorageEvent(
-          model.titel,
-        ));
+        if (BlocProvider.of<StorageBloc>(context).amount.text.contains('.') ==
+            true) {
+          if (BlocProvider.of<StorageBloc>(context)
+                  .amount
+                  .text
+                  .substring(BlocProvider.of<StorageBloc>(context)
+                      .amount
+                      .text
+                      .indexOf('.'))
+                  .length <=
+              10) {
+            BlocProvider.of<StorageBloc>(context).add(StorageEvent(
+              model.titel,
+            ));
+          } else if (BlocProvider.of<StorageBloc>(context)
+                      .amount
+                      .text
+                      .substring(BlocProvider.of<StorageBloc>(context)
+                          .amount
+                          .text
+                          .indexOf('.'))
+                      .length >
+                  10 &&
+              model.titel != 'CE' &&
+              model.titel != 'AC' &&
+              model.titel != '⇌') {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackbarMessage.decimalpointmessage);
+          } else {
+            BlocProvider.of<StorageBloc>(context).add(StorageEvent(
+              model.titel,
+            ));
+          }
+        } else {
+          if (model.titel == '.') {
+            BlocProvider.of<StorageBloc>(context).add(StorageEvent(
+              model.titel,
+            ));
+          } else {
+            if (BlocProvider.of<StorageBloc>(context).amount.text.length - 1 <
+                15) {
+              BlocProvider.of<StorageBloc>(context).add(StorageEvent(
+                model.titel,
+              ));
+            } else if (BlocProvider.of<StorageBloc>(context)
+                        .amount
+                        .text
+                        .length >
+                    15 &&
+                model.titel != 'CE' &&
+                model.titel != 'AC' &&
+                model.titel != '⇌') {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackbarMessage.message);
+            } else {
+              BlocProvider.of<StorageBloc>(context).add(StorageEvent(
+                model.titel,
+              ));
+            }
+          }
+        }
       },
       child: Bottom(property: model),
     );
@@ -449,12 +512,12 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 12.5, bottom: 12.5),
+                        padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
                         child: Text(
                           'Select unit',
-                          style: TextStyle(fontSize: 16),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -481,7 +544,9 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                    '${item[index].parameter}  (${item[index].unit})')),
+                                  '${item[index].parameter}  (${item[index].unit})',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                )),
                           );
                         },
                       ),

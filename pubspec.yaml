@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^8.1.2
   bloc: ^8.1.1
   adivery: ^4.2.0 
+  google_fonts: ^4.0.3
+  percent_indicator: ^4.0.1
 
 
 dev_dependencies:

@@ -65,6 +65,7 @@ class LengthBloc extends Bloc<ILengthEvent, ILengthState> {
         } else {
           amount.text = amount.text + event.value;
         }
+
         claculateresult();
         emit(LengthState(amount, item, item1, result));
       }

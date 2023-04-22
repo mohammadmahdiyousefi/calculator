@@ -1,10 +1,6 @@
 import 'package:calculator/bloc/calculator/calculator_bloc.dart';
-import 'package:calculator/constanc/app_colors.dart';
-import 'package:calculator/model/bottom_model.dart';
-import 'package:calculator/widgets/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/calculator/calculator_event.dart';
 import '../bloc/calculator/calculator_state.dart';
 import '../widgets/calculator_bottoms.dart';
 
@@ -29,65 +25,75 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
         children: [
           Expanded(
-            flex: 1,
+            flex: 8,
             child: SizedBox(
               width: screenw,
               child: BlocBuilder<CalculatorBloc, ICalculatorState>(
                   builder: (context, state) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 15,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 6,
+                            child: state is CalculatorState
+                                ? TextField(
+                                    readOnly: true,
+                                    maxLines: 10,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
+                                    textAlign: TextAlign.end,
+                                    controller: state.calculate,
+                                    keyboardType: TextInputType.none,
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none),
+                                  )
+                                : Text('error',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                           ),
-                          if (state is CalculatorState) ...{
-                            TextField(
-                              readOnly: true,
-                              style: Theme.of(context).textTheme.displayLarge,
-                              textAlign: TextAlign.end,
-                              controller: state.calculate,
-                              keyboardType: TextInputType.none,
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                            ),
-                          } else ...{
-                            Text('error',
-                                style:
-                                    Theme.of(context).textTheme.displayLarge),
-                          },
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 16,
+                        ),
+                        Divider(
+                          height: 1,
+                          color: Theme.of(context).unselectedWidgetColor,
+                        ),
+                        SingleChildScrollView(
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height / 6,
+                            child: state is CalculatorState
+                                ? TextField(
+                                    readOnly: true,
+                                    maxLines: 3,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge,
+                                    textAlign: TextAlign.end,
+                                    controller: state.result,
+                                    keyboardType: TextInputType.none,
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none),
+                                  )
+                                : Text(
+                                    'error',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
+                                    textAlign: TextAlign.end,
+                                  ),
                           ),
-                          if (state is CalculatorState) ...{
-                            TextField(
-                              readOnly: true,
-                              style: Theme.of(context).textTheme.displayMedium,
-                              textAlign: TextAlign.end,
-                              controller: state.result,
-                              keyboardType: TextInputType.none,
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                            ),
-                          } else ...{
-                            Text(
-                              'error',
-                              style: Theme.of(context).textTheme.displayMedium,
-                              textAlign: TextAlign.end,
-                            ),
-                          },
-                        ]),
-                  ),
+                        ),
+                      ]),
                 );
               }),
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 12,
             child: Container(
               width: screenw,
               decoration: BoxDecoration(

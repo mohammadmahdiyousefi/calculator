@@ -66,6 +66,7 @@ class StorageBloc extends Bloc<IStorageEvent, IStorageState> {
         } else {
           amount.text = amount.text + event.value;
         }
+
         claculateresult();
         emit(StorageState(amount, item, item1, result));
       }

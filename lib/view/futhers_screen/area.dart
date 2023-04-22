@@ -3,6 +3,7 @@ import 'package:calculator/bloc/area/area_bloc.dart';
 import 'package:calculator/bloc/area/area_event.dart';
 import 'package:calculator/bloc/area/area_state.dart';
 import 'package:calculator/constanc/app_colors.dart';
+import 'package:calculator/constanc/snackbar_message.dart';
 import 'package:calculator/model/bottom_model.dart';
 import 'package:calculator/model/capabilities.dart';
 import 'package:calculator/service/local/area_local_api.dart';
@@ -20,11 +21,11 @@ class AreaScreen extends StatefulWidget {
 
 class _AreaScreenState extends State<AreaScreen> {
   TextEditingController text = TextEditingController();
-//--------------------User input------------------------------------------------
-  var setinput = TextEditingController();
+
 //------------------------------------------------------------------------------
   var controller = DraggableScrollableController();
   var controller1 = DraggableScrollableController();
+
 //--------------Getting values ​​from local api-----------------------------------
   var items = AreaApi().getdata();
 //------------------------------------------------------------------------------
@@ -39,12 +40,16 @@ class _AreaScreenState extends State<AreaScreen> {
   Widget build(BuildContext context) {
 //-------------------Getting the width of the phone screen----------------------
     var screenw = MediaQuery.of(context).size.width;
-//------------------------------------------------------------------------------
+//==============================================================================
     return Scaffold(
+//------------ App Bar ---------------------------------------------------------
+
       appBar: appbarwidget(
         context: context,
         titel: 'Area',
       ),
+
+//----------Area Screen body ---------------------------------------------------
       body: SafeArea(
           child: Column(
         children: [
@@ -83,9 +88,14 @@ class _AreaScreenState extends State<AreaScreen> {
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(state is AreaState
-                                            ? state.item.parameter
-                                            : ''),
+                                        child: Text(
+                                          state is AreaState
+                                              ? state.item.parameter
+                                              : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
                                       );
                                     },
                                   ),
@@ -100,13 +110,13 @@ class _AreaScreenState extends State<AreaScreen> {
                           Expanded(child: BlocBuilder<AreaBloc, IAreaState>(
                               builder: (context, state) {
                             return Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: AppColor.brightorange),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                     textAlign: TextAlign.end,
                                     controller:
                                         state is AreaState ? state.value : text,
@@ -116,14 +126,12 @@ class _AreaScreenState extends State<AreaScreen> {
                                   ),
                                 ),
                                 Text(
-                                  state is AreaState
-                                      ? '${state.item.unit}  '
-                                      : '',
-                                  textDirection: TextDirection.rtl,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
-                                ),
+                                    state is AreaState
+                                        ? '${state.item.unit}  '
+                                        : '',
+                                    textDirection: TextDirection.rtl,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall),
                               ],
                             );
                           })),
@@ -158,6 +166,9 @@ class _AreaScreenState extends State<AreaScreen> {
                                           state is AreaState
                                               ? state.item1.parameter
                                               : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           textAlign: TextAlign.end,
                                         ),
                                       );
@@ -171,37 +182,40 @@ class _AreaScreenState extends State<AreaScreen> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: BlocBuilder<AreaBloc, IAreaState>(
+                          Expanded(
+                            child: BlocBuilder<AreaBloc, IAreaState>(
                               builder: (context, state) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: Colors.grey.shade700),
-                                    textAlign: TextAlign.end,
-                                    controller: state is AreaState
-                                        ? state.result
-                                        : text,
-                                    keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                Text(
-                                  state is AreaState
-                                      ? '${state.item1.unit}  '
-                                      : '',
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
-                                ),
-                              ],
-                            );
-                          })),
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
+                                        readOnly: true,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                        textAlign: TextAlign.end,
+                                        controller: state is AreaState
+                                            ? state.result
+                                            : text,
+                                        keyboardType: TextInputType.none,
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none),
+                                      ),
+                                    ),
+                                    Text(
+                                        state is AreaState
+                                            ? '${state.item1.unit}  '
+                                            : '',
+                                        textAlign: TextAlign.end,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ]),
@@ -219,13 +233,15 @@ class _AreaScreenState extends State<AreaScreen> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: const Keys(),
+              child: const Buttons(),
             ),
           )
         ],
       )),
     );
   }
+
+//---------------- ads ---------------------------------------------------------
 
   void _showInterstitial() {
     AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
@@ -238,16 +254,17 @@ class _AreaScreenState extends State<AreaScreen> {
       AdiveryPlugin.show(placementId);
     }
   }
+//------------------------------------------------------------------------------
 }
 
-class Keys extends StatelessWidget {
-  const Keys({
+//---------------- button widget -----------------------------------------------
+class Buttons extends StatelessWidget {
+  const Buttons({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    var fontsize = MediaQuery.of(context).size.width / 16;
     return Row(
       children: [
         SizedBox(
@@ -259,22 +276,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '7',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '8',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '9',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -285,22 +302,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '4',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '5',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '6',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -311,22 +328,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '1',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '2',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '3',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -337,22 +354,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '00',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '0',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '.',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -365,22 +382,22 @@ class Keys extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'AC',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'CE',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: '⇌',
                 titelcolor: AppColor.bottomtitel,
                 bottomcolor: AppColor.customorange,
@@ -393,22 +410,79 @@ class Keys extends StatelessWidget {
   }
 }
 
-class Clikbottom extends StatelessWidget {
-  Clikbottom(this.model, {super.key});
-  BottomModel model;
+//---------------- Clicking buttons -----------------------------------------
+class Clikbutton extends StatelessWidget {
+  Clikbutton(this.model, {super.key});
+  ButtonModel model;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        BlocProvider.of<AreaBloc>(context).add(AreaEvent(
-          model.titel,
-        ));
+        if (BlocProvider.of<AreaBloc>(context).amount.text.contains('.') ==
+            true) {
+          if (BlocProvider.of<AreaBloc>(context)
+                  .amount
+                  .text
+                  .substring(BlocProvider.of<AreaBloc>(context)
+                      .amount
+                      .text
+                      .indexOf('.'))
+                  .length <=
+              10) {
+            BlocProvider.of<AreaBloc>(context).add(AreaEvent(
+              model.titel,
+            ));
+          } else if (BlocProvider.of<AreaBloc>(context)
+                      .amount
+                      .text
+                      .substring(BlocProvider.of<AreaBloc>(context)
+                          .amount
+                          .text
+                          .indexOf('.'))
+                      .length >
+                  10 &&
+              model.titel != 'CE' &&
+              model.titel != 'AC' &&
+              model.titel != '⇌') {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackbarMessage.decimalpointmessage);
+          } else {
+            BlocProvider.of<AreaBloc>(context).add(AreaEvent(
+              model.titel,
+            ));
+          }
+        } else {
+          if (model.titel == '.') {
+            BlocProvider.of<AreaBloc>(context).add(AreaEvent(
+              model.titel,
+            ));
+          } else {
+            if (BlocProvider.of<AreaBloc>(context).amount.text.length - 1 <
+                15) {
+              BlocProvider.of<AreaBloc>(context).add(AreaEvent(
+                model.titel,
+              ));
+            } else if (BlocProvider.of<AreaBloc>(context).amount.text.length >
+                    15 &&
+                model.titel != 'CE' &&
+                model.titel != 'AC' &&
+                model.titel != '⇌') {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackbarMessage.message);
+            } else {
+              BlocProvider.of<AreaBloc>(context).add(AreaEvent(
+                model.titel,
+              ));
+            }
+          }
+        }
       },
       child: Bottom(property: model),
     );
   }
 }
+//------------------------------------------------------------------------------
 
 Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
     DraggableScrollableController controller, int number) {
@@ -447,13 +521,11 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 12.5, bottom: 12.5),
-                        child: Text(
-                          'Select unit',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
+                        child: Text('Select unit',
+                            style: Theme.of(context).textTheme.bodySmall),
                       ),
                     ],
                   ),
@@ -466,7 +538,7 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(
-                                bottom: 30, top: 20, left: 10),
+                                bottom: 30, top: 20, left: 15),
                             child: GestureDetector(
                                 onTap: () {
                                   if (number == 0) {
@@ -479,7 +551,9 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                    '${item[index].parameter}  (${item[index].unit})')),
+                                  '${item[index].parameter}  (${item[index].unit})',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                )),
                           );
                         },
                       ),

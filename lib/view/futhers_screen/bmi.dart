@@ -3,12 +3,14 @@ import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_event.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
 import 'package:calculator/constanc/app_colors.dart';
+import 'package:calculator/constanc/snackbar_message.dart';
 import 'package:calculator/model/bottom_model.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
 import 'package:calculator/widgets/bottom.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class BmiScreen extends StatefulWidget {
   const BmiScreen({Key? key}) : super(key: key);
@@ -22,7 +24,7 @@ class _BmiScreenState extends State<BmiScreen> {
   var seth = TextEditingController();
   bool height = false;
   bool weight = false;
-  String result = '0.0';
+  double result = 0.0;
   Color resultcolor = Colors.grey.shade600;
   @override
   void initState() {
@@ -45,7 +47,7 @@ class _BmiScreenState extends State<BmiScreen> {
             flex: 1,
             child: Container(
               width: screenw,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,16 +73,21 @@ class _BmiScreenState extends State<BmiScreen> {
                                           ? AppColor.brightorange
                                           : Colors.grey.shade600,
                                       width: 2),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
                                 ),
                                 child: BlocBuilder<BmiBloc, IBmiState>(
                                     builder: (context, state) {
                                   return Center(
-                                    child: Text(state is BmiState &&
-                                            state.height.isNotEmpty
-                                        ? state.height
-                                        : 'Height (m)'),
+                                    child: Text(
+                                        state is BmiState &&
+                                                state.height.isNotEmpty
+                                            ? state.height
+                                            : 'Height (m)',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Theme.of(context)
+                                                .unselectedWidgetColor)),
                                   );
                                 })),
                           ),
@@ -102,47 +109,143 @@ class _BmiScreenState extends State<BmiScreen> {
                                             ? AppColor.brightorange
                                             : Colors.grey.shade600,
                                         width: 2),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
                                 child: BlocBuilder<BmiBloc, IBmiState>(
                                     builder: (context, state) {
                                   return Center(
                                     child: Text(
-                                      state is BmiState &&
-                                              state.weight.isNotEmpty
-                                          ? state.weight
-                                          : 'Weight (kg)',
-                                    ),
+                                        state is BmiState &&
+                                                state.weight.isNotEmpty
+                                            ? state.weight
+                                            : 'Weight (kg)',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Theme.of(context)
+                                                .unselectedWidgetColor)),
                                   );
                                 })),
                           ),
                         ]),
-                    Center(
-                      child: BlocBuilder<BmiBloc, IBmiState>(
-                          builder: (context, state) {
-                        return Container(
-                          height: screenh / 4,
-                          width: screenh / 4,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: state is BmiState &&
-                                          (state.height.isNotEmpty ||
-                                              state.weight.isNotEmpty)
-                                      ? state.color
-                                      : resultcolor,
-                                  width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(1000))),
-                          child: Center(
-                            child: Text(
-                              '${state is BmiState ? state.result : result}',
-                              style:
-                                  TextStyle(fontSize: 40, color: Colors.grey),
+                    Center(child: BlocBuilder<BmiBloc, IBmiState>(
+                        builder: (context, state) {
+                      return CircularPercentIndicator(
+                        radius: screenh / 8,
+                        percent: state is BmiState
+                            ? state.result == 0
+                                ? 0
+                                : state.result / 100 + 0.5
+                            : result,
+                        lineWidth: 12,
+                        animation: true,
+                        progressColor: state is BmiState &&
+                                (state.height.isNotEmpty ||
+                                    state.weight.isNotEmpty)
+                            ? state.color
+                            : resultcolor,
+                        circularStrokeCap: CircularStrokeCap.round,
+                        center: Text(
+                          '${state is BmiState ? state.result : result}',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      );
+                    })),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  color: Colors.blue,
+                                ),
+                                Text(
+                                  ' Below 18.5',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ],
                             ),
-                          ),
-                        );
-                      }),
-                    )
+                            const Text(
+                              'Underweight',
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 13),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  color: Colors.green,
+                                ),
+                                Text(
+                                  ' 18.5 – 24.9',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ],
+                            ),
+                            const Text(
+                              'Healthy Weight',
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 13),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  color: Colors.orange,
+                                ),
+                                Text(
+                                  ' 25.0 – 29.9',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ],
+                            ),
+                            const Text(
+                              'Overweight',
+                              style:
+                                  TextStyle(color: Colors.orange, fontSize: 13),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  ' 30.0 and Above',
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ],
+                            ),
+                            const Text(
+                              'Obesity',
+                              style: TextStyle(color: Colors.red, fontSize: 13),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ]),
             ),
           ),
@@ -157,151 +260,7 @@ class _BmiScreenState extends State<BmiScreen> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 1.3,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '7',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '8',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '9',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '4',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '5',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '6',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '1',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '2',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '3',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '00',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '0',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                              Clikbottom(
-                                  BottomModel(
-                                      titel: '.',
-                                      titelcolor: Colors.white,
-                                      bottomcolor: Colors.grey.shade800),
-                                  height,
-                                  weight),
-                            ],
-                          ),
-                        ]),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Clikbottom(
-                          BottomModel(
-                            titel: 'AC',
-                            titelcolor: AppColor.brightorange,
-                            bottomcolor: AppColor.bottomcolor,
-                          ),
-                          height,
-                          weight),
-                      Clikbottom(
-                          BottomModel(
-                            titel: 'CE',
-                            titelcolor: AppColor.brightorange,
-                            bottomcolor: AppColor.bottomcolor,
-                          ),
-                          height,
-                          weight),
-                      Clikbottom(
-                          BottomModel(
-                            titel: '=',
-                            titelcolor: AppColor.bottomtitel,
-                            bottomcolor: AppColor.customorange,
-                          ),
-                          height,
-                          weight),
-                    ],
-                  )
-                ],
-              ),
+              child: Buttons(height: height, weight: weight),
             ),
           )
         ],
@@ -322,20 +281,205 @@ class _BmiScreenState extends State<BmiScreen> {
   }
 }
 
-class Clikbottom extends StatelessWidget {
-  Clikbottom(this.model, this.height, this.weight, {super.key});
-  BottomModel model;
+class Buttons extends StatelessWidget {
+  const Buttons({
+    super.key,
+    required this.height,
+    required this.weight,
+  });
+
+  final bool height;
+  final bool weight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 1.3,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '7',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '8',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '9',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '4',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '5',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '6',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '1',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '2',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '3',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '00',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '0',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                            titel: '.',
+                            titelcolor: Colors.white,
+                            bottomcolor: Colors.grey.shade800),
+                        height,
+                        weight),
+                  ],
+                ),
+              ]),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Clikbutton(
+                ButtonModel(
+                  titel: 'AC',
+                  titelcolor: AppColor.brightorange,
+                  bottomcolor: AppColor.bottomcolor,
+                ),
+                height,
+                weight),
+            Clikbutton(
+                ButtonModel(
+                  titel: 'CE',
+                  titelcolor: AppColor.brightorange,
+                  bottomcolor: AppColor.bottomcolor,
+                ),
+                height,
+                weight),
+            Clikbutton(
+                ButtonModel(
+                  titel: '=',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: AppColor.customorange,
+                ),
+                height,
+                weight),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class Clikbutton extends StatelessWidget {
+  Clikbutton(this.model, this.height, this.weight, {super.key});
+  ButtonModel model;
   bool height = false;
   bool weight = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (height == true) {
-          BlocProvider.of<BmiBloc>(context).add(HeightEvent(model.titel));
-        } else if (weight == true) {
-          BlocProvider.of<BmiBloc>(context).add(WeightEvent(model.titel));
-        } else {}
+        if (model.titel == '=' &&
+            BlocProvider.of<BmiBloc>(context).height.isEmpty &&
+            BlocProvider.of<BmiBloc>(context).weight.isEmpty) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackbarMessage.bmimessage);
+        } else if (model.titel == '=' &&
+            BlocProvider.of<BmiBloc>(context).height.isEmpty &&
+            BlocProvider.of<BmiBloc>(context).weight.isNotEmpty) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackbarMessage.bmimessage2);
+        } else if (model.titel == '=' &&
+            BlocProvider.of<BmiBloc>(context).height.isNotEmpty &&
+            BlocProvider.of<BmiBloc>(context).weight.isEmpty) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackbarMessage.bmimessage1);
+        } else if (model.titel == '=' &&
+            double.parse(BlocProvider.of<BmiBloc>(context).height) >= 10) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackbarMessage.bmimessage3);
+        } else {
+          if (height == true) {
+            BlocProvider.of<BmiBloc>(context).add(HeightEvent(model.titel));
+            if (double.parse(BlocProvider.of<BmiBloc>(context).height) >= 10) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackbarMessage.bmimessage3);
+            } else {}
+          } else if (weight == true) {
+            BlocProvider.of<BmiBloc>(context).add(WeightEvent(model.titel));
+          } else {}
+        }
       },
       child: Bottom(property: model),
     );

@@ -65,6 +65,7 @@ class TimeBloc extends Bloc<ITimeEvent, ITimeState> {
         } else {
           amount.text = amount.text + event.value;
         }
+
         claculateresult();
         emit(TimeState(amount, item, item1, result));
       }

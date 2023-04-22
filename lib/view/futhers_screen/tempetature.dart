@@ -11,6 +11,8 @@ import 'package:calculator/widgets/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constanc/snackbar_message.dart';
+
 class TempetatureScreen extends StatefulWidget {
   const TempetatureScreen({Key? key}) : super(key: key);
 
@@ -40,10 +42,12 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
     var screenw = MediaQuery.of(context).size.width;
 //------------------------------------------------------------------------------
     return Scaffold(
+//-------------- App Bar -------------------------------------------------------
       appBar: appbarwidget(
         context: context,
         titel: 'Tempetature',
       ),
+//------------------------------------------------------------------------------
       body: SafeArea(
           child: Column(
         children: [
@@ -83,9 +87,14 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(state is TempetatureState
-                                            ? state.item.parameter
-                                            : ''),
+                                        child: Text(
+                                          state is TempetatureState
+                                              ? state.item.parameter
+                                              : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
                                       );
                                     },
                                   ),
@@ -105,27 +114,24 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: AppColor.brightorange),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
                                     textAlign: TextAlign.end,
                                     controller: state is TempetatureState
                                         ? state.value
                                         : TextEditingController(),
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
-                                  state is TempetatureState
-                                      ? '${state.item.unit}  '
-                                      : '',
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
-                                ),
+                                    state is TempetatureState
+                                        ? '${state.item.unit}  '
+                                        : '',
+                                    textAlign: TextAlign.end,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall),
                               ],
                             );
                           })),
@@ -161,6 +167,9 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                                           state is TempetatureState
                                               ? state.item1.parameter
                                               : '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           textAlign: TextAlign.end,
                                         ),
                                       );
@@ -182,15 +191,14 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                                 Expanded(
                                   child: TextField(
                                     readOnly: true,
-                                    style: TextStyle(
-                                        fontSize: screenw / 15,
-                                        color: Colors.grey.shade700),
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                     textAlign: TextAlign.end,
                                     controller: state is TempetatureState
                                         ? state.result
                                         : TextEditingController(),
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
@@ -199,9 +207,7 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                                       ? '${state.item1.unit}  '
                                       : '',
                                   textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                    fontSize: screenw / 21,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ],
                             );
@@ -223,7 +229,7 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: const Keys()),
+                child: const Buttons()),
           )
         ],
       )),
@@ -243,14 +249,13 @@ class _TempetatureScreenState extends State<TempetatureScreen> {
   }
 }
 
-class Keys extends StatelessWidget {
-  const Keys({
+class Buttons extends StatelessWidget {
+  const Buttons({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    var fontsize = MediaQuery.of(context).size.width / 16;
     return Row(
       children: [
         SizedBox(
@@ -262,22 +267,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '7',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '8',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '9',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -288,22 +293,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '4',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '5',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '6',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -314,22 +319,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '1',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '2',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '3',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -340,22 +345,22 @@ class Keys extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '00',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '0',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
                       ),
                     ),
-                    Clikbottom(
-                      BottomModel(
+                    Clikbutton(
+                      ButtonModel(
                         titel: '.',
                         titelcolor: Colors.white,
                         bottomcolor: Colors.grey.shade800,
@@ -368,22 +373,22 @@ class Keys extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'AC',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: 'CE',
                 titelcolor: AppColor.brightorange,
                 bottomcolor: AppColor.bottomcolor,
               ),
             ),
-            Clikbottom(
-              BottomModel(
+            Clikbutton(
+              ButtonModel(
                 titel: '⇌',
                 titelcolor: AppColor.bottomtitel,
                 bottomcolor: AppColor.customorange,
@@ -396,17 +401,79 @@ class Keys extends StatelessWidget {
   }
 }
 
-class Clikbottom extends StatelessWidget {
-  Clikbottom(this.model, {super.key});
-  BottomModel model;
+class Clikbutton extends StatelessWidget {
+  Clikbutton(this.model, {super.key});
+  ButtonModel model;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
-          model.titel,
-        ));
+        if (BlocProvider.of<TempetatureBloc>(context)
+                .amount
+                .text
+                .contains('.') ==
+            true) {
+          if (BlocProvider.of<TempetatureBloc>(context)
+                  .amount
+                  .text
+                  .substring(BlocProvider.of<TempetatureBloc>(context)
+                      .amount
+                      .text
+                      .indexOf('.'))
+                  .length <=
+              10) {
+            BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
+              model.titel,
+            ));
+          } else if (BlocProvider.of<TempetatureBloc>(context)
+                      .amount
+                      .text
+                      .substring(BlocProvider.of<TempetatureBloc>(context)
+                          .amount
+                          .text
+                          .indexOf('.'))
+                      .length >
+                  10 &&
+              model.titel != 'CE' &&
+              model.titel != 'AC' &&
+              model.titel != '⇌') {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackbarMessage.decimalpointmessage);
+          } else {
+            BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
+              model.titel,
+            ));
+          }
+        } else {
+          if (model.titel == '.') {
+            BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
+              model.titel,
+            ));
+          } else {
+            if (BlocProvider.of<TempetatureBloc>(context).amount.text.length -
+                    1 <
+                15) {
+              BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
+                model.titel,
+              ));
+            } else if (BlocProvider.of<TempetatureBloc>(context)
+                        .amount
+                        .text
+                        .length >
+                    15 &&
+                model.titel != 'CE' &&
+                model.titel != 'AC' &&
+                model.titel != '⇌') {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackbarMessage.message);
+            } else {
+              BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
+                model.titel,
+              ));
+            }
+          }
+        }
       },
       child: Bottom(property: model),
     );
@@ -450,12 +517,12 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 12.5, bottom: 12.5),
+                        padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
                         child: Text(
                           'Select unit',
-                          style: TextStyle(fontSize: 16),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -482,7 +549,9 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                    '${item[index].parameter}  (${item[index].unit})')),
+                                  '${item[index].parameter}  (${item[index].unit})',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                )),
                           );
                         },
                       ),

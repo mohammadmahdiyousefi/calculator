@@ -19,8 +19,9 @@ class AreaBloc extends Bloc<IAreaEvent, IAreaState> {
 //----------Clear all-----------------------------------------------------------
 
       if (event.value == 'AC') {
-        result.text = '0';
         amount.text = '0';
+
+        claculateresult();
         emit(AreaState(amount, item, item1, result));
       }
 
@@ -50,7 +51,9 @@ class AreaBloc extends Bloc<IAreaEvent, IAreaState> {
       else if (event.value == '.') {
         if (amount.text.contains(event.value) == false) {
           amount.text = amount.text + event.value;
-        } else {}
+        } else {
+          amount.text = amount.text;
+        }
 
         claculateresult();
         emit(AreaState(amount, item, item1, result));
@@ -65,6 +68,7 @@ class AreaBloc extends Bloc<IAreaEvent, IAreaState> {
         } else {
           amount.text = amount.text + event.value;
         }
+
         claculateresult();
         emit(AreaState(amount, item, item1, result));
       }

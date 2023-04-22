@@ -32,6 +32,7 @@ class _SecoundScreenState extends State<SecoundScreen> {
     // TODO: implement initState
     super.initState();
     creatabannerad();
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
   }
 
 //------------------------------------------------------------------------------------------

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class BottomModel {
+class ButtonModel {
   String titel;
   Color? titelcolor;
   Color? bottomcolor;
 
-  BottomModel({
+  ButtonModel({
     this.bottomcolor = Colors.grey,
     this.titel = '',
     this.titelcolor = Colors.white,

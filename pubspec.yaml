@@ -40,6 +40,7 @@ dependencies:
   adivery: ^4.2.0 
   google_fonts: ^4.0.3
   percent_indicator: ^4.0.1
+  age_calculator: ^1.0.0
 
 
 dev_dependencies:

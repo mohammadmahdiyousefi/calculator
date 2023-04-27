@@ -8,11 +8,12 @@ class AppTheme {
     scaffoldBackgroundColor: AppColor.black,
     unselectedWidgetColor: Colors.white,
     colorScheme: const ColorScheme.dark(),
+    cardColor: AppColor.black,
     primaryColor: AppColor.darkprimaryColor,
     textTheme: TextTheme(
 //---------------- selected item style -----------------------------------------
         bodySmall: GoogleFonts.roboto(
-            fontSize: 16,
+            fontSize: 15,
             fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w400,
             color: Colors.white),
@@ -33,6 +34,12 @@ class AppTheme {
             fontSize: 18,
             fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w500,
+            color: Colors.white),
+//----------------- bmi --------------------------------------------------------
+        labelLarge: GoogleFonts.lato(
+            fontSize: 12,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w400,
             color: Colors.white),
 //------------------ BMI information--------------------------------------------
         labelMedium: GoogleFonts.lato(
@@ -69,12 +76,13 @@ class AppTheme {
     scaffoldBackgroundColor: AppColor.white,
     unselectedWidgetColor: Colors.black,
     colorScheme: const ColorScheme.light(),
+    cardColor: AppColor.white,
     primaryColor: AppColor.lightprimaryColor,
 
     textTheme: TextTheme(
 //---------------- selected item style -----------------------------------------
       bodySmall: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 15,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.w400,
           color: Colors.black),
@@ -96,6 +104,12 @@ class AppTheme {
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.w500,
           color: Colors.black),
+//----------------- bmi --------------------------------------------------------
+      labelLarge: GoogleFonts.lato(
+          fontSize: 12,
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w400,
+          color: Colors.black),
 //------------------ BMI information--------------------------------------------
       labelMedium: GoogleFonts.lato(
           fontSize: 15,
@@ -107,7 +121,7 @@ class AppTheme {
       displayMedium: GoogleFonts.lato(
           fontSize: 30,
           fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           color: Colors.black),
 //------------------ calculator result  ----------------------------------------
       displayLarge: GoogleFonts.lato(

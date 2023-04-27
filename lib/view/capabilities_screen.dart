@@ -1,5 +1,6 @@
 import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
+import 'package:calculator/view/futhers_screen/age.dart';
 import 'package:calculator/view/futhers_screen/area.dart';
 import 'package:calculator/view/futhers_screen/bmi.dart';
 
@@ -82,12 +83,7 @@ class _SecoundScreenState extends State<SecoundScreen> {
                   Property(
                     boxicon: Icons.cake,
                     titel: 'Age',
-                    newpage: null,
-                  ),
-                  Property(
-                    boxicon: Icons.money,
-                    titel: 'Currency',
-                    newpage: null,
+                    newpage: const AgeScreen(),
                   ),
                 ],
               ),

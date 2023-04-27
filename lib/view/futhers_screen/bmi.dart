@@ -158,21 +158,20 @@ class _BmiScreenState extends State<BmiScreen> {
                             Row(
                               children: [
                                 Container(
-                                  height: 15,
-                                  width: 15,
+                                  height: 12,
+                                  width: 12,
                                   color: Colors.blue,
                                 ),
                                 Text(
                                   ' Below 18.5',
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               ],
                             ),
                             const Text(
                               'Underweight',
                               style:
-                                  TextStyle(color: Colors.blue, fontSize: 13),
+                                  TextStyle(color: Colors.blue, fontSize: 10),
                             ),
                           ],
                         ),
@@ -181,21 +180,20 @@ class _BmiScreenState extends State<BmiScreen> {
                             Row(
                               children: [
                                 Container(
-                                  height: 15,
-                                  width: 15,
+                                  height: 12,
+                                  width: 12,
                                   color: Colors.green,
                                 ),
                                 Text(
                                   ' 18.5 – 24.9',
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               ],
                             ),
                             const Text(
                               'Healthy Weight',
                               style:
-                                  TextStyle(color: Colors.green, fontSize: 13),
+                                  TextStyle(color: Colors.green, fontSize: 10),
                             )
                           ],
                         ),
@@ -204,21 +202,20 @@ class _BmiScreenState extends State<BmiScreen> {
                             Row(
                               children: [
                                 Container(
-                                  height: 15,
-                                  width: 15,
+                                  height: 12,
+                                  width: 12,
                                   color: Colors.orange,
                                 ),
                                 Text(
                                   ' 25.0 – 29.9',
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               ],
                             ),
                             const Text(
                               'Overweight',
                               style:
-                                  TextStyle(color: Colors.orange, fontSize: 13),
+                                  TextStyle(color: Colors.orange, fontSize: 10),
                             )
                           ],
                         ),
@@ -227,20 +224,19 @@ class _BmiScreenState extends State<BmiScreen> {
                             Row(
                               children: [
                                 Container(
-                                  height: 15,
-                                  width: 15,
+                                  height: 12,
+                                  width: 12,
                                   color: Colors.red,
                                 ),
                                 Text(
                                   ' 30.0 and Above',
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               ],
                             ),
                             const Text(
                               'Obesity',
-                              style: TextStyle(color: Colors.red, fontSize: 13),
+                              style: TextStyle(color: Colors.red, fontSize: 10),
                             )
                           ],
                         ),

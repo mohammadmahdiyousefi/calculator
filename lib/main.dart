@@ -1,4 +1,7 @@
 import 'package:adivery/adivery.dart';
+import 'package:age_calculator/age_calculator.dart';
+import 'package:calculator/bloc/age/age_bloc.dart';
+import 'package:calculator/bloc/age/age_state.dart';
 import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
 import 'package:calculator/bloc/length/length_bloc.dart';
@@ -103,7 +106,13 @@ void main() {
       create: (context) {
         return BmiBloc(BmiState(Colors.grey, '', '', 0));
       },
-    )
+    ),
+    BlocProvider(
+      create: (context) {
+        return AgeBloc(AgeState(DateTime.now(), DateTime.now(), '0', '0', '0',
+            '0', '0', '0', DateDuration(), DateDuration()));
+      },
+    ),
   ], child: const MyApp()));
 }
 
@@ -143,6 +152,7 @@ class _MainPageState extends State<MainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(elevation: 0, title: TabBarwidget(tabcontrol)),
       body: SafeArea(
         child: TabBarView(

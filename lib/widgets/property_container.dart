@@ -69,7 +69,7 @@ class _PropertyState extends State<Property> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text(
+                    child: const Text(
                       'ok',
                       style: TextStyle(color: Colors.blue, fontSize: 18),
                     ))

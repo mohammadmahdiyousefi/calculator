@@ -12,18 +12,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String inputuser = '';
-  String result = '';
-
-//-------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    //گرفتن سایز صفحه
+//--------------- get screen width ---------------------------------------------
     var screenw = MediaQuery.of(context).size.width;
+//------------------------------------------------------------------------------
     return Scaffold(
       body: SafeArea(
           child: Column(
         children: [
+//---------------- show inputuser and result -----------------------------------
           Expanded(
             flex: 8,
             child: SizedBox(
@@ -37,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         SingleChildScrollView(
                           physics: const BouncingScrollPhysics(),
+//----------------------------- show inputuser text --------------------------//
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height / 6,
                             child: state is CalculatorState
@@ -58,10 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .displayLarge),
                           ),
                         ),
+//----------------------------------------------------------------------------//
+//----------------------- separate result of inputuser -------------------------
                         Divider(
                           height: 1,
                           color: Theme.of(context).unselectedWidgetColor,
                         ),
+//------------------------------------------------------------------------------
+//-------------------------- result text -------------------------------------//
                         SingleChildScrollView(
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height / 6,
@@ -87,11 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                           ),
                         ),
+//----------------------------------------------------------------------------//
                       ]),
                 );
               }),
             ),
           ),
+
+          ///------------------- show calculator buttons ------------------------------///
           Expanded(
             flex: 12,
             child: Container(
@@ -105,7 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: const CalculatorBottoms(),
             ),
-          )
+          ),
+
+          ///--------------------------------------------------------------------------///
         ],
       )),
     );

@@ -30,7 +30,6 @@ class _StorageScreenState extends State<StorageScreen> {
 //------------------------------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }
@@ -222,7 +221,7 @@ class _StorageScreenState extends State<StorageScreen> {
                 width: screenw,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
@@ -254,7 +253,6 @@ class Buttons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fontsize = MediaQuery.of(context).size.width / 16;
     return Row(
       children: [
         SizedBox(

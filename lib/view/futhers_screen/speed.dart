@@ -30,7 +30,6 @@ class _SpeedScreenState extends State<SpeedScreen> {
 //------------------------------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }

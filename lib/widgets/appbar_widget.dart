@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constanc/app_colors.dart';
 
 PreferredSizeWidget appbarwidget(
     {required BuildContext context, String titel = 'Appbar'}) {

@@ -1,9 +1,9 @@
 import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
+import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/view/futhers_screen/age.dart';
 import 'package:calculator/view/futhers_screen/area.dart';
 import 'package:calculator/view/futhers_screen/bmi.dart';
-
 import 'package:calculator/view/futhers_screen/length.dart';
 import 'package:calculator/view/futhers_screen/speed.dart';
 import 'package:calculator/view/futhers_screen/tempetature.dart';
@@ -20,14 +20,17 @@ class SecoundScreen extends StatefulWidget {
 }
 
 class _SecoundScreenState extends State<SecoundScreen> {
+//--------------------- banner ad ----------------------------------------------
   BannerAd? _ads;
-
+//------------------------------------------------------------------------------
+//-------------------- navigator page metod ------------------------------------
   void nextpage(Widget newpage) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return newpage;
     }));
   }
 
+//------------------------------------------------------------------------------
   @override
   void initState() {
     // TODO: implement initState
@@ -90,17 +93,17 @@ class _SecoundScreenState extends State<SecoundScreen> {
               SizedBox(
                 height: 50,
                 width: 300,
-                child: _ads == null ? Container() : _ads,
+                child: _ads ?? Container(),
               ),
               SizedBox(
                 height: 50,
                 width: 300,
-                child: _ads == null ? Container() : _ads,
+                child: _ads ?? Container(),
               ),
               SizedBox(
                 height: 50,
                 width: 300,
-                child: _ads == null ? Container() : _ads,
+                child: _ads ?? Container(),
               ),
             ],
           ),
@@ -114,13 +117,14 @@ class _SecoundScreenState extends State<SecoundScreen> {
   Widget bottom(
       {IconData boxicon = Icons.mp, String titel = '', Widget? newpage}) {
     return Padding(
-      padding: EdgeInsets.all(5),
-      child: Container(
+      padding: const EdgeInsets.all(5),
+      child: SizedBox(
         height: 130,
         width: (MediaQuery.of(context).size.width / 3) - 10,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).scaffoldBackgroundColor, elevation: 0),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              elevation: 0),
           onPressed: () {
             nextpage(newpage!);
           },
@@ -129,33 +133,21 @@ class _SecoundScreenState extends State<SecoundScreen> {
             children: [
               Icon(
                 boxicon,
-                color: Colors.orange.shade800,
+                color: AppColor.iconcolor,
                 size: 40,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Text(
                 titel,
-                style: TextStyle(color: Colors.orange),
+                style: TextStyle(color: AppColor.iconcolor),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _showInterstitial() {
-    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
-        (isLoaded) =>
-            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
-  }
-
-  void showPlacement(bool isLoaded, String placementId) {
-    if (isLoaded) {
-      AdiveryPlugin.show(placementId);
-    }
   }
 
   void creatabannerad() {

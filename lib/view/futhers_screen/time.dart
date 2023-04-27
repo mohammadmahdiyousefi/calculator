@@ -31,7 +31,6 @@ class _TimeScreenState extends State<TimeScreen> {
 //------------------------------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }

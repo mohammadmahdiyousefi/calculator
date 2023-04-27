@@ -28,7 +28,6 @@ class _BmiScreenState extends State<BmiScreen> {
   Color resultcolor = Colors.grey.shade600;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }

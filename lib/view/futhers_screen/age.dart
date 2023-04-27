@@ -2,6 +2,7 @@ import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/age/age_bloc.dart';
 import 'package:calculator/bloc/age/age_event.dart';
 import 'package:calculator/bloc/age/age_state.dart';
+import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,19 +16,42 @@ class AgeScreen extends StatefulWidget {
 }
 
 class _AgeScreenState extends State<AgeScreen> {
+//----------------- calender metod ---------------------------------------------
   void _showDatePicker() {
     showDatePicker(
       context: context,
       initialDate: BlocProvider.of<AgeBloc>(context).birthday,
       firstDate: DateTime(1930),
-      lastDate: DateTime(2096),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+            data: Theme.of(context).copyWith(
+              textTheme: TextTheme(
+                  headlineSmall: GoogleFonts.lato(), // Selected Date landscape
+                  titleLarge: GoogleFonts.lato(), // Selected Date portrait
+                  labelSmall: GoogleFonts.lato(), // Title - SELECT DATE
+                  titleMedium: GoogleFonts.lato(color: Colors.black), // input
+                  titleSmall: GoogleFonts.lato(), // month/year picker
+                  bodySmall: GoogleFonts.lato(), // days
+                  bodyLarge: GoogleFonts.lato()),
+              colorScheme: Theme.of(context).colorScheme.copyWith(
+                    // Title, selected date and day selection background (dark and light mode)
+                    surface: AppColor.brightorange,
+                    primary: AppColor.brightorange,
+                    // Title, selected date and month/year picker color (dark and light mode)
+                    onSurface: Colors.black,
+                    onPrimary: Colors.black,
+                  ),
+            ),
+            child: child!);
+      },
     ).then(
         (value) => {BlocProvider.of<AgeBloc>(context).add(AgeEvent(value!))});
   }
 
+//------------------------------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }
@@ -39,6 +63,7 @@ class _AgeScreenState extends State<AgeScreen> {
         appBar: appbarwidget(context: context, titel: 'Age'),
         body: Column(
           children: [
+            ///--------------------- today date -----------------------------------------///
             Padding(
                 padding: const EdgeInsets.only(
                     left: 20, right: 28, top: 10, bottom: 10),
@@ -63,6 +88,9 @@ class _AgeScreenState extends State<AgeScreen> {
                     }),
                   ],
                 )),
+
+            ///--------------------------------------------------------------------------///
+            ///--------------------- date of birth --------------------------------------///
             Padding(
               padding: const EdgeInsets.only(
                   left: 20, right: 5, top: 5, bottom: 100),
@@ -101,6 +129,9 @@ class _AgeScreenState extends State<AgeScreen> {
                 ],
               ),
             ),
+
+            ///--------------------------------------------------------------------------///
+//------------------------ show detales view ---------------------------------//
             BlocBuilder<AgeBloc, IAgeState>(builder: (context, state) {
               return Card(
                 elevation: 2,
@@ -399,10 +430,11 @@ class _AgeScreenState extends State<AgeScreen> {
                 ),
               );
             }),
+//----------------------------------------------------------------------------//
           ],
         ));
   }
-  //---------------- ads ---------------------------------------------------------
+  //---------------- ads -------------------------------------------------------
 
   void _showInterstitial() {
     AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(

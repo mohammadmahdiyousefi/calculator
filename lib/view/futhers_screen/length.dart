@@ -118,7 +118,7 @@ class _LengthScreenState extends State<LengthScreen> {
                                         ? state.value
                                         : TextEditingController(),
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
@@ -251,7 +251,6 @@ class Buttons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fontsize = MediaQuery.of(context).size.width / 16;
     return Row(
       children: [
         SizedBox(

@@ -31,7 +31,6 @@ class _AreaScreenState extends State<AreaScreen> {
 //------------------------------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }
@@ -121,7 +120,7 @@ class _AreaScreenState extends State<AreaScreen> {
                                     controller:
                                         state is AreaState ? state.value : text,
                                     keyboardType: TextInputType.none,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
@@ -199,7 +198,7 @@ class _AreaScreenState extends State<AreaScreen> {
                                             ? state.result
                                             : text,
                                         keyboardType: TextInputType.none,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                             border: InputBorder.none),
                                       ),
                                     ),

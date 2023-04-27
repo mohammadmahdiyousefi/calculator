@@ -1,3 +1,4 @@
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/age/age_bloc.dart';
 import 'package:calculator/bloc/age/age_event.dart';
 import 'package:calculator/bloc/age/age_state.dart';
@@ -22,6 +23,13 @@ class _AgeScreenState extends State<AgeScreen> {
       lastDate: DateTime(2096),
     ).then(
         (value) => {BlocProvider.of<AgeBloc>(context).add(AgeEvent(value!))});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _showInterstitial();
   }
 
   @override
@@ -270,7 +278,7 @@ class _AgeScreenState extends State<AgeScreen> {
                         height: 0,
                         color: Colors.grey,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(
@@ -394,4 +402,18 @@ class _AgeScreenState extends State<AgeScreen> {
           ],
         ));
   }
+  //---------------- ads ---------------------------------------------------------
+
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
+  }
+//------------------------------------------------------------------------------
 }

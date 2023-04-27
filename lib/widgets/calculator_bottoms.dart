@@ -229,22 +229,6 @@ class Clikbottom extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // if (BlocProvider.of<CalculatorBloc>(context)
-        //             .inputuser
-        //             .text
-        //             .substring(BlocProvider.of<CalculatorBloc>(context)
-        //                 .inputuser
-        //                 .text
-        //                 .lastIndexOf(
-        //                   BlocProvider.of<CalculatorBloc>(context).operator,
-        //                 ))
-        //             .length ==
-        //         15 &&
-        //     model.titel != 'CE' &&
-        //     model.titel != 'AC' &&
-        //     model.titel != '⇌') {
-        //   ScaffoldMessenger.of(context).showSnackBar(SnackbarMessage.message);
-        // } else {
         BlocProvider.of<CalculatorBloc>(context).add(CalculatorEvent(
           model.titel,
         ));

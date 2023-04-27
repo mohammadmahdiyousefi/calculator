@@ -204,7 +204,7 @@ class TabBarwidget extends StatelessWidget {
             icon: Icon(Icons.calculate_outlined),
           ),
           Tab(
-            icon: Icon(Icons.category_outlined),
+            icon: Icon(Icons.square_foot_rounded),
           ),
         ],
       ),

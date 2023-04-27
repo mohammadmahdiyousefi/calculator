@@ -447,15 +447,14 @@ class Clikbutton extends StatelessWidget {
               model.titel,
             ));
           } else {
-            if (BlocProvider.of<StorageBloc>(context).amount.text.length - 1 <
-                15) {
+            if (BlocProvider.of<StorageBloc>(context).amount.text.length < 15) {
               BlocProvider.of<StorageBloc>(context).add(StorageEvent(
                 model.titel,
               ));
             } else if (BlocProvider.of<StorageBloc>(context)
                         .amount
                         .text
-                        .length >
+                        .length >=
                     15 &&
                 model.titel != 'CE' &&
                 model.titel != 'AC' &&

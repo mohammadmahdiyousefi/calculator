@@ -458,12 +458,11 @@ class Clikbutton extends StatelessWidget {
               model.titel,
             ));
           } else {
-            if (BlocProvider.of<AreaBloc>(context).amount.text.length - 1 <
-                15) {
+            if (BlocProvider.of<AreaBloc>(context).amount.text.length < 15) {
               BlocProvider.of<AreaBloc>(context).add(AreaEvent(
                 model.titel,
               ));
-            } else if (BlocProvider.of<AreaBloc>(context).amount.text.length >
+            } else if (BlocProvider.of<AreaBloc>(context).amount.text.length >=
                     15 &&
                 model.titel != 'CE' &&
                 model.titel != 'AC' &&

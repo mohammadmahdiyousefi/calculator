@@ -16,11 +16,15 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //-------Clear each one---------------------------------------------------------
 
           if (event.value == 'CE') {
-            inputuser.text =
-                inputuser.text.substring(0, inputuser.text.length - 1);
-            if (inputuser.text.isEmpty) {
-              inputuser.text = '0';
-            } else {}
+            if (inputuser.text == 'Format Error') {
+              inputuser.text = '';
+            } else {
+              inputuser.text =
+                  inputuser.text.substring(0, inputuser.text.length - 1);
+              if (inputuser.text.isEmpty) {
+                inputuser.text = '0';
+              } else {}
+            }
             result.text = '';
             emit(CalculatorState(result, inputuser));
           }
@@ -36,14 +40,19 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //--------------- equal --------------------------------------------------------
 
           else if (event.value == '=') {
-            Parser parser = Parser();
-            value = inputuser.text.replaceAll('×', '*');
-            value = value.replaceAll('÷', '/');
-            Expression expression = parser.parse(value);
-            ContextModel contextModel = ContextModel();
-            double result1 =
-                expression.evaluate(EvaluationType.REAL, contextModel);
-            result.text = result1.toString();
+            if (result.text.isEmpty) {
+              Parser parser = Parser();
+              value = inputuser.text.replaceAll('×', '*');
+              value = value.replaceAll('÷', '/');
+              Expression expression = parser.parse(value);
+              ContextModel contextModel = ContextModel();
+              double result1 =
+                  expression.evaluate(EvaluationType.REAL, contextModel);
+              result.text = result1.toString();
+            } else {
+              inputuser.text = result.text;
+              result.text = '';
+            }
 
             emit(CalculatorState(result, inputuser));
           }
@@ -52,10 +61,12 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 
           else if (event.value == 'x²' && inputuser.text != '') {
             inputuser.text = inputuser.text + '^(2)';
+            result.text = '';
             emit(CalculatorState(result, inputuser));
           }
 //--------point conditions------------------------------------------------------
           else if (event.value == '.') {
+            result.text = '';
             if (inputuser.text.contains(event.value) == false) {
               if (inputuser.text[inputuser.text.length - 1] != '0' &&
                   inputuser.text[inputuser.text.length - 1] != '1' &&
@@ -99,6 +110,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //----------------- Percent ----------------------------------------------------
 
           else if (event.value == '%') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('%') != inputuser.text.length - 1) {
               inputuser.text = inputuser.text + event.value;
             } else {}
@@ -109,6 +121,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //----------------- minus ------------------------------------------------------
 
           else if (event.value == '-') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('-') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('+') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('×') == inputuser.text.length - 1 ||
@@ -126,6 +139,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //--------------- plus ---------------------------------------------------------
 
           else if (event.value == '+') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('-') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('+') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('×') == inputuser.text.length - 1 ||
@@ -143,6 +157,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //----------------- multiplication ---------------------------------------------
 
           else if (event.value == '×') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('-') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('+') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('×') == inputuser.text.length - 1 ||
@@ -160,6 +175,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //--------------- Division -----------------------------------------------------
 
           else if (event.value == '÷') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('-') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('+') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('×') == inputuser.text.length - 1 ||
@@ -177,6 +193,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //------------------------------------------------------------------------------
 
           else if (event.value == '(') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('-') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('+') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('×') == inputuser.text.length - 1 ||
@@ -184,6 +201,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
                 inputuser.text.lastIndexOf('%') == inputuser.text.length - 1) {
               inputuser.text = inputuser.text + event.value;
             } else {
+              result.text = '';
               if (inputuser.text == '0') {
                 inputuser.text = '';
                 inputuser.text = inputuser.text + event.value;
@@ -197,6 +215,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //------------------------------------------------------------------------------
 
           else if (event.value == ')') {
+            result.text = '';
             inputuser.text = inputuser.text + event.value;
             emit(CalculatorState(result, inputuser));
           }
@@ -204,6 +223,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //---------------- Factorial ---------------------------------------------------
 
           else if (event.value == '!') {
+            result.text = '';
             if (inputuser.text.lastIndexOf('-') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('+') == inputuser.text.length - 1 ||
                 inputuser.text.lastIndexOf('×') == inputuser.text.length - 1 ||
@@ -220,6 +240,7 @@ class CalculatorBloc extends Bloc<ICalculatorEvent, ICalculatorState> {
 //------------------------------------------------------------------------------
 
           else {
+            result.text = '';
             if (inputuser.text == '0') {
               inputuser.text = '';
               inputuser.text = inputuser.text + event.value;

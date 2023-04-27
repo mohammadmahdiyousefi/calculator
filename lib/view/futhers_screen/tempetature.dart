@@ -451,8 +451,7 @@ class Clikbutton extends StatelessWidget {
               model.titel,
             ));
           } else {
-            if (BlocProvider.of<TempetatureBloc>(context).amount.text.length -
-                    1 <
+            if (BlocProvider.of<TempetatureBloc>(context).amount.text.length <
                 15) {
               BlocProvider.of<TempetatureBloc>(context).add(TempetatureEvent(
                 model.titel,
@@ -460,7 +459,7 @@ class Clikbutton extends StatelessWidget {
             } else if (BlocProvider.of<TempetatureBloc>(context)
                         .amount
                         .text
-                        .length >
+                        .length >=
                     15 &&
                 model.titel != 'CE' &&
                 model.titel != 'AC' &&

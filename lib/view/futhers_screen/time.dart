@@ -444,12 +444,11 @@ class Clikbutton extends StatelessWidget {
               model.titel,
             ));
           } else {
-            if (BlocProvider.of<TimeBloc>(context).amount.text.length - 1 <
-                15) {
+            if (BlocProvider.of<TimeBloc>(context).amount.text.length < 15) {
               BlocProvider.of<TimeBloc>(context).add(TimeEvent(
                 model.titel,
               ));
-            } else if (BlocProvider.of<TimeBloc>(context).amount.text.length >
+            } else if (BlocProvider.of<TimeBloc>(context).amount.text.length >=
                     15 &&
                 model.titel != 'CE' &&
                 model.titel != 'AC' &&

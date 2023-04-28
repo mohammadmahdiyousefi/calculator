@@ -9,8 +9,8 @@ class Bottom extends StatelessWidget {
   ButtonModel property;
   @override
   Widget build(BuildContext context) {
-    double keysize = MediaQuery.of(context).size.height % 92.6;
-    double keytitelsize = MediaQuery.of(context).size.height % 130;
+    double keysize = MediaQuery.of(context).size.width / 7;
+    double keytitelsize = keysize / 2.5;
     return Container(
       height: keysize,
       width: keysize,

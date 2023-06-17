@@ -1,52 +1,59 @@
 import 'package:adivery/adivery.dart';
-import 'package:calculator/bloc/length/length_bloc.dart';
-import 'package:calculator/bloc/length/length_event.dart';
-import 'package:calculator/bloc/length/length_state.dart';
+import 'package:calculator/bloc/unitconversion/unitconversion_event.dart';
 import 'package:calculator/constanc/app_colors.dart';
+import 'package:calculator/constanc/snackbar_message.dart';
 import 'package:calculator/model/bottom_model.dart';
 import 'package:calculator/model/capabilities.dart';
+import 'package:calculator/widgets/appbar_widget.dart';
 import 'package:calculator/widgets/bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../constanc/snackbar_message.dart';
-import '../../service/local/length_local_api.dart';
-import '../../widgets/appbar_widget.dart';
 
-class LengthScreen extends StatefulWidget {
-  const LengthScreen({Key? key}) : super(key: key);
+import '../../bloc/unitconversion/unitconversion_bloc.dart';
+import '../../bloc/unitconversion/unitconversion_state.dart';
 
+// ignore: must_be_immutable
+class ConversionScreen extends StatefulWidget {
+  ConversionScreen(this.items, this.titel, {Key? key}) : super(key: key);
+  List<Capabilities> items;
+  String titel;
   @override
-  State<LengthScreen> createState() => _LengthScreenState();
+  State<ConversionScreen> createState() => _ConversionScreenState();
 }
 
-class _LengthScreenState extends State<LengthScreen> {
-  //-------------------- User input --------------------------------------------
-  var setinput = TextEditingController();
+class _ConversionScreenState extends State<ConversionScreen> {
+  String text = "";
+
 //------------------------------------------------------------------------------
   var controller = DraggableScrollableController();
   var controller1 = DraggableScrollableController();
-//--------------Getting values ​​from local api-----------------------------------
-  var items = LengthApi().getdata();
+
 //------------------------------------------------------------------------------
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _showInterstitial();
+
+    BlocProvider.of<UnitconversionBloc>(context).add(Settitel(widget.titel));
+    BlocProvider.of<UnitconversionBloc>(context).add(Unit(widget.items[0]));
+    BlocProvider.of<UnitconversionBloc>(context).add(Unit1(widget.items[1]));
+    BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion('AC'));
   }
 
   @override
   Widget build(BuildContext context) {
 //-------------------Getting the width of the phone screen----------------------
     var screenw = MediaQuery.of(context).size.width;
-//------------------------------------------------------------------------------
+//==============================================================================
     return Scaffold(
-//--------------- App Bar ------------------------------------------------------
+//------------ App Bar ---------------------------------------------------------
+
       appBar: appbarwidget(
         context: context,
-        titel: 'Length',
+        titel: widget.titel,
       ),
-//-------------- Length screen body --------------------------------------------
+
+//----------Area Screen body ---------------------------------------------------
       body: SafeArea(
           child: Column(
         children: [
@@ -73,7 +80,8 @@ class _LengthScreenState extends State<LengthScreen> {
                             child: Center(
                               child: GestureDetector(
                                 onTap: () {
-                                  bottomshet(context, items, controller, 0);
+                                  bottomshet(
+                                      context, widget.items, controller, 0);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -81,13 +89,14 @@ class _LengthScreenState extends State<LengthScreen> {
                                           color: AppColor.brightorange),
                                       borderRadius:
                                           BorderRadius.circular(1000)),
-                                  child: BlocBuilder<LengthBloc, ILengthState>(
+                                  child: BlocBuilder<UnitconversionBloc,
+                                      IUnitconversionState>(
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          state is LengthState
-                                              ? state.item.parameter
+                                          state is UnitconversionState
+                                              ? state.unit.parameter
                                               : '',
                                           style: Theme.of(context)
                                               .textTheme
@@ -104,27 +113,24 @@ class _LengthScreenState extends State<LengthScreen> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: BlocBuilder<LengthBloc, ILengthState>(
-                              builder: (context, state) {
+                          Expanded(child: BlocBuilder<UnitconversionBloc,
+                              IUnitconversionState>(builder: (context, state) {
                             return Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: TextField(
-                                    readOnly: true,
+                                  child: SelectableText(
+                                    state is UnitconversionState
+                                        ? state.value
+                                        : text,
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                     textAlign: TextAlign.end,
-                                    controller: state is LengthState
-                                        ? state.value
-                                        : TextEditingController(),
-                                    keyboardType: TextInputType.none,
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Text(
-                                    state is LengthState
-                                        ? '${state.item.unit}  '
+                                    state is UnitconversionState
+                                        ? '${state.unit.unit}  '
                                         : '',
                                     textDirection: TextDirection.rtl,
                                     style:
@@ -147,7 +153,8 @@ class _LengthScreenState extends State<LengthScreen> {
                             child: Center(
                               child: GestureDetector(
                                 onTap: () {
-                                  bottomshet(context, items, controller1, 1);
+                                  bottomshet(
+                                      context, widget.items, controller1, 1);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -155,14 +162,16 @@ class _LengthScreenState extends State<LengthScreen> {
                                           color: AppColor.brightorange),
                                       borderRadius:
                                           BorderRadius.circular(1000)),
-                                  child: BlocBuilder<LengthBloc, ILengthState>(
+                                  child: BlocBuilder<UnitconversionBloc,
+                                      IUnitconversionState>(
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          state is LengthState
-                                              ? state.item1.parameter
+                                          state is UnitconversionState
+                                              ? state.unit1.parameter
                                               : '',
+                                          textDirection: TextDirection.ltr,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall,
@@ -179,34 +188,38 @@ class _LengthScreenState extends State<LengthScreen> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: BlocBuilder<LengthBloc, ILengthState>(
+                          Expanded(
+                            child: BlocBuilder<UnitconversionBloc,
+                                IUnitconversionState>(
                               builder: (context, state) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    readOnly: true,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                    textAlign: TextAlign.end,
-                                    controller: state is LengthState
-                                        ? state.result
-                                        : TextEditingController(),
-                                    keyboardType: TextInputType.none,
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                Text(
-                                    state is LengthState
-                                        ? '${state.item1.unit}  '
-                                        : '',
-                                    textAlign: TextAlign.end,
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall),
-                              ],
-                            );
-                          })),
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: SelectableText(
+                                        state is UnitconversionState
+                                            ? state.result
+                                            : text,
+                                        textDirection: TextDirection.ltr,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                        textAlign: TextAlign.end,
+                                      ),
+                                    ),
+                                    Text(
+                                        state is UnitconversionState
+                                            ? '${state.unit1.unit}  '
+                                            : '',
+                                        textAlign: TextAlign.end,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ]),
@@ -216,20 +229,23 @@ class _LengthScreenState extends State<LengthScreen> {
           Expanded(
             flex: 1,
             child: Container(
-                width: screenw,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
+              width: screenw,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                child: const Buttons()),
+              ),
+              child: const Buttons(),
+            ),
           )
         ],
       )),
     );
   }
+
+//---------------- ads ---------------------------------------------------------
 
   void _showInterstitial() {
     AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
@@ -242,8 +258,10 @@ class _LengthScreenState extends State<LengthScreen> {
       AdiveryPlugin.show(placementId);
     }
   }
+//------------------------------------------------------------------------------
 }
 
+//---------------- button widget -----------------------------------------------
 class Buttons extends StatelessWidget {
   const Buttons({
     super.key,
@@ -396,6 +414,7 @@ class Buttons extends StatelessWidget {
   }
 }
 
+//---------------- Clicking buttons -----------------------------------------
 class Clikbutton extends StatelessWidget {
   Clikbutton(this.model, {super.key});
   ButtonModel model;
@@ -404,26 +423,22 @@ class Clikbutton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (BlocProvider.of<LengthBloc>(context).amount.text.contains('.') ==
+        if (BlocProvider.of<UnitconversionBloc>(context).amount.contains('.') ==
             true) {
-          if (BlocProvider.of<LengthBloc>(context)
+          if (BlocProvider.of<UnitconversionBloc>(context)
                   .amount
-                  .text
-                  .substring(BlocProvider.of<LengthBloc>(context)
+                  .substring(BlocProvider.of<UnitconversionBloc>(context)
                       .amount
-                      .text
                       .indexOf('.'))
                   .length <=
               10) {
-            BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+            BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion(
               model.titel,
             ));
-          } else if (BlocProvider.of<LengthBloc>(context)
+          } else if (BlocProvider.of<UnitconversionBloc>(context)
                       .amount
-                      .text
-                      .substring(BlocProvider.of<LengthBloc>(context)
+                      .substring(BlocProvider.of<UnitconversionBloc>(context)
                           .amount
-                          .text
                           .indexOf('.'))
                       .length >
                   10 &&
@@ -433,23 +448,23 @@ class Clikbutton extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackbarMessage.decimalpointmessage);
           } else {
-            BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+            BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion(
               model.titel,
             ));
           }
         } else {
           if (model.titel == '.') {
-            BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+            BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion(
               model.titel,
             ));
           } else {
-            if (BlocProvider.of<LengthBloc>(context).amount.text.length < 15) {
-              BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+            if (BlocProvider.of<UnitconversionBloc>(context).amount.length <
+                15) {
+              BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion(
                 model.titel,
               ));
-            } else if (BlocProvider.of<LengthBloc>(context)
+            } else if (BlocProvider.of<UnitconversionBloc>(context)
                         .amount
-                        .text
                         .length >=
                     15 &&
                 model.titel != 'CE' &&
@@ -458,7 +473,7 @@ class Clikbutton extends StatelessWidget {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackbarMessage.message);
             } else {
-              BlocProvider.of<LengthBloc>(context).add(LengthEvent(
+              BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion(
                 model.titel,
               ));
             }
@@ -469,6 +484,7 @@ class Clikbutton extends StatelessWidget {
     );
   }
 }
+//------------------------------------------------------------------------------
 
 Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
     DraggableScrollableController controller, int number) {
@@ -510,10 +526,8 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
-                        child: Text(
-                          'Select unit',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
+                        child: Text('Select unit',
+                            style: Theme.of(context).textTheme.bodySmall),
                       ),
                     ],
                   ),
@@ -526,15 +540,15 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(
-                                bottom: 30, top: 20, left: 10),
+                                bottom: 30, top: 20, left: 15),
                             child: GestureDetector(
                                 onTap: () {
                                   if (number == 0) {
-                                    BlocProvider.of<LengthBloc>(context)
-                                        .add(ItemEvent(item[index]));
+                                    BlocProvider.of<UnitconversionBloc>(context)
+                                        .add(Unit(item[index]));
                                   } else if (number == 1) {
-                                    BlocProvider.of<LengthBloc>(context)
-                                        .add(Item1Event(item[index]));
+                                    BlocProvider.of<UnitconversionBloc>(context)
+                                        .add(Unit1(item[index]));
                                   }
                                   Navigator.pop(context);
                                 },

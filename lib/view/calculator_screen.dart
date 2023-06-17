@@ -1,7 +1,9 @@
 import 'package:calculator/bloc/calculator/calculator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../bloc/calculator/calculator_state.dart';
+import '../constanc/app_colors.dart';
 import '../widgets/calculator_bottoms.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,19 +40,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           physics: const BouncingScrollPhysics(),
 //----------------------------- show inputuser text --------------------------//
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
+                            height: MediaQuery.of(context).size.height / 7,
                             child: state is CalculatorState
-                                ? TextField(
-                                    readOnly: true,
-                                    maxLines: 10,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium,
+                                ? SelectableText(
+                                    state.calculate,
                                     textAlign: TextAlign.end,
-                                    controller: state.calculate,
-                                    keyboardType: TextInputType.none,
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none),
+                                    style: GoogleFonts.lato(
+                                        fontSize: MediaQuery.of(context)
+                                                .size
+                                                .longestSide /
+                                            25,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            .unselectedWidgetColor),
                                   )
                                 : Text('error',
                                     style: Theme.of(context)
@@ -68,19 +71,24 @@ class _HomeScreenState extends State<HomeScreen> {
 //-------------------------- result text -------------------------------------//
                         SingleChildScrollView(
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
+                            height: MediaQuery.of(context).size.height / 7,
                             child: state is CalculatorState
-                                ? TextField(
-                                    readOnly: true,
-                                    maxLines: 3,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge,
+                                ? SelectableText(
+                                    state.result,
+                                    style: GoogleFonts.lato(
+                                        fontSize: state.result.length > 15
+                                            ? MediaQuery.of(context)
+                                                    .size
+                                                    .longestSide /
+                                                20
+                                            : MediaQuery.of(context)
+                                                    .size
+                                                    .longestSide /
+                                                16,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColor.costumembrightgrey),
                                     textAlign: TextAlign.end,
-                                    controller: state.result,
-                                    keyboardType: TextInputType.none,
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none),
                                   )
                                 : Text(
                                     'error',
@@ -100,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           ///------------------- show calculator buttons ------------------------------///
           Expanded(
-            flex: 12,
+            flex: 16,
             child: Container(
               width: screenw,
               decoration: BoxDecoration(
@@ -110,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: const CalculatorBottoms(),
+              child: const KeyPad(),
             ),
           ),
 

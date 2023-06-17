@@ -2,15 +2,17 @@ import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
 import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/view/futhers_screen/age.dart';
-import 'package:calculator/view/futhers_screen/area.dart';
+import 'package:calculator/view/futhers_screen/conversionScreen.dart';
 import 'package:calculator/view/futhers_screen/bmi.dart';
-import 'package:calculator/view/futhers_screen/length.dart';
-import 'package:calculator/view/futhers_screen/speed.dart';
-import 'package:calculator/view/futhers_screen/tempetature.dart';
-import 'package:calculator/view/futhers_screen/time.dart';
+
 import 'package:calculator/widgets/property_container.dart';
 import 'package:flutter/material.dart';
-import 'futhers_screen/storage.dart';
+import '../service/local/Storage_local_api.dart';
+import '../service/local/Tempetature_local)api.dart';
+import '../service/local/area_local_api.dart';
+import '../service/local/length_local_api.dart';
+import '../service/local/speed_local_api.dart';
+import '../service/local/time_local_api.dart';
 
 class SecoundScreen extends StatefulWidget {
   const SecoundScreen({Key? key}) : super(key: key);
@@ -50,41 +52,43 @@ class _SecoundScreenState extends State<SecoundScreen> {
               Wrap(
                 children: [
                   Property(
-                    boxicon: Icons.category,
+                    boximage: "geometrical-shapes",
                     titel: 'Area',
-                    newpage: const AreaScreen(),
+                    newpage: ConversionScreen(AreaApi().getdata(), 'Area'),
                   ),
                   Property(
-                    boxicon: Icons.straighten,
+                    boximage: "length",
                     titel: 'Length',
-                    newpage: const LengthScreen(),
+                    newpage: ConversionScreen(LengthApi().getdata(), 'Length'),
                   ),
                   Property(
-                      boxicon: Icons.thermostat,
-                      titel: 'Temperature',
-                      newpage: const TempetatureScreen()),
+                    boximage: "temperature",
+                    titel: 'Temperature',
+                    newpage: ConversionScreen(
+                        TempetatureApi().getdata(), 'Temperature'),
+                  ),
                   Property(
-                    boxicon: Icons.speed,
+                    boximage: "speed",
                     titel: 'Speed',
-                    newpage: const SpeedScreen(),
+                    newpage: ConversionScreen(SpeedApi().getdata(), 'Speed'),
                   ),
                   Property(
-                    boxicon: Icons.data_usage,
+                    boximage: "data",
                     titel: 'Data',
-                    newpage: const StorageScreen(),
+                    newpage: ConversionScreen(StorageApi().getdata(), 'Data'),
                   ),
                   Property(
-                    boxicon: Icons.timer,
+                    boximage: "time",
                     titel: 'Time',
-                    newpage: const TimeScreen(),
+                    newpage: ConversionScreen(TimeApi().getdata(), 'Time'),
                   ),
                   Property(
-                    boxicon: Icons.family_restroom,
+                    boximage: "bmi",
                     titel: 'BMI',
                     newpage: const BmiScreen(),
                   ),
                   Property(
-                    boxicon: Icons.cake,
+                    boximage: "birthday",
                     titel: 'Age',
                     newpage: const AgeScreen(),
                   ),

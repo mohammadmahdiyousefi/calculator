@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Property extends StatefulWidget {
-  Property({super.key, this.boxicon = Icons.mp, this.titel = '', this.newpage});
-  IconData boxicon;
+  Property({super.key, this.boximage = '', this.titel = '', this.newpage});
+  String boximage;
   String titel;
   Widget? newpage;
 
@@ -15,11 +15,13 @@ class Property extends StatefulWidget {
 class _PropertyState extends State<Property> {
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height / 8;
+    var width = (MediaQuery.of(context).size.width / 3);
     return Padding(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 7,
-        width: (MediaQuery.of(context).size.width / 3) - 10,
+        height: height,
+        width: width,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -35,24 +37,33 @@ class _PropertyState extends State<Property> {
               ));
             }
           },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                widget.boxicon,
-                color: AppColor.iconcolor,
-                size: 40,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Text(
-                widget.titel,
-                style: TextStyle(
-                    color: AppColor.iconcolor,
-                    fontSize: MediaQuery.of(context).size.width / 30),
-              ),
-            ],
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            height: height,
+            width: width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: height / 2.5,
+                  width: width,
+                  child: Image.asset(
+                    'assets/images/${widget.boximage}.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  widget.titel,
+                  style: TextStyle(
+                      color: Color(0xFFFFA500),
+                      fontSize: MediaQuery.of(context).size.width / 30,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -6,8 +6,9 @@ import '../constanc/app_colors.dart';
 import '../model/bottom_model.dart';
 import 'bottom.dart';
 
-class CalculatorBottoms extends StatelessWidget {
-  const CalculatorBottoms({super.key});
+// ignore: must_be_immutable
+class KeyPad extends StatelessWidget {
+  const KeyPad({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class CalculatorBottoms extends StatelessWidget {
           ),
           Clikbottom(
             ButtonModel(
-              titel: 'x²',
+              titel: 'x^',
               titelcolor: AppColor.brightorange,
               bottomcolor: AppColor.bottomcolor,
             ),

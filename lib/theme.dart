@@ -8,7 +8,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColor.black,
     unselectedWidgetColor: Colors.white,
     colorScheme: const ColorScheme.dark(),
-    cardColor: AppColor.black,
+    cardColor: const Color.fromARGB(255, 43, 40, 40),
     primaryColor: AppColor.darkprimaryColor,
     textTheme: TextTheme(
 //---------------- selected item style -----------------------------------------
@@ -76,7 +76,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppColor.white,
     unselectedWidgetColor: Colors.black,
     colorScheme: const ColorScheme.light(),
-    cardColor: AppColor.white,
+    cardColor: const Color.fromARGB(255, 235, 235, 235),
     primaryColor: AppColor.lightprimaryColor,
 
     textTheme: TextTheme(

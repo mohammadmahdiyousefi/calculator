@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 abstract class ICalculatorState {}
 
 class CalculatorState extends ICalculatorState {
-  TextEditingController calculate;
-  TextEditingController result;
+  String calculate;
+  String result;
   CalculatorState(this.result, this.calculate);
 }
 

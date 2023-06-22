@@ -6,7 +6,7 @@ A new Flutter project.
 ![Screenshot_20230615_181620](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/ed7ea53b-2faa-46f1-a661-fbdad10c2a5d)
 ![InShot_20230615_185849270](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/116b24c2-4eaf-4fc9-aacb-f2f6f9ebbcb3)
 ![InShot_20230615_185859741](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/d26f7f46-cfaf-4f3a-b7da-0ec3a27a4196)
-<img src="[https://your-image-url.type](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/d26f7f46-cfaf-4f3a-b7da-0ec3a27a4196)" width="300">
+<img src="https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/d26f7f46-cfaf-4f3a-b7da-0ec3a27a4196" width="300">
 ## Getting Started
 
 

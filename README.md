@@ -1,7 +1,7 @@
 # calculator
 
 A new Flutter project.
-|![Screenshot_20230615_181600](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/431825df-462c-464a-bd98-e7521bab8706)|![Screenshot_20230615_181610](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/3c184748-49e7-442d-a6af-2ac20a566541)|
+|![Screenshot_20230615_181600](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/431825df-462c-464a-bd98-e7521bab8706 =250x250)|![Screenshot_20230615_181610](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/3c184748-49e7-442d-a6af-2ac20a566541)|
 ![Screenshot_20230615_181632](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/423566e2-8d8e-4c0e-9706-4265734dc19d)
 ![Screenshot_20230615_181620](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/ed7ea53b-2faa-46f1-a661-fbdad10c2a5d)
 ![InShot_20230615_185849270](https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/116b24c2-4eaf-4fc9-aacb-f2f6f9ebbcb3)

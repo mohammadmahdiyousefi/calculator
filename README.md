@@ -1,6 +1,7 @@
 # calculator
 
-A new Flutter project.
+Flutter Calculator pro
+
 
 <img src="https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/431825df-462c-464a-bd98-e7521bab8706" width="200"> 
 <img src="https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/3c184748-49e7-442d-a6af-2ac20a566541" width="200"> 

@@ -2,7 +2,7 @@
 
 Flutter Calculator pro
 
-A powerful calculator that has a lot of functionality, including bmi calculator, and age calculator, etc., which is developed with Flutter and bloc state Management language.
+A powerful calculator that has a lot of functionality, including bmi calculator, and age calculator, etc., which is developed with Flutter language and bloc state Management .
 
 <img src="https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/431825df-462c-464a-bd98-e7521bab8706" width="200"> 
 <img src="https://github.com/mohammadmahdiyousefi/calculator/assets/103829998/3c184748-49e7-442d-a6af-2ac20a566541" width="200"> 

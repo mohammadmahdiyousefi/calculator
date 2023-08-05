@@ -134,7 +134,7 @@ class _BmiScreenState extends State<BmiScreen> {
                                 ? 0
                                 : state.result / 100 + 0.5
                             : result,
-                        lineWidth: 12,
+                        lineWidth: 10,
                         animation: true,
                         progressColor: state is BmiState &&
                                 (state.height.isNotEmpty ||
@@ -248,7 +248,7 @@ class _BmiScreenState extends State<BmiScreen> {
             child: Container(
               width: screenw,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).cardColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
@@ -275,16 +275,15 @@ class _BmiScreenState extends State<BmiScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class Buttons extends StatelessWidget {
-  const Buttons({
+  Buttons({
     super.key,
-    required this.height,
-    required this.weight,
+    this.height = false,
+    this.weight = false,
   });
-
-  final bool height;
-  final bool weight;
-
+  bool height = false;
+  bool weight = false;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -300,49 +299,26 @@ class Buttons extends StatelessWidget {
                   children: [
                     Clikbutton(
                         ButtonModel(
-                            titel: '7',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '7',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                     Clikbutton(
                         ButtonModel(
-                            titel: '8',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '8',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                     Clikbutton(
                         ButtonModel(
-                            titel: '9',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
-                        height,
-                        weight),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Clikbutton(
-                        ButtonModel(
-                            titel: '4',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                            titel: '5',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                            titel: '6',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '9',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                   ],
@@ -352,23 +328,26 @@ class Buttons extends StatelessWidget {
                   children: [
                     Clikbutton(
                         ButtonModel(
-                            titel: '1',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '4',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                     Clikbutton(
                         ButtonModel(
-                            titel: '2',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '5',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                     Clikbutton(
                         ButtonModel(
-                            titel: '3',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '6',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                   ],
@@ -378,23 +357,55 @@ class Buttons extends StatelessWidget {
                   children: [
                     Clikbutton(
                         ButtonModel(
-                            titel: '00',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '1',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                     Clikbutton(
                         ButtonModel(
-                            titel: '0',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '2',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                     Clikbutton(
                         ButtonModel(
-                            titel: '.',
-                            titelcolor: Colors.white,
-                            bottomcolor: Colors.grey.shade800),
+                          titel: '3',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
+                        height,
+                        weight),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Clikbutton(
+                        ButtonModel(
+                          titel: '00',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                          titel: '0',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
+                        height,
+                        weight),
+                    Clikbutton(
+                        ButtonModel(
+                          titel: '.',
+                          titelcolor: Colors.white,
+                          bottomcolor: Theme.of(context).canvasColor,
+                        ),
                         height,
                         weight),
                   ],
@@ -407,24 +418,24 @@ class Buttons extends StatelessWidget {
             Clikbutton(
                 ButtonModel(
                   titel: 'AC',
-                  titelcolor: AppColor.brightorange,
-                  bottomcolor: AppColor.bottomcolor,
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
                 ),
                 height,
                 weight),
             Clikbutton(
                 ButtonModel(
                   titel: 'CE',
-                  titelcolor: AppColor.brightorange,
-                  bottomcolor: AppColor.bottomcolor,
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
                 ),
                 height,
                 weight),
             Clikbutton(
                 ButtonModel(
                   titel: '=',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: AppColor.customorange,
+                  titelcolor: Colors.white,
+                  bottomcolor: Theme.of(context).primaryColor,
                 ),
                 height,
                 weight),
@@ -434,6 +445,8 @@ class Buttons extends StatelessWidget {
     );
   }
 }
+
+//---------------- Clicking buttons -----------------------------------------
 
 class Clikbutton extends StatelessWidget {
   Clikbutton(this.model, this.height, this.weight, {super.key});

@@ -9,15 +9,15 @@ class Bottom extends StatelessWidget {
   ButtonModel property;
   @override
   Widget build(BuildContext context) {
-    double keysize = MediaQuery.of(context).size.longestSide / 12.5;
+    double keysize = MediaQuery.of(context).size.shortestSide / 6;
     double keytitelsize = keysize / 2.5;
     return Card(
       color: property.bottomcolor,
       shadowColor: property.bottomcolor,
-      elevation: 4,
+      elevation: 1,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
-              MediaQuery.of(context).size.shortestSide / 20)),
+              MediaQuery.of(context).size.shortestSide / 28)),
       child: SizedBox(
         height: keysize,
         width: keysize,

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/calculator/calculator_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,9 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height / 7,
                             child: state is CalculatorState
-                                ? SelectableText(
+                                ? AutoSizeText(
                                     state.calculate,
                                     textAlign: TextAlign.end,
+                                    minFontSize: 15,
                                     style: GoogleFonts.lato(
                                         fontSize: MediaQuery.of(context)
                                                 .size
@@ -55,6 +57,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: Theme.of(context)
                                             .unselectedWidgetColor),
                                   )
+                                // SelectableText(
+                                //     state.calculate,
+                                //     textAlign: TextAlign.end,
+                                //     style: GoogleFonts.lato(
+                                //         fontSize: MediaQuery.of(context)
+                                //                 .size
+                                //                 .longestSide /
+                                //             25,
+                                //         fontStyle: FontStyle.normal,
+                                //         fontWeight: FontWeight.w400,
+                                //         color: Theme.of(context)
+                                //             .unselectedWidgetColor),
+                                //   )
                                 : Text('error',
                                     style: Theme.of(context)
                                         .textTheme
@@ -73,23 +88,37 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height / 7,
                             child: state is CalculatorState
-                                ? SelectableText(
+                                ? AutoSizeText(
                                     state.result,
+                                    minFontSize: 15,
                                     style: GoogleFonts.lato(
-                                        fontSize: state.result.length > 15
-                                            ? MediaQuery.of(context)
-                                                    .size
-                                                    .longestSide /
-                                                20
-                                            : MediaQuery.of(context)
-                                                    .size
-                                                    .longestSide /
-                                                16,
+                                        fontSize: MediaQuery.of(context)
+                                                .size
+                                                .longestSide /
+                                            20,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: AppColor.costumembrightgrey),
                                     textAlign: TextAlign.end,
                                   )
+                                //  SelectableText(
+                                //     state.result,
+
+                                //     style: GoogleFonts.lato(
+                                //         fontSize: state.result.length > 15
+                                //             ? MediaQuery.of(context)
+                                //                     .size
+                                //                     .longestSide /
+                                //                 20
+                                //             : MediaQuery.of(context)
+                                //                     .size
+                                //                     .longestSide /
+                                //                 16,
+                                //         fontStyle: FontStyle.normal,
+                                //         fontWeight: FontWeight.w400,
+                                //         color: AppColor.costumembrightgrey),
+                                //     textAlign: TextAlign.end,
+                                //   )
                                 : Text(
                                     'error',
                                     style: Theme.of(context)
@@ -112,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               width: screenw,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).cardColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),

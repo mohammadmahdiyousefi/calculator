@@ -1,4 +1,5 @@
 import 'package:adivery/adivery.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/age/age_bloc.dart';
 import 'package:calculator/bloc/age/age_event.dart';
 import 'package:calculator/bloc/age/age_state.dart';
@@ -52,10 +53,25 @@ class _AgeScreenState extends State<AgeScreen> {
 //------------------------------------------------------------------------------
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _showInterstitial();
   }
+  //---------------- ads ---------------------------------------------------------
 
+  void _showInterstitial() {
+    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
+        (isLoaded) =>
+            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+  }
+
+  void showPlacement(bool isLoaded, String placementId) {
+    if (isLoaded) {
+      AdiveryPlugin.show(placementId);
+    }
+  }
+
+//------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +136,10 @@ class _AgeScreenState extends State<AgeScreen> {
                                   fontWeight: FontWeight.w500,
                                   color: Colors.orange),
                             ),
-                            const Icon(Icons.arrow_drop_down),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: Theme.of(context).unselectedWidgetColor,
+                            ),
                           ],
                         );
                       }),
@@ -144,15 +163,18 @@ class _AgeScreenState extends State<AgeScreen> {
                           height: MediaQuery.of(context).size.height / 5,
                           width: MediaQuery.of(context).size.width / 2.5,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(
+                                  MediaQuery.of(context).size.shortestSide *
+                                      0.03),
                               color: Theme.of(context).cardColor),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Row(
                                 children: [
-                                  const SizedBox(
-                                    width: 20,
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.05,
                                   ),
                                   Text(
                                     'Age',
@@ -172,8 +194,9 @@ class _AgeScreenState extends State<AgeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const SizedBox(
-                                    width: 20,
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.05,
                                   ),
                                   Text(
                                     state is AgeState
@@ -188,8 +211,9 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontWeight: FontWeight.w400,
                                         color: Colors.orange),
                                   ),
-                                  const SizedBox(
-                                    width: 10,
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.02,
                                   ),
                                   Text(
                                     'years',
@@ -216,7 +240,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -231,7 +255,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -245,7 +269,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -260,13 +284,16 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             .unselectedWidgetColor),
                                   ),
                                 ],
+                              ),
+                              const SizedBox(
+                                height: 2,
                               ),
                             ],
                           ),
@@ -275,13 +302,16 @@ class _AgeScreenState extends State<AgeScreen> {
                           height: MediaQuery.of(context).size.height / 5,
                           width: MediaQuery.of(context).size.width / 2.5,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(
+                                  MediaQuery.of(context).size.shortestSide *
+                                      0.03),
                               color: Theme.of(context).cardColor),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 'Next birthday ',
+                                minFontSize: 5,
                                 style: GoogleFonts.lato(
                                     fontSize: MediaQuery.of(context)
                                             .size
@@ -291,10 +321,11 @@ class _AgeScreenState extends State<AgeScreen> {
                                     fontWeight: FontWeight.w500,
                                     color: Colors.orange),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.cake_outlined,
                                 color: Colors.orange,
-                                size: 50,
+                                size: MediaQuery.of(context).size.longestSide *
+                                    0.06,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -307,7 +338,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -322,7 +353,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -336,7 +367,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -351,7 +382,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                         fontSize: MediaQuery.of(context)
                                                 .size
                                                 .shortestSide /
-                                            29,
+                                            33,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -364,37 +395,39 @@ class _AgeScreenState extends State<AgeScreen> {
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height / 5,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(
+                              MediaQuery.of(context).size.shortestSide * 0.03),
                           color: Theme.of(context).cardColor),
                       child: Column(
                         children: [
-                          const SizedBox(
-                            height: 7,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.005,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 'Summary',
+                                minFontSize: 5,
                                 style: GoogleFonts.lato(
                                     fontSize: MediaQuery.of(context)
                                             .size
                                             .shortestSide /
-                                        16,
+                                        18,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.orange),
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 15,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -413,7 +446,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -425,14 +458,16 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .unselectedWidgetColor),
                                       ),
-                                      const SizedBox(
-                                        height: 10,
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
                                       ),
                                       Text(
                                         'Days',
@@ -440,7 +475,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -452,7 +487,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -470,7 +505,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -482,14 +517,16 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .unselectedWidgetColor),
                                       ),
-                                      const SizedBox(
-                                        height: 10,
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
                                       ),
                                       Text(
                                         'Hours',
@@ -497,7 +534,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -509,14 +546,16 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .unselectedWidgetColor),
                                       ),
-                                      const SizedBox(
-                                        width: 10,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
                                       ),
                                     ],
                                   ),
@@ -530,7 +569,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -542,14 +581,16 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .unselectedWidgetColor),
                                       ),
-                                      const SizedBox(
-                                        height: 10,
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
                                       ),
                                       Text(
                                         'Minutes',
@@ -557,7 +598,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -569,7 +610,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                             fontSize: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide /
-                                                28,
+                                                33,
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
@@ -594,16 +635,5 @@ class _AgeScreenState extends State<AgeScreen> {
   }
   //---------------- ads -------------------------------------------------------
 
-  void _showInterstitial() {
-    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32917').then(
-        (isLoaded) =>
-            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32917'));
-  }
-
-  void showPlacement(bool isLoaded, String placementId) {
-    if (isLoaded) {
-      AdiveryPlugin.show(placementId);
-    }
-  }
 //------------------------------------------------------------------------------
 }

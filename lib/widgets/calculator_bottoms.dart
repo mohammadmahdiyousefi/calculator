@@ -21,28 +21,28 @@ class KeyPad extends StatelessWidget {
             ButtonModel(
               titel: 'AC',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.customorange,
+              bottomcolor: Theme.of(context).primaryColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: 'CE',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.customorange,
+              bottomcolor: Theme.of(context).primaryColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: 'x^',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '!',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
         ],
@@ -54,29 +54,29 @@ class KeyPad extends StatelessWidget {
           Clikbottom(
             ButtonModel(
               titel: '(',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: ')',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '%',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '÷',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
         ],
@@ -89,28 +89,28 @@ class KeyPad extends StatelessWidget {
             ButtonModel(
               titel: '7',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '8',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '9',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '×',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
         ],
@@ -123,28 +123,28 @@ class KeyPad extends StatelessWidget {
             ButtonModel(
               titel: '4',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '5',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '6',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '-',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
         ],
@@ -157,28 +157,28 @@ class KeyPad extends StatelessWidget {
             ButtonModel(
               titel: '1',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '2',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '3',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '+',
-              titelcolor: AppColor.brightorange,
-              bottomcolor: AppColor.bottomcolor,
+              titelcolor: Theme.of(context).primaryColorLight,
+              bottomcolor: Theme.of(context).primaryColorDark,
             ),
           ),
         ],
@@ -191,28 +191,28 @@ class KeyPad extends StatelessWidget {
             ButtonModel(
               titel: '00',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '0',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '.',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.numberbottomcolor,
+              bottomcolor: Theme.of(context).canvasColor,
             ),
           ),
           Clikbottom(
             ButtonModel(
               titel: '=',
               titelcolor: AppColor.bottomtitel,
-              bottomcolor: AppColor.customorange,
+              bottomcolor: Theme.of(context).primaryColor,
             ),
           ),
         ],

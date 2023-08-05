@@ -13,4 +13,6 @@ class AppColor {
   static const Color brightorange = Colors.orange;
   static final Color iconcolor = Colors.orange.shade700;
   static final Color customorange = Colors.orange.shade900;
+  static const Color customcardcolor = Color.fromARGB(255, 230, 230, 230);
+  static const Color customcardcolordark = Color.fromARGB(255, 25, 25, 25);
 }

@@ -4,6 +4,8 @@ import 'package:calculator/bloc/age/age_bloc.dart';
 import 'package:calculator/bloc/age/age_state.dart';
 import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
+import 'package:calculator/bloc/gap/gap_bloc.dart';
+import 'package:calculator/bloc/gap/gap_state.dart';
 
 import 'package:calculator/bloc/unitconversion/unitconversion_bloc.dart';
 import 'package:calculator/bloc/unitconversion/unitconversion_state.dart';
@@ -64,6 +66,11 @@ void main() {
           create: (context) {
             return AgeBloc(AgeState(DateTime.now(), DateTime.now(), '0', '0',
                 '0', '0', '0', '0', DateDuration(), DateDuration()));
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return GapBloc(GapState([], 0, 0));
           },
         ),
       ],
@@ -153,7 +160,6 @@ class TabBarwidget extends StatelessWidget {
       ),
       child: TabBar(
         controller: tabcontrol,
-        indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
         splashFactory: NoSplash.splashFactory,
         overlayColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
@@ -165,6 +171,7 @@ class TabBarwidget extends StatelessWidget {
         splashBorderRadius: BorderRadius.circular(1000),
         indicatorColor: Colors.transparent,
         labelColor: AppColor.iconcolor,
+        dividerColor: Colors.transparent,
         unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
         tabs: const [
           Tab(

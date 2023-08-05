@@ -5,15 +5,18 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
 //=============== Drak Theme ===================================================
   static final darktheme = ThemeData(
+    useMaterial3: true,
     scaffoldBackgroundColor: AppColor.black,
     unselectedWidgetColor: Colors.white,
-    colorScheme: const ColorScheme.dark(),
-    cardColor: const Color.fromARGB(255, 43, 40, 40),
-    primaryColor: AppColor.darkprimaryColor,
+    cardColor: AppColor.customcardcolordark,
+    canvasColor: AppColor.numberbottomcolor,
+    primaryColor: AppColor.customorange,
+    primaryColorLight: AppColor.brightorange,
+    primaryColorDark: AppColor.bottomcolor,
     textTheme: TextTheme(
 //---------------- selected item style -----------------------------------------
         bodySmall: GoogleFonts.roboto(
-            fontSize: 15,
+            fontSize: 13,
             fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w400,
             color: Colors.white),
@@ -56,6 +59,7 @@ class AppTheme {
 //------------------ calculator result  ----------------------------------------
         displayLarge: GoogleFonts.lato(
           fontSize: 45,
+          color: AppColor.costumembrightgrey,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.w400,
         )),
@@ -73,16 +77,18 @@ class AppTheme {
   );
 //============== Light Theme ===================================================
   static final lighttheme = ThemeData(
+    useMaterial3: true,
     scaffoldBackgroundColor: AppColor.white,
     unselectedWidgetColor: Colors.black,
-    colorScheme: const ColorScheme.light(),
-    cardColor: const Color.fromARGB(255, 235, 235, 235),
-    primaryColor: AppColor.lightprimaryColor,
-
+    cardColor: AppColor.customcardcolor,
+    primaryColor: AppColor.customorange,
+    primaryColorLight: AppColor.brightorange,
+    canvasColor: AppColor.numberbottomcolor,
+    primaryColorDark: AppColor.bottomcolor,
     textTheme: TextTheme(
 //---------------- selected item style -----------------------------------------
       bodySmall: GoogleFonts.roboto(
-          fontSize: 15,
+          fontSize: 13,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.w400,
           color: Colors.black),
@@ -115,7 +121,7 @@ class AppTheme {
           fontSize: 15,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.w500,
-          color: Colors.white),
+          color: Colors.black),
 //------------------ calculator input user
 //------------------ calculator input user -------------------------------------
       displayMedium: GoogleFonts.lato(
@@ -130,6 +136,7 @@ class AppTheme {
           fontWeight: FontWeight.w400,
           color: AppColor.costumembrightgrey),
     ),
+
 //--------------- App Bar theme ------------------------------------------------
     appBarTheme: AppBarTheme(
       iconTheme: const IconThemeData(color: AppColor.brightorange, size: 25),

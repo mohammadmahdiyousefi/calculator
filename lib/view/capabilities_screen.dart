@@ -2,6 +2,7 @@ import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
 import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/view/futhers_screen/age.dart';
+import 'package:calculator/view/futhers_screen/gpa_calculator.dart';
 import 'package:calculator/view/futhers_screen/conversionScreen.dart';
 import 'package:calculator/view/futhers_screen/bmi.dart';
 
@@ -92,6 +93,11 @@ class _SecoundScreenState extends State<SecoundScreen> {
                     titel: 'Age',
                     newpage: const AgeScreen(),
                   ),
+                  Property(
+                    boximage: "GPA",
+                    titel: 'GPA',
+                    newpage: const AvrageScreen(),
+                  )
                 ],
               ),
               SizedBox(

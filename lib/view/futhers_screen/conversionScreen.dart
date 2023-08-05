@@ -1,4 +1,5 @@
 import 'package:adivery/adivery.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/unitconversion/unitconversion_event.dart';
 import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/constanc/snackbar_message.dart';
@@ -43,7 +44,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
   @override
   Widget build(BuildContext context) {
 //-------------------Getting the width of the phone screen----------------------
-    var screenw = MediaQuery.of(context).size.width;
+    var width = MediaQuery.of(context).size.width;
 //==============================================================================
     return Scaffold(
 //------------ App Bar ---------------------------------------------------------
@@ -60,7 +61,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
           Expanded(
             flex: 1,
             child: SizedBox(
-              width: screenw,
+              width: width,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -72,8 +73,9 @@ class _ConversionScreenState extends State<ConversionScreen> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).cardColor,
                                 border: Border.all(
+                                    width: 0.6,
                                     color: Theme.of(context).primaryColor),
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(20))),
@@ -94,10 +96,11 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(
+                                        child: AutoSizeText(
                                           state is UnitconversionState
                                               ? state.unit.parameter
                                               : '',
+                                          minFontSize: 5,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall,
@@ -119,19 +122,21 @@ class _ConversionScreenState extends State<ConversionScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: SelectableText(
+                                  child: AutoSizeText(
                                     state is UnitconversionState
                                         ? state.value
                                         : text,
+                                    minFontSize: 5,
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                     textAlign: TextAlign.end,
                                   ),
                                 ),
-                                Text(
+                                AutoSizeText(
                                     state is UnitconversionState
                                         ? '${state.unit.unit}  '
                                         : '',
+                                    minFontSize: 5,
                                     textDirection: TextDirection.rtl,
                                     style:
                                         Theme.of(context).textTheme.labelSmall),
@@ -145,8 +150,9 @@ class _ConversionScreenState extends State<ConversionScreen> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).cardColor,
                                 border: Border.all(
+                                    width: 0.6,
                                     color: Theme.of(context).primaryColor),
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(20))),
@@ -167,10 +173,11 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                     builder: (context, state) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(
+                                        child: AutoSizeText(
                                           state is UnitconversionState
                                               ? state.unit1.parameter
                                               : '',
+                                          minFontSize: 5,
                                           textDirection: TextDirection.ltr,
                                           style: Theme.of(context)
                                               .textTheme
@@ -196,10 +203,11 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
-                                      child: SelectableText(
+                                      child: AutoSizeText(
                                         state is UnitconversionState
                                             ? state.result
                                             : text,
+                                        minFontSize: 5,
                                         textDirection: TextDirection.ltr,
                                         style: Theme.of(context)
                                             .textTheme
@@ -207,10 +215,11 @@ class _ConversionScreenState extends State<ConversionScreen> {
                                         textAlign: TextAlign.end,
                                       ),
                                     ),
-                                    Text(
+                                    AutoSizeText(
                                         state is UnitconversionState
                                             ? '${state.unit1.unit}  '
                                             : '',
+                                        minFontSize: 5,
                                         textAlign: TextAlign.end,
                                         style: Theme.of(context)
                                             .textTheme
@@ -229,9 +238,9 @@ class _ConversionScreenState extends State<ConversionScreen> {
           Expanded(
             flex: 1,
             child: Container(
-              width: screenw,
+              width: width,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).cardColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
@@ -269,10 +278,11 @@ class Buttons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Row(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width / 1.3,
+          width: width / 1.3,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -284,21 +294,21 @@ class Buttons extends StatelessWidget {
                       ButtonModel(
                         titel: '7',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '8',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '9',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                   ],
@@ -310,21 +320,21 @@ class Buttons extends StatelessWidget {
                       ButtonModel(
                         titel: '4',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '5',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '6',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                   ],
@@ -336,21 +346,21 @@ class Buttons extends StatelessWidget {
                       ButtonModel(
                         titel: '1',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '2',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '3',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                   ],
@@ -362,21 +372,21 @@ class Buttons extends StatelessWidget {
                       ButtonModel(
                         titel: '00',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '0',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                     Clikbutton(
                       ButtonModel(
                         titel: '.',
                         titelcolor: Colors.white,
-                        bottomcolor: Colors.grey.shade800,
+                        bottomcolor: Theme.of(context).canvasColor,
                       ),
                     ),
                   ],
@@ -389,22 +399,22 @@ class Buttons extends StatelessWidget {
             Clikbutton(
               ButtonModel(
                 titel: 'AC',
-                titelcolor: AppColor.brightorange,
-                bottomcolor: AppColor.bottomcolor,
+                titelcolor: Theme.of(context).primaryColorLight,
+                bottomcolor: Theme.of(context).primaryColorDark,
               ),
             ),
             Clikbutton(
               ButtonModel(
                 titel: 'CE',
-                titelcolor: AppColor.brightorange,
-                bottomcolor: AppColor.bottomcolor,
+                titelcolor: Theme.of(context).primaryColorLight,
+                bottomcolor: Theme.of(context).primaryColorDark,
               ),
             ),
             Clikbutton(
               ButtonModel(
                 titel: '⇌',
-                titelcolor: AppColor.bottomtitel,
-                bottomcolor: AppColor.customorange,
+                titelcolor: Colors.white,
+                bottomcolor: Theme.of(context).primaryColor,
               ),
             ),
           ],
@@ -513,7 +523,7 @@ Future<Widget?> bottomshet(BuildContext context, List<Capabilities> item,
           builder: (context, scrollController) {
             return Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).cardColor,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),

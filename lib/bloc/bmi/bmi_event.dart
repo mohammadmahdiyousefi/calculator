@@ -1,12 +1,8 @@
 abstract class IBmiEvent {}
 
-class HeightEvent extends IBmiEvent {
-  String height;
-
-  HeightEvent(this.height);
-}
-
-class WeightEvent extends IBmiEvent {
-  String weight;
-  WeightEvent(this.weight);
+class BMICalculateEvent extends IBmiEvent {
+  final double height;
+  final double weight;
+  final int age;
+  BMICalculateEvent(this.age, this.height, this.weight);
 }

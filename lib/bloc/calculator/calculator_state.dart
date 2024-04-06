@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:calculator/bloc/calculator/input_calculator.dart';
+import 'package:calculator/bloc/calculator/result_calculator.dart';
 
-abstract class ICalculatorState {}
-
-class CalculatorState extends ICalculatorState {
-  String calculate;
-  String result;
-  CalculatorState(this.result, this.calculate);
-}
-
-class CalculatorErrorState extends ICalculatorState {
-  TextEditingController calculate;
-  TextEditingController result;
-  CalculatorErrorState(this.result, this.calculate);
+class CalculatorState {
+  final ResultCalculatorState result;
+  final InputCalculatorState input;
+  const CalculatorState({required this.result, required this.input});
+  CalculatorState copyWith({
+    ResultCalculatorState? newresult,
+    InputCalculatorState? newinput,
+  }) {
+    return CalculatorState(
+        result: newresult ?? result, input: newinput ?? input);
+  }
 }

@@ -1,15 +1,15 @@
-import 'package:adivery/adivery.dart';
+import 'dart:async';
 import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_event.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
-import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/constanc/snackbar_message.dart';
 import 'package:calculator/model/bottom_model.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
 import 'package:calculator/widgets/bottom.dart';
+import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:gap/gap.dart';
 
 class BmiScreen extends StatefulWidget {
   const BmiScreen({Key? key}) : super(key: key);
@@ -19,226 +19,196 @@ class BmiScreen extends StatefulWidget {
 }
 
 class _BmiScreenState extends State<BmiScreen> {
-  var setw = TextEditingController();
-  var seth = TextEditingController();
-  bool height = false;
-  bool weight = false;
-  double result = 0.0;
-  Color resultcolor = Colors.grey.shade600;
+  final TextEditingController setw = TextEditingController();
+  final TextEditingController seth = TextEditingController();
+  final TextEditingController seta = TextEditingController();
+  final FocusNode weightnode = FocusNode();
+  final FocusNode heightnode = FocusNode();
+  final FocusNode agenode = FocusNode();
+  late Timer timer;
   @override
   void initState() {
     super.initState();
-    _showInterstitial();
+    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      showInterstitial();
+      timer.cancel();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    var screenh = MediaQuery.of(context).size.height;
-    var screenw = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      appBar: appbarwidget(context: context, titel: 'Bmi'),
-      body: SafeArea(
-          child: Column(
+      appBar: appbarwidget(context: context, titel: 'BMI'),
+      body: Column(
         children: [
           Expanded(
             flex: 1,
             child: Container(
-              width: screenw,
               decoration: const BoxDecoration(),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 16),
+                      child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (height == false) {
-                                  height = !height;
-                                  weight = !height;
-                                } else {}
-                              });
-                            },
-                            child: Container(
-                                height: 50,
-                                width: screenw / 3,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: height == true
-                                          ? AppColor.brightorange
-                                          : Colors.grey.shade600,
-                                      width: 2),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
-                                ),
-                                child: BlocBuilder<BmiBloc, IBmiState>(
-                                    builder: (context, state) {
-                                  return Center(
-                                    child: Text(
-                                        state is BmiState &&
-                                                state.height.isNotEmpty
-                                            ? state.height
-                                            : 'Height (m)',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor)),
-                                  );
-                                })),
+                          Expanded(
+                            flex: 5,
+                            child: Text("your Height",
+                                style: Theme.of(context).textTheme.labelLarge),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (weight == false) {
-                                  weight = !weight;
-                                  height = !weight;
-                                } else {}
-                              });
-                            },
-                            child: Container(
+                          Expanded(
+                              flex: 4,
+                              child: SizedBox(
                                 height: 50,
-                                width: screenw / 3,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: weight == true
-                                            ? AppColor.brightorange
-                                            : Colors.grey.shade600,
-                                        width: 2),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(20))),
-                                child: BlocBuilder<BmiBloc, IBmiState>(
-                                    builder: (context, state) {
-                                  return Center(
-                                    child: Text(
-                                        state is BmiState &&
-                                                state.weight.isNotEmpty
-                                            ? state.weight
-                                            : 'Weight (kg)',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor)),
-                                  );
-                                })),
+                                child: TextField(
+                                  cursorColor: Theme.of(context).primaryColor,
+                                  focusNode: heightnode,
+                                  controller: seth,
+                                  keyboardType: TextInputType.none,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(fontSize: 18),
+                                  decoration: InputDecoration(
+                                      hintText: "Height",
+                                      hintStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall!
+                                          .copyWith(color: Colors.grey),
+                                      filled: true,
+                                      contentPadding: const EdgeInsets.only(
+                                          left: 16, right: 16),
+                                      fillColor: Theme.of(context).cardColor,
+                                      suffixIconConstraints:
+                                          const BoxConstraints(minWidth: 32),
+                                      suffixIcon: Text(
+                                        "cm",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall!
+                                            .copyWith(color: Colors.grey),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          borderSide: BorderSide(
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      )),
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Text("your Weight",
+                                style: Theme.of(context).textTheme.labelLarge),
                           ),
-                        ]),
-                    Center(child: BlocBuilder<BmiBloc, IBmiState>(
-                        builder: (context, state) {
-                      return CircularPercentIndicator(
-                        radius: screenh / 8,
-                        percent: state is BmiState
-                            ? state.result == 0
-                                ? 0
-                                : state.result / 100 + 0.5
-                            : result,
-                        lineWidth: 10,
-                        animation: true,
-                        progressColor: state is BmiState &&
-                                (state.height.isNotEmpty ||
-                                    state.weight.isNotEmpty)
-                            ? state.color
-                            : resultcolor,
-                        circularStrokeCap: CircularStrokeCap.round,
-                        center: Text(
-                          '${state is BmiState ? state.result : result}',
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      );
-                    })),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 12,
-                                  width: 12,
-                                  color: Colors.blue,
-                                ),
-                                Text(
-                                  ' Below 18.5',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                              ],
+                          Expanded(
+                            flex: 4,
+                            child: TextField(
+                              cursorColor: Theme.of(context).primaryColor,
+                              focusNode: weightnode,
+                              controller: setw,
+                              keyboardType: TextInputType.none,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge!
+                                  .copyWith(fontSize: 18),
+                              decoration: InputDecoration(
+                                  hintText: "Weight",
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(color: Colors.grey),
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.only(
+                                    left: 16,
+                                    right: 16,
+                                  ),
+                                  fillColor: Theme.of(context).cardColor,
+                                  suffixIconConstraints:
+                                      const BoxConstraints(minWidth: 32),
+                                  suffixIcon: Text(
+                                    "kg",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .copyWith(color: Colors.grey),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Theme.of(context).primaryColor)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  )),
                             ),
-                            const Text(
-                              'Underweight',
-                              style:
-                                  TextStyle(color: Colors.blue, fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Text("your Age",
+                                style: Theme.of(context).textTheme.labelLarge),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: TextField(
+                              cursorColor: Theme.of(context).primaryColor,
+                              focusNode: agenode,
+                              controller: seta,
+                              keyboardType: TextInputType.none,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge!
+                                  .copyWith(fontSize: 18),
+                              decoration: InputDecoration(
+                                  hintText: "Age",
+                                  hintStyle: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(color: Colors.grey),
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.only(
+                                    left: 16,
+                                    right: 16,
+                                  ),
+                                  fillColor: Theme.of(context).cardColor,
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Theme.of(context).primaryColor)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  )),
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 12,
-                                  width: 12,
-                                  color: Colors.green,
-                                ),
-                                Text(
-                                  ' 18.5 – 24.9',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                              ],
-                            ),
-                            const Text(
-                              'Healthy Weight',
-                              style:
-                                  TextStyle(color: Colors.green, fontSize: 10),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 12,
-                                  width: 12,
-                                  color: Colors.orange,
-                                ),
-                                Text(
-                                  ' 25.0 – 29.9',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                              ],
-                            ),
-                            const Text(
-                              'Overweight',
-                              style:
-                                  TextStyle(color: Colors.orange, fontSize: 10),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 12,
-                                  width: 12,
-                                  color: Colors.red,
-                                ),
-                                Text(
-                                  ' 30.0 and Above',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                              ],
-                            ),
-                            const Text(
-                              'Obesity',
-                              style: TextStyle(color: Colors.red, fontSize: 10),
-                            )
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ]),
             ),
@@ -246,7 +216,6 @@ class _BmiScreenState extends State<BmiScreen> {
           Expanded(
             flex: 1,
             child: Container(
-              width: screenw,
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: const BorderRadius.only(
@@ -254,241 +223,417 @@ class _BmiScreenState extends State<BmiScreen> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: Buttons(height: height, weight: weight),
+              child: buttons(context),
             ),
           )
         ],
-      )),
+      ),
     );
   }
 
-  void _showInterstitial() {
-    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
-        (isLoaded) =>
-            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
-  }
-
-  void showPlacement(bool isLoaded, String placementId) {
-    if (isLoaded) {
-      AdiveryPlugin.show(placementId);
-    }
-  }
-}
-
-// ignore: must_be_immutable
-class Buttons extends StatelessWidget {
-  Buttons({
-    super.key,
-    this.height = false,
-    this.weight = false,
-  });
-  bool height = false;
-  bool weight = false;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width / 1.3,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  Widget buttons(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 7,
+            child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '7',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '7',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '8',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '8',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '9',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '9',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '4',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '4',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '5',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '5',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '6',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '6',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '1',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '1',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '2',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '2',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '3',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '3',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '00',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '00',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '0',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '0',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                    Clikbutton(
-                        ButtonModel(
-                          titel: '.',
-                          titelcolor: Colors.white,
-                          bottomcolor: Theme.of(context).canvasColor,
+                      ),
+                      Expanded(
+                        child: clikbutton(
+                          context,
+                          ButtonModel(
+                            titel: '.',
+                            titelcolor: Colors.white,
+                            bottomcolor: Theme.of(context).canvasColor,
+                          ),
                         ),
-                        height,
-                        weight),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ]),
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Clikbutton(
-                ButtonModel(
-                  titel: 'AC',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: [
+                Expanded(
+                  child: clikbutton(
+                    context,
+                    ButtonModel(
+                      titel: 'AC',
+                      titelcolor: Theme.of(context).primaryColorLight,
+                      bottomcolor: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
                 ),
-                height,
-                weight),
-            Clikbutton(
-                ButtonModel(
-                  titel: 'CE',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+                Expanded(
+                  child: clikbutton(
+                    context,
+                    ButtonModel(
+                      titel: 'CE',
+                      titelcolor: Theme.of(context).primaryColorLight,
+                      bottomcolor: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
                 ),
-                height,
-                weight),
-            Clikbutton(
-                ButtonModel(
-                  titel: '=',
-                  titelcolor: Colors.white,
-                  bottomcolor: Theme.of(context).primaryColor,
+                Expanded(
+                  child: clikbutton(
+                    context,
+                    ButtonModel(
+                      titel: 'GO',
+                      titelcolor: Colors.white,
+                      bottomcolor: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ),
-                height,
-                weight),
-          ],
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
-}
 
-//---------------- Clicking buttons -----------------------------------------
-
-class Clikbutton extends StatelessWidget {
-  Clikbutton(this.model, this.height, this.weight, {super.key});
-  ButtonModel model;
-  bool height = false;
-  bool weight = false;
-  @override
-  Widget build(BuildContext context) {
+  Widget clikbutton(BuildContext context, ButtonModel model) {
     return GestureDetector(
       onTap: () {
-        if (model.titel == '=' &&
-            BlocProvider.of<BmiBloc>(context).height.isEmpty &&
-            BlocProvider.of<BmiBloc>(context).weight.isEmpty) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackbarMessage.bmimessage);
-        } else if (model.titel == '=' &&
-            BlocProvider.of<BmiBloc>(context).height.isEmpty &&
-            BlocProvider.of<BmiBloc>(context).weight.isNotEmpty) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackbarMessage.bmimessage2);
-        } else if (model.titel == '=' &&
-            BlocProvider.of<BmiBloc>(context).height.isNotEmpty &&
-            BlocProvider.of<BmiBloc>(context).weight.isEmpty) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackbarMessage.bmimessage1);
-        } else if (model.titel == '=' &&
-            double.parse(BlocProvider.of<BmiBloc>(context).height) >= 10) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackbarMessage.bmimessage3);
+        if (model.titel == "AC") {
+          if (heightnode.hasFocus) {
+            seth.text = '';
+          } else if (weightnode.hasFocus) {
+            setw.text = '';
+          } else if (agenode.hasFocus) {
+            seta.text = '';
+          }
+          setState(() {});
+        } else if (model.titel == "CE") {
+          if (heightnode.hasFocus && seth.text.isNotEmpty) {
+            seth.text = seth.text.substring(0, seth.text.length - 1);
+          } else if (weightnode.hasFocus && setw.text.isNotEmpty) {
+            setw.text = setw.text.substring(0, setw.text.length - 1);
+          } else if (agenode.hasFocus && seta.text.isNotEmpty) {
+            seta.text = seta.text.substring(0, seta.text.length - 1);
+          }
+          setState(() {});
+        } else if (model.titel == "GO") {
+          if (seth.text.isEmpty || setw.text.isEmpty || seta.text.isEmpty) {
+            SnackbarMessage.customsnackbar(
+                context, "Please complete all fields", Colors.red);
+          } else {
+            final double? height = double.tryParse(seth.text);
+            final double? weight = double.tryParse(setw.text);
+            final int? age = int.tryParse(seta.text);
+            if (height == null) {
+              SnackbarMessage.customsnackbar(
+                  context, "Please enter a valid height", Colors.red);
+            } else if (weight == null) {
+              SnackbarMessage.customsnackbar(
+                  context, "Please enter a valid weight", Colors.red);
+            } else if (age == null) {
+              SnackbarMessage.customsnackbar(
+                  context, "Please enter a valid age", Colors.red);
+            } else {
+              showCustomDialog(context, int.parse(seta.text),
+                  double.parse(seth.text), double.parse(setw.text));
+            }
+          }
         } else {
-          if (height == true) {
-            BlocProvider.of<BmiBloc>(context).add(HeightEvent(model.titel));
-            if (double.parse(BlocProvider.of<BmiBloc>(context).height) >= 10) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackbarMessage.bmimessage3);
-            } else {}
-          } else if (weight == true) {
-            BlocProvider.of<BmiBloc>(context).add(WeightEvent(model.titel));
-          } else {}
+          if (heightnode.hasFocus) {
+            seth.text = seth.text + model.titel;
+          } else if (weightnode.hasFocus) {
+            setw.text = setw.text + model.titel;
+          } else if (agenode.hasFocus) {
+            seta.text = seta.text + model.titel;
+          }
+          setState(() {});
         }
       },
       child: Bottom(property: model),
+    );
+  }
+
+  Future<void> showCustomDialog(
+      BuildContext ctx, int age, double height, double weight) async {
+    await showDialog(
+      context: ctx,
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).cardColor,
+          elevation: 0,
+          actionsPadding: const EdgeInsets.all(0),
+          insetPadding: const EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.all(16),
+          buttonPadding: const EdgeInsets.all(0),
+          titlePadding: const EdgeInsets.all(0),
+          scrollable: true,
+          content: BlocProvider(
+            create: (context) {
+              var bloc = BmiBloc();
+              bloc.add(BMICalculateEvent(age, height, weight));
+              return bloc;
+            },
+            child: BlocBuilder<BmiBloc, BmiState>(
+              builder: (context, state) {
+                if (state is BmiResultState) {
+                  // double result = state.result < 16
+                  //     ? 16
+                  //     : state.result > 30
+                  //         ? 30
+                  //         : state.result;
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              state.result.toString(),
+                              style: Theme.of(context).textTheme.displayLarge,
+                            ),
+                            const Gap(8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "BMI",
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                Text(
+                                  state.bodystatus,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(color: state.color),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Gap(16),
+                        Container(
+                          height: 10,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                            Colors.blue,
+                            Colors.green,
+                            Colors.red
+                          ])),
+                          // child: Stack(
+                          //   children: [
+                          //     Positioned(
+                          //       left: state.result,
+                          //       top: 0.0,
+                          //       bottom: 0.0,
+                          //       child: Container(
+                          //         width: 4.0,
+                          //         color: Colors.white,
+                          //       ),
+                          //     ),
+                          //   ],
+                          //  ),
+                        ),
+                        const Gap(24),
+                        Text(
+                          "BMI categorise : ",
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const Gap(8),
+                        Text(
+                          "Underweight = 18.5 <",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: const Color(0xFF2196F3)),
+                        ),
+                        const Gap(8),
+                        Text(
+                          "Healthy Weight = 18.5-24.9",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: const Color(0xFF4CAF50)),
+                        ),
+                        const Gap(8),
+                        Text(
+                          "OverWeight = 25-29.9",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: const Color(0xFFFF7552)),
+                        ),
+                        const Gap(8),
+                        Text(
+                          "Obesity = <30",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: const Color(0xFFF44336)),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (state is BmiLoadingState) {
+                  return CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  );
+                } else if (state is BmiInitState) {
+                  return CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  );
+                } else if (state is BmiErrorState) {
+                  return Text(
+                    state.error,
+                    style: Theme.of(context).textTheme.labelLarge,
+                  );
+                } else {
+                  return CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  );
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

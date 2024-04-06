@@ -1,82 +1,29 @@
 import 'package:adivery/adivery.dart';
-import 'package:age_calculator/age_calculator.dart';
-import 'package:calculator/bloc/age/age_bloc.dart';
-import 'package:calculator/bloc/age/age_state.dart';
-import 'package:calculator/bloc/bmi/bmi_bloc.dart';
-import 'package:calculator/bloc/bmi/bmi_state.dart';
-import 'package:calculator/bloc/gap/gap_bloc.dart';
-import 'package:calculator/bloc/gap/gap_state.dart';
+import 'package:calculator/bloc/calculator/calculator_event.dart';
 
-import 'package:calculator/bloc/unitconversion/unitconversion_bloc.dart';
-import 'package:calculator/bloc/unitconversion/unitconversion_state.dart';
+import 'package:calculator/bloc/theme/theme_bloc.dart';
+import 'package:calculator/bloc/theme/theme_event.dart';
+import 'package:calculator/bloc/theme/theme_state.dart';
 import 'package:calculator/constanc/app_colors.dart';
-import 'package:calculator/model/capabilities.dart';
-
-import 'package:calculator/service/local/area_local_api.dart';
-import 'package:calculator/theme.dart';
+import 'package:calculator/theme/theme.dart';
 import 'package:calculator/view/calculator_screen.dart';
 import 'package:calculator/view/capabilities_screen.dart';
+import 'package:calculator/view/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'bloc/calculator/calculator_bloc.dart';
-import 'bloc/calculator/calculator_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AdiveryPlugin.initialize('8da5622e-3eb1-4bb7-9bcc-4e722d63c5e9');
-
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  runApp(MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) {
-            return UnitconversionBloc(UnitconversionState(
-              "0",
-              Capabilities('', '', 0),
-              Capabilities('', '', 0),
-              "0",
-            ));
-          },
-        ),
-//---------------- calculator bloc provider ------------------------------------
-        BlocProvider(
-          create: (context) {
-            return CalculatorBloc(CalculatorState(
-              " ",
-              "0",
-            ));
-          },
-        ),
-
-//---------------- BmiBloc provider --------------------------------------------
-
-        BlocProvider(
-          create: (context) {
-            return BmiBloc(BmiState(Colors.grey, '', '', 0));
-          },
-        ),
-//---------------- AgeBloc provider --------------------------------------------
-
-        BlocProvider(
-          create: (context) {
-            return AgeBloc(AgeState(DateTime.now(), DateTime.now(), '0', '0',
-                '0', '0', '0', '0', DateDuration(), DateDuration()));
-          },
-        ),
-        BlocProvider(
-          create: (context) {
-            return GapBloc(GapState([], 0, 0));
-          },
-        ),
-      ],
-//---------------- run App -----------------------------------------------------
-
-      child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -84,15 +31,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-//------------------ hide or show debugbanner ----------------------------------
-      debugShowCheckedModeBanner: false,
-//------------------ dark theme ------------------------------------------------
-      themeMode: ThemeMode.system,
-      theme: AppTheme.lighttheme,
-      darkTheme: AppTheme.darktheme,
-//------------------------------------------------------------------------------
-      home: const MainPage(),
+    return BlocProvider(
+      create: (context) {
+        var themeBloc = ThemeBloc();
+        themeBloc.add(InitThemeEvent());
+        return themeBloc;
+      },
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: state.mode,
+            theme: AppTheme.lighttheme,
+            darkTheme: AppTheme.darktheme,
+            home: const MainPage(),
+          );
+        },
+      ),
     );
   }
 }
@@ -122,17 +77,69 @@ class _MainPageState extends State<MainPage>
 //---------------------- Scaffold backgroundColor ------------------------------
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 //--------------------- main appbar TabBarwidget view --------------------------
-      appBar: AppBar(elevation: 0, title: TabBarwidget(tabcontrol)),
+      appBar: AppBar(
+        elevation: 0,
+        title: TabBarwidget(tabcontrol),
+        leadingWidth: 60,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                return const SettingScreen();
+              },
+            ));
+          },
+          icon: Icon(
+            Icons.settings,
+            color: Theme.of(context).iconTheme.color,
+          ),
+        ),
+        actions: [
+          BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              if (state.mode == ThemeMode.dark) {
+                return IconButton(
+                  onPressed: () {
+                    BlocProvider.of<ThemeBloc>(context).add(LightThemeEvent());
+                  },
+                  icon: Icon(
+                    Icons.dark_mode,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                );
+              } else {
+                return IconButton(
+                  onPressed: () {
+                    BlocProvider.of<ThemeBloc>(context).add(DarkThemeEvent());
+                  },
+                  icon: Icon(
+                    Icons.light_mode,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                );
+              }
+            },
+          ),
+          const Gap(15),
+        ],
+      ),
 //--------------------- tabbar view body ---------------------------------------
       body: SafeArea(
         child: TabBarView(
-            physics: const BouncingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             controller: tabcontrol,
-            children: const [
+            children: [
 //------------ calculator page -------------------------------------------------
-              HomeScreen(),
+              BlocProvider(
+                create: (context) {
+                  var bloc = CalculatorBloc();
+                  bloc.add(CalculatorEventInitial());
+                  return bloc;
+                },
+                child: const CalculatorScreen(),
+              ),
 //------------ capabilities page -----------------------------------------------
-              SecoundScreen(),
+              const SecoundScreen(),
             ]),
       ),
     );
@@ -147,45 +154,34 @@ class TabBarwidget extends StatelessWidget {
   TabController? tabcontrol;
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width / 6;
-    return Container(
-      margin: EdgeInsets.only(
-        left: width,
-        right: width,
+    return TabBar(
+      controller: tabcontrol,
+      physics: const NeverScrollableScrollPhysics(),
+      splashFactory: NoSplash.splashFactory,
+      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          return states.contains(MaterialState.focused)
+              ? null
+              : Colors.transparent;
+        },
       ),
-      height: 30,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(1000),
-      ),
-      child: TabBar(
-        controller: tabcontrol,
-        splashFactory: NoSplash.splashFactory,
-        overlayColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-            return states.contains(MaterialState.focused)
-                ? null
-                : Colors.transparent;
-          },
+      splashBorderRadius: BorderRadius.circular(1000),
+      indicatorColor: Colors.transparent,
+      labelColor: AppColor.iconcolor,
+      dividerColor: Colors.transparent,
+      unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
+      tabs: const [
+        Tab(
+          icon: Icon(
+            Icons.calculate_outlined,
+          ),
         ),
-        splashBorderRadius: BorderRadius.circular(1000),
-        indicatorColor: Colors.transparent,
-        labelColor: AppColor.iconcolor,
-        dividerColor: Colors.transparent,
-        unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
-        tabs: const [
-          Tab(
-            icon: Icon(
-              Icons.calculate_outlined,
-            ),
+        Tab(
+          icon: Icon(
+            Icons.category_outlined,
           ),
-          Tab(
-            icon: Icon(
-              Icons.square_foot_rounded,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

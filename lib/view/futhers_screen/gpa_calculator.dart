@@ -1,748 +1,540 @@
-import 'package:adivery/adivery.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:calculator/bloc/gap/gap_bloc.dart';
-import 'package:calculator/bloc/gap/gap_event.dart';
-import 'package:calculator/bloc/gap/gap_state.dart';
-import 'package:calculator/model/gap.dart';
+import 'dart:async';
+
+import 'package:calculator/bloc/gpa/gpa_bloc.dart';
+import 'package:calculator/bloc/gpa/gpa_event.dart';
+import 'package:calculator/bloc/gpa/gpa_state.dart';
+import 'package:calculator/constanc/app_colors.dart';
+import 'package:calculator/model/gpa_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../widgets/appbar_widget.dart';
+import '../../widgets/prepare_interstitial_ad.dart';
 
-class AvrageScreen extends StatefulWidget {
-  const AvrageScreen({super.key});
+class GpaScreen extends StatefulWidget {
+  const GpaScreen({super.key});
 
   @override
-  State<AvrageScreen> createState() => _AvrageScreenState();
+  State<GpaScreen> createState() => _GpaScreenState();
 }
 
-class _AvrageScreenState extends State<AvrageScreen> {
+class _GpaScreenState extends State<GpaScreen> {
+  late Timer timer;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _showInterstitial();
-  }
-  //---------------- ads ---------------------------------------------------------
-
-  void _showInterstitial() {
-    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
-        (isLoaded) =>
-            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      showInterstitial();
+      timer.cancel();
+    });
   }
 
-  void showPlacement(bool isLoaded, String placementId) {
-    if (isLoaded) {
-      AdiveryPlugin.show(placementId);
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
 //------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: SizedBox(
-        height: height * 0.065,
-        width: width * 0.13,
-        child: FloatingActionButton(
-          onPressed: () {
-            openAddiolog(context, Gap("course", 0, 0, 0));
-          },
-          backgroundColor: Colors.orange,
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-            size: MediaQuery.of(context).size.shortestSide * 0.1,
-          ),
-        ),
-      ),
       appBar: appbarwidget(context: context, titel: 'GPA'),
-      body: SafeArea(
-          child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: 50,
-                width: width * 0.3,
-                margin: EdgeInsets.symmetric(horizontal: width * 0.04),
-                decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Center(
-                    child: AutoSizeText(
-                  "Course",
-                  minFontSize: 5,
-                  style: Theme.of(context).textTheme.bodySmall,
-                )),
+      body: BlocBuilder<GpaBloc, GpaState>(builder: (context, state) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Your GPA",
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            state is GpaStateComplet
+                                ? state.grade.toString()
+                                : "0",
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge!
+                                .copyWith(
+                                    color: AppColor.customorange,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 40),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Units Total",
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: Text(
+                                state is GpaStateComplet
+                                    ? state.unitstotal.toString()
+                                    : "0",
+                                style:
+                                    Theme.of(context).textTheme.displayMedium)),
+                      ],
+                    ),
+                  )
+                ],
               ),
-              Container(
-                height: 50,
-                width: width * 0.14,
-                margin: EdgeInsets.symmetric(horizontal: width * 0.036),
+            ),
+            GestureDetector(
+              onTap: () {
+                openAddiolog(
+                    context,
+                    GPA(
+                      "course",
+                      0,
+                      0,
+                    ));
+              },
+              child: Container(
+                height: 45,
+                width: double.infinity,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Center(
+                  child: Text("+ New Course",
+                      style: Theme.of(context).textTheme.labelMedium),
                 ),
-                child: Center(
-                    child: AutoSizeText(
-                  "Credits",
-                  minFontSize: 5,
-                  style: Theme.of(context).textTheme.bodySmall,
-                )),
               ),
-              Container(
-                  height: 50,
-                  width: width * 0.12,
-                  margin: EdgeInsets.symmetric(horizontal: width * 0.04),
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Center(
-                      child: AutoSizeText(
-                    "Max Grade",
-                    minFontSize: 5,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.lato(
-                        fontSize: 13,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red),
-                  ))),
-              Container(
-                  height: 50,
-                  width: width * 0.12,
-                  margin: EdgeInsets.symmetric(horizontal: width * 0.04),
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Center(
-                      child: AutoSizeText(
-                    "Min Grade",
-                    minFontSize: 5,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.lato(
-                        fontSize: 13,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blue),
-                  ))),
-            ],
-          ),
-          Expanded(
-            child: BlocBuilder<GapBloc, IGapState>(builder: (context, state) {
-              if (state is GapState) {
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      height: height,
-                      width: width,
-                      child: ListView.builder(
-                        itemCount: state.gaps.length,
+            ),
+            Expanded(
+                child: (state is GpaStateComplet)
+                    ? ListView.builder(
+                        itemCount: state.gpas.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              openEditdiolog(context, state.gaps[index], index);
-                            },
+                          return Container(
+                            height: 115,
+                            padding: const EdgeInsets.all(8),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Theme.of(context).cardColor,
+                                width: 3,
+                              ),
+                            ),
                             child: Row(
                               children: [
-                                Container(
-                                  height: height * 0.06,
-                                  width: width * 0.3,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: width * 0.04, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                      child: AutoSizeText(
-                                    state.gaps[index].course,
-                                    minFontSize: 5,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  )),
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          state.gpas[index].coursename,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelMedium!
+                                              .copyWith(fontSize: 20),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    "Creadits",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .labelMedium,
+                                                  ),
+                                                  Text(
+                                                    state.gpas[index].credits
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .labelLarge!
+                                                        .copyWith(fontSize: 24),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    "Grade",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .labelMedium,
+                                                  ),
+                                                  Text(
+                                                    state.gpas[index].grade
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .labelLarge!
+                                                        .copyWith(fontSize: 24),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                Container(
-                                  height: height * 0.06,
-                                  width: width * 0.13,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: width * 0.042, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                      child: AutoSizeText(
-                                    state.gaps[index].credits.toString(),
-                                    minFontSize: 5,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  )),
-                                ),
-                                Container(
-                                  height: height * 0.06,
-                                  width: width * 0.12,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: width * 0.04, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                      child: AutoSizeText(
-                                    state.gaps[index].maxgrade.toString(),
-                                    minFontSize: 5,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.lato(
-                                        fontSize: 13,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.red),
-                                  )),
-                                ),
-                                Container(
-                                  height: height * 0.06,
-                                  width: width * 0.12,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: width * 0.04, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(
-                                      child: AutoSizeText(
-                                    state.gaps[index].mingrade.toString(),
-                                    minFontSize: 5,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.lato(
-                                        fontSize: 13,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue),
-                                  )),
-                                ),
+                                Expanded(
+                                    flex: 2,
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                            onPressed: () async {
+                                              await openEditdiolog(context,
+                                                  state.gpas[index], index);
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              color: Colors.green,
+                                            )),
+                                        IconButton(
+                                            onPressed: () {
+                                              BlocProvider.of<GpaBloc>(context)
+                                                  .add(DeletGpaEvent(
+                                                      state.gpas[index]));
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ))
+                                      ],
+                                    ))
                               ],
                             ),
                           );
                         },
-                      ),
+                      )
+                    : const SizedBox()),
+          ],
+        );
+      }),
+    );
+  }
+
+  Future openEditdiolog(BuildContext ctx, GPA gpa, int index) {
+    TextEditingController course = TextEditingController(text: gpa.coursename);
+    TextEditingController credits =
+        TextEditingController(text: gpa.credits.toString());
+    TextEditingController grade =
+        TextEditingController(text: gpa.grade.toString());
+
+    return showDialog(
+      context: ctx,
+      builder: (context) {
+        return AlertDialog(
+          elevation: 0,
+          actionsPadding: const EdgeInsets.all(0),
+          insetPadding: const EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.all(16),
+          buttonPadding: const EdgeInsets.all(0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: course,
+                cursorColor: Theme.of(context).primaryColor,
+                style: Theme.of(context).textTheme.labelLarge,
+                decoration: InputDecoration(
+                    labelText: "Course",
+                    labelStyle: GoogleFonts.lato(
+                        fontSize: 13,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.orange),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.orange),
                     ),
-                    Positioned(
-                      bottom: 10,
-                      child: Visibility(
-                        visible: state.gaps.isEmpty ? false : true,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size(width * 0.1, height * 0.05),
-                                backgroundColor: Colors.orange),
-                            onPressed: () async {
-                              BlocProvider.of<GapBloc>(context)
-                                  .add(CalculatGapEvent());
-                              await resultdiolog(context, state.max, state.min);
-                            },
-                            child: AutoSizeText(
-                              "Calculat",
-                              minFontSize: 5,
-                              style: GoogleFonts.lato(
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white),
-                            )),
-                      ),
-                    )
-                  ],
-                );
-              } else {
-                return Container();
-              }
-            }),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.orange),
+                    )),
+              ),
+              const Gap(8),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: credits,
+                      cursorColor: Theme.of(context).primaryColor,
+                      style: Theme.of(context).textTheme.labelLarge,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          labelText: "Credits",
+                          labelStyle: GoogleFonts.lato(
+                              fontSize: 13,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.orange),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          )),
+                    ),
+                  ),
+                  const Gap(8),
+                  Expanded(
+                    child: TextField(
+                      controller: grade,
+                      cursorColor: Theme.of(context).primaryColor,
+                      style: Theme.of(context).textTheme.labelLarge,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          labelText: "Grade",
+                          labelStyle: GoogleFonts.lato(
+                              fontSize: 13,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.orange),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          )),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      )),
-    );
-  }
-
-  Future openEditdiolog(BuildContext context, Gap gap, int index) {
-    TextEditingController Course = TextEditingController(text: gap.course);
-    TextEditingController Credits =
-        TextEditingController(text: gap.credits.toString());
-    TextEditingController MaxGrade =
-        TextEditingController(text: gap.maxgrade.toString());
-    TextEditingController MinGrade =
-        TextEditingController(text: gap.mingrade.toString());
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Center(
+          actions: [
+            TextButton(
+              onPressed: () {
+                BlocProvider.of<GpaBloc>(ctx).add(
+                  EditGpaEvent(
+                    gpa,
+                    GPA(
+                      course.text,
+                      int.parse(credits.text),
+                      double.parse(grade.text),
+                    ),
+                    index,
+                  ),
+                );
+                Navigator.pop(context);
+              },
               child: Text(
-            'Edit',
-            style: Theme.of(context).textTheme.labelSmall,
-          )),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          content: SizedBox(
-              height: height * 0.5,
-              width: width * 0.5,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        controller: Course,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        decoration: InputDecoration(
-                            labelText: "Course",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        controller: Credits,
-                        decoration: InputDecoration(
-                            labelText: "Credits",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        controller: MaxGrade,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Max Grade",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        controller: MinGrade,
-                        decoration: InputDecoration(
-                            labelText: "Min Grade",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize:
-                                      Size(width * 0.01, height * 0.05),
-                                  backgroundColor: Colors.orange),
-                              onPressed: () {
-                                BlocProvider.of<GapBloc>(context)
-                                    .add(DeletGapEvent(gap));
-                                Navigator.pop(context);
-                              },
-                              child: AutoSizeText(
-                                "Delet",
-                                minFontSize: 5,
-                                style: GoogleFonts.lato(
-                                    fontSize: 15,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                              )),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize:
-                                      Size(width * 0.01, height * 0.05),
-                                  backgroundColor: Colors.orange),
-                              onPressed: () {
-                                BlocProvider.of<GapBloc>(context)
-                                    .add(EditGapEvent(
-                                        gap,
-                                        Gap(
-                                          Course.text,
-                                          int.parse(Credits.text),
-                                          double.parse(MaxGrade.text),
-                                          double.parse(MinGrade.text),
-                                        ),
-                                        index));
-                                Navigator.pop(context);
-                              },
-                              child: AutoSizeText(
-                                "Edit",
-                                minFontSize: 5,
-                                style: GoogleFonts.lato(
-                                    fontSize: 15,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+                "Edit",
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            )
+          ],
         );
       },
     );
   }
 
-  Future openAddiolog(BuildContext context, Gap gap) {
-    TextEditingController Course = TextEditingController(text: gap.course);
-    TextEditingController Credits =
-        TextEditingController(text: gap.credits.toString());
-    TextEditingController MaxGrade =
-        TextEditingController(text: gap.maxgrade.toString());
-    TextEditingController MinGrade =
-        TextEditingController(text: gap.mingrade.toString());
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+  Future openAddiolog(BuildContext ctx, GPA gpa) {
+    TextEditingController course = TextEditingController(text: gpa.coursename);
+    TextEditingController credits =
+        TextEditingController(text: gpa.credits.toString());
+    TextEditingController grade =
+        TextEditingController(text: gpa.grade.toString());
     return showDialog(
-      context: context,
+      context: ctx,
       builder: (context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(0),
+          elevation: 0,
+          actionsPadding: const EdgeInsets.all(0),
+          insetPadding: const EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.all(16),
+          buttonPadding: const EdgeInsets.all(0),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Center(
-              child: Text(
-            'Add',
-            style: Theme.of(context).textTheme.labelSmall,
-          )),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          content: SizedBox(
-              height: height * 0.5,
-              width: width * 0.5,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        controller: Course,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        decoration: InputDecoration(
-                            labelText: "Course",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: course,
+                cursorColor: Theme.of(context).primaryColor,
+                style: Theme.of(context).textTheme.labelLarge,
+                decoration: InputDecoration(
+                    labelText: "Course",
+                    labelStyle: GoogleFonts.lato(
+                        fontSize: 13,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.orange),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.orange),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        controller: Credits,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Credits",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        controller: MaxGrade,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Max Grade",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.orange),
+                    )),
+              ),
+              const Gap(8),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: credits,
+                      cursorColor: Theme.of(context).primaryColor,
+                      style: Theme.of(context).textTheme.labelLarge,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          labelText: "Credits",
+                          labelStyle: GoogleFonts.lato(
+                              fontSize: 13,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.orange),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          )),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: TextField(
-                        controller: MinGrade,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Min Grade",
-                            labelStyle: GoogleFonts.lato(
-                                fontSize: 13,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.orange),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  const BorderSide(color: Colors.orange),
-                            )),
-                      ),
+                  ),
+                  const Gap(8),
+                  Expanded(
+                    child: TextField(
+                      controller: grade,
+                      cursorColor: Theme.of(context).primaryColor,
+                      style: Theme.of(context).textTheme.labelLarge,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          labelText: "Grade",
+                          labelStyle: GoogleFonts.lato(
+                              fontSize: 13,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.orange),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.orange),
+                          )),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize:
-                                      Size(width * 0.01, height * 0.05),
-                                  backgroundColor: Colors.orange),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Center(
-                                child: AutoSizeText(
-                                  "Cancel",
-                                  minFontSize: 5,
-                                  style: GoogleFonts.lato(
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
-                              )),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  minimumSize:
-                                      Size(width * 0.01, height * 0.05),
-                                  backgroundColor: Colors.orange),
-                              onPressed: () {
-                                BlocProvider.of<GapBloc>(context).add(
-                                    AddGapEvent(Gap(
-                                        Course.text,
-                                        int.parse(Credits.text),
-                                        double.parse(MaxGrade.text),
-                                        double.parse(MinGrade.text))));
-                                Navigator.pop(context);
-                              },
-                              child: AutoSizeText(
-                                "Add",
-                                minFontSize: 5,
-                                style: GoogleFonts.lato(
-                                    fontSize: 15,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                              )),
-                        ],
-                      ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Cancel",
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                BlocProvider.of<GpaBloc>(ctx).add(
+                  AddGpaEvent(
+                    GPA(
+                      course.text,
+                      int.parse(credits.text),
+                      double.parse(grade.text),
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                );
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Add",
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            )
+          ],
         );
-      },
-    );
-  }
-
-  Future resultdiolog(
-    BuildContext context,
-    double max,
-    double min,
-  ) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return BlocBuilder<GapBloc, IGapState>(builder: (context, state) {
-          return AlertDialog(
-            contentPadding: const EdgeInsets.all(0),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Center(
-                child: Text(
-              'Result',
-              style: Theme.of(context).textTheme.bodySmall,
-            )),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            content: SizedBox(
-                height: height * 0.2,
-                width: width * 0.2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Center(
-                      child: Text(
-                        "Max Grade",
-                        style: GoogleFonts.lato(
-                            fontSize: 18,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.red),
-                      ),
-                    ),
-                    Text(
-                      state is GapState ? state.max.toStringAsFixed(2) : "0",
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    Center(
-                      child: Text(
-                        "Min Grade",
-                        style: GoogleFonts.lato(
-                            fontSize: 18,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.blue),
-                      ),
-                    ),
-                    Text(
-                      state is GapState ? state.min.toStringAsFixed(2) : "0",
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ],
-                )),
-          );
-        });
       },
     );
   }

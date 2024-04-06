@@ -5,4 +5,4 @@ class CalculatorEvent extends ICalculatorEvent {
   CalculatorEvent(this.value);
 }
 
-class CalculatorEventdoubletap extends ICalculatorEvent {}
+class CalculatorEventInitial extends ICalculatorEvent {}

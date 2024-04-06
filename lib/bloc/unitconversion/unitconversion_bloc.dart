@@ -1,152 +1,145 @@
+import 'package:calculator/bloc/unitconversion/from_state.dart';
+import 'package:calculator/bloc/unitconversion/input_state.dart';
+import 'package:calculator/bloc/unitconversion/result_state.dart';
+import 'package:calculator/bloc/unitconversion/to_state.dart';
 import 'package:calculator/bloc/unitconversion/unitconversion_event.dart';
 import 'package:calculator/bloc/unitconversion/unitconversion_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:units_converter/models/extension_converter.dart';
 import '../../model/capabilities.dart';
 
 class UnitconversionBloc
-    extends Bloc<IUnitconversionEvent, IUnitconversionState> {
+    extends Bloc<IUnitconversionEvent, UnitconversionState> {
+  //-----inputuser is used to hold the input value-----------------------------------
   String inputuser = "0";
-  //-----amount is used to hold the input value-----------------------------------
-  String amount = "0";
 //------result is used to store the answer--------------------------------------
-  String result = "0";
+  double? result = 0;
+
 //------The unit is used to keep the unit---------------------------------------
-  Capabilities? unit;
-  Capabilities? unit1;
+  Capabilities? from;
+  Capabilities? to;
   String? titel;
 
-  UnitconversionBloc(super.initialState) {
+  UnitconversionBloc()
+      : super(UnitconversionState(
+            from: FromStateInital(),
+            to: ToStateInital(),
+            result: ResultStateInital(),
+            input: InputStateInital())) {
+    on<UnitconversionInitial>((event, emit) {
+      from = event.from;
+      to = event.to;
+      emit(state.copyWith(
+          newfrom: FromStateUnit(unit: from!), newto: ToStateUnit(unit: to!)));
+      if (from != null && to != null) {
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+          newresult: ResultStateResult(result: result ?? 0),
+          newinput: InputStateUser(input: inputuser),
+        ));
+      }
+    });
     on<Unitconversion>((event, emit) {
-      if (event.value == 'AC') {
-        amount = '0';
-        claculateresult();
-        emit(UnitconversionState(inputuser, unit!, unit1!, result));
+      if (event.input == 'AC') {
+        inputuser = '0';
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+          newinput: InputStateUser(input: inputuser),
+          newresult: ResultStateResult(result: result ?? 0),
+        ));
       }
 
 //-------Clear each one---------------------------------------------------------
 
-      else if (event.value == 'CE') {
-        amount = amount.substring(0, amount.length - 1);
-
-        if (amount.isEmpty) {
-          amount = '0';
-        } else {}
-        claculateresult();
-        emit(UnitconversionState(inputuser, unit!, unit1!, result));
+      else if (event.input == 'CE') {
+        inputuser = inputuser.substring(0, inputuser.length - 1);
+        if (inputuser.isEmpty) {
+          inputuser = '0';
+        }
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+          newinput: InputStateUser(input: inputuser),
+          newresult: ResultStateResult(result: result ?? 0),
+        ));
       }
 
 //--------Change button---------------------------------------------------------
 
-      else if (event.value == '⇌') {
-        Capabilities unit2 = unit!;
-        unit = unit1!;
-        unit1 = unit2;
-        claculateresult();
-        emit(UnitconversionState(inputuser, unit!, unit1!, result));
+      else if (event.input == '⇌') {
+        if (from != null && to != null) {
+          final Capabilities? change = from;
+          from = to;
+          to = change;
+          result = unitConvert(inputuser, from, to);
+          emit(state.copyWith(
+              newinput: InputStateUser(input: inputuser),
+              newresult: ResultStateResult(result: result ?? 0),
+              newfrom: FromStateUnit(unit: from!),
+              newto: ToStateUnit(unit: to!)));
+        }
       }
 
 //--------point conditions------------------------------------------------------
 
-      else if (event.value == '.') {
-        if (amount.contains(event.value) == false) {
-          amount = amount + event.value;
+      else if (event.input == '.') {
+        if (inputuser.contains(event.input)) {
+          inputuser = inputuser;
         } else {
-          amount = amount;
+          inputuser = inputuser + event.input;
         }
 
-        claculateresult();
-        emit(UnitconversionState(inputuser, unit!, unit1!, result));
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+          newinput: InputStateUser(input: inputuser),
+          newresult: ResultStateResult(result: result ?? 0),
+        ));
       }
 
 //---------Add number-----------------------------------------------------------
 
       else {
-        if (amount == '0') {
-          amount = '';
-          amount = amount + event.value;
+        if (inputuser == '0') {
+          inputuser = '';
+          inputuser = inputuser + event.input;
         } else {
-          amount = amount + event.value;
+          inputuser = inputuser + event.input;
         }
 
-        claculateresult();
-        emit(UnitconversionState(inputuser, unit!, unit1!, result));
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+          newinput: InputStateUser(input: inputuser),
+          newresult: ResultStateResult(result: result ?? 0),
+        ));
       }
     });
-    on<Unit>((event, emit) {
-      unit = event.unit;
-      claculateresult();
-      emit(UnitconversionState(inputuser, unit!, unit1!, result));
-    });
-    on<Unit1>((event, emit) {
-      unit1 = event.unit1;
-      claculateresult();
-      emit(UnitconversionState(inputuser, unit!, unit1!, result));
-    });
-    on<Settitel>((event, emit) {
-      titel = event.titel;
-    });
-  }
-  claculateresult() {
-    if (titel == 'Temperature') {
-      if (amount != '') {
-        if (unit!.parameter == unit1!.parameter) {
-          result = (double.parse(amount)).toString();
-        } else if (unit!.parameter == 'Celsius' &&
-            unit1!.parameter == 'Fahrenheit') {
-          result = ((double.parse(amount) * 9 / 5) + 32).toString();
-        } else if (unit!.parameter == 'Celsius' &&
-            unit1!.parameter == 'Kelvin') {
-          result = ((double.parse(amount) + 273.15)).toString();
-        } else if (unit!.parameter == 'Fahrenheit' &&
-            unit1!.parameter == 'Celsius') {
-          result = ((double.parse(amount) - 32) * 5 / 9).toString();
-        } else if (unit!.parameter == 'Fahrenheit' &&
-            unit1!.parameter == 'Kelvin') {
-          result = ((double.parse(amount) + 459.67) * 5 / 9).toString();
-        } else if (unit!.parameter == 'Kelvin' &&
-            unit1!.parameter == 'Celsius') {
-          result = ((double.parse(amount) - 273.15)).toString();
-        } else if (unit!.parameter == 'Kelvin' &&
-            unit1!.parameter == 'Fahrenheit') {
-          result = ((double.parse(amount) * 9 / 5) - 459.67).toString();
-        }
+    on<FromUnit>((event, emit) {
+      from = event.from;
+      emit(state.copyWith(newfrom: FromStateUnit(unit: from!)));
+      if (from != null && to != null) {
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+            newresult: ResultStateResult(result: result ?? 0),
+            newfrom: FromStateUnit(unit: from!)));
       }
-    } else if (titel == 'Time') {
-      if (amount != '') {
-        result = ((double.parse(amount) * unit1!.amount) / unit!.amount)
-            .roundToDouble()
-            .toString();
+    });
+    on<ToUnit>((event, emit) {
+      to = event.to;
+      emit(state.copyWith(newto: ToStateUnit(unit: to!)));
+      if (from != null && to != null) {
+        result = unitConvert(inputuser, from, to);
+        emit(state.copyWith(
+            newresult: ResultStateResult(result: result ?? 0),
+            newfrom: FromStateUnit(unit: from!)));
       }
-    } else {
-      if (amount != '') {
-        result =
-            ((double.parse(amount) * unit1!.amount) / unit!.amount).toString();
-      }
-    }
-    result = separateByComma(double.parse(result).toInt()) +
-        result.substring(result.lastIndexOf('.'));
-    inputuser = amount;
-    if (inputuser.contains('.')) {
-      inputuser = separateByComma(double.parse(inputuser).toInt()) +
-          inputuser.substring(inputuser.lastIndexOf('.'));
-    } else {
-      inputuser = separateByComma(double.parse(inputuser).toInt());
-    }
-    return result;
+    });
   }
 
-  String separateByComma(int n) {
-    if (n < 1000) {
-      return n.toString();
+  double? unitConvert(String inputuser, dynamic from, dynamic to) {
+    if (from == null || to == null) {
+      return double.tryParse(inputuser) ?? 0;
+    } else {
+      final double input = double.tryParse(inputuser) ?? 0;
+      return input.convertFromTo(from!.unit, to!.unit);
     }
-    String s = separateByComma(n ~/ 1000);
-    String r = (n % 1000).toString();
-    if (r.length == 1) {
-      r = "00$r";
-    } else if (r.length == 2) {
-      r = "0$r";
-    }
-    return "$s,$r";
   }
 }

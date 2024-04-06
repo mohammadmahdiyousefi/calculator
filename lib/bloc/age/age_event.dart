@@ -1,6 +1,13 @@
-abstract class IAgeEvent {}
+abstract class AgeEvent {}
 
-class AgeEvent extends IAgeEvent {
-  DateTime birthdaydate;
-  AgeEvent(this.birthdaydate);
+class AgeEventCalculate extends AgeEvent {}
+
+class AgeEventSetTo extends AgeEvent {
+  final DateTime to;
+  AgeEventSetTo(this.to);
+}
+
+class AgeEventSetFrom extends AgeEvent {
+  final DateTime from;
+  AgeEventSetFrom(this.from);
 }

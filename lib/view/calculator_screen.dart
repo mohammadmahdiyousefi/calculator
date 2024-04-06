@@ -1,159 +1,407 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/calculator/calculator_bloc.dart';
+import 'package:calculator/bloc/calculator/calculator_event.dart';
+import 'package:calculator/bloc/calculator/input_calculator.dart';
+import 'package:calculator/bloc/calculator/result_calculator.dart';
+import 'package:calculator/model/bottom_model.dart';
+import 'package:calculator/widgets/bottom.dart';
+import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../bloc/calculator/calculator_state.dart';
 import '../constanc/app_colors.dart';
-import '../widgets/calculator_bottoms.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class CalculatorScreen extends StatefulWidget {
+  const CalculatorScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CalculatorScreen> createState() => _CalculatorScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-//------------------------------------------------------------------------------
+class _CalculatorScreenState extends State<CalculatorScreen> {
+  late Timer timer;
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      showInterstitial();
+      timer.cancel();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
-//--------------- get screen width ---------------------------------------------
-    var screenw = MediaQuery.of(context).size.width;
-//------------------------------------------------------------------------------
     return Scaffold(
-      body: SafeArea(
-          child: Column(
+      body: Column(
         children: [
-//---------------- show inputuser and result -----------------------------------
           Expanded(
             flex: 8,
-            child: SizedBox(
-              width: screenw,
-              child: BlocBuilder<CalculatorBloc, ICalculatorState>(
-                  builder: (context, state) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-//----------------------------- show inputuser text --------------------------//
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: state is CalculatorState
-                                ? AutoSizeText(
-                                    state.calculate,
-                                    textAlign: TextAlign.end,
-                                    minFontSize: 15,
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .longestSide /
-                                            25,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  )
-                                // SelectableText(
-                                //     state.calculate,
-                                //     textAlign: TextAlign.end,
-                                //     style: GoogleFonts.lato(
-                                //         fontSize: MediaQuery.of(context)
-                                //                 .size
-                                //                 .longestSide /
-                                //             25,
-                                //         fontStyle: FontStyle.normal,
-                                //         fontWeight: FontWeight.w400,
-                                //         color: Theme.of(context)
-                                //             .unselectedWidgetColor),
-                                //   )
-                                : Text('error',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge),
-                          ),
-                        ),
-//----------------------------------------------------------------------------//
-//----------------------- separate result of inputuser -------------------------
-                        Divider(
-                          height: 1,
-                          color: Theme.of(context).unselectedWidgetColor,
-                        ),
-//------------------------------------------------------------------------------
-//-------------------------- result text -------------------------------------//
-                        SingleChildScrollView(
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: state is CalculatorState
-                                ? AutoSizeText(
-                                    state.result,
-                                    minFontSize: 15,
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .longestSide /
-                                            20,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColor.costumembrightgrey),
-                                    textAlign: TextAlign.end,
-                                  )
-                                //  SelectableText(
-                                //     state.result,
-
-                                //     style: GoogleFonts.lato(
-                                //         fontSize: state.result.length > 15
-                                //             ? MediaQuery.of(context)
-                                //                     .size
-                                //                     .longestSide /
-                                //                 20
-                                //             : MediaQuery.of(context)
-                                //                     .size
-                                //                     .longestSide /
-                                //                 16,
-                                //         fontStyle: FontStyle.normal,
-                                //         fontWeight: FontWeight.w400,
-                                //         color: AppColor.costumembrightgrey),
-                                //     textAlign: TextAlign.end,
-                                //   )
-                                : Text(
-                                    'error',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium,
-                                    textAlign: TextAlign.end,
-                                  ),
-                          ),
-                        ),
-//----------------------------------------------------------------------------//
-                      ]),
-                );
-              }),
-            ),
+            child: BlocBuilder<CalculatorBloc, CalculatorState>(
+                builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                          flex: 2, child: _inputuser(context, state.input)),
+                      Expanded(
+                          flex: 1, child: _resultuser(context, state.result)),
+                    ]),
+              );
+            }),
           ),
-
-          ///------------------- show calculator buttons ------------------------------///
           Expanded(
             flex: 16,
             child: Container(
-              width: screenw,
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
               ),
-              child: const KeyPad(),
+              child: _keypad(context),
             ),
           ),
-
-          ///--------------------------------------------------------------------------///
         ],
-      )),
+      ),
+    );
+  }
+
+  Widget _resultuser(BuildContext context, ResultCalculatorState state) {
+    return state is ResultCalculatorStateResult
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: AutoSizeText(
+                  state.resultCalculator,
+                  minFontSize: 15,
+                  style: Theme.of(context).textTheme.displayMedium,
+                  textAlign: TextAlign.end,
+                  textDirection: TextDirection.ltr,
+                ),
+              ),
+            ],
+          )
+        : state is ResultCalculatorStateError
+            ? AutoSizeText(
+                state.error,
+                minFontSize: 20,
+                style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                      color: Colors.red,
+                    ),
+                textAlign: TextAlign.end,
+              )
+            : Text(
+                'error',
+                style: Theme.of(context).textTheme.displayMedium,
+                textAlign: TextAlign.end,
+              );
+  }
+
+  Widget _inputuser(BuildContext context, InputCalculatorState state) {
+    return state is InputCalculatorStateUser
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: AutoSizeText(state.input,
+                    textAlign: TextAlign.end,
+                    textDirection: TextDirection.ltr,
+                    minFontSize: 15,
+                    style: Theme.of(context).textTheme.displayLarge),
+              ),
+            ],
+          )
+        : Text('error', style: Theme.of(context).textTheme.displayLarge);
+  }
+
+  Widget _keypad(BuildContext context) {
+    return Column(children: [
+      // AC  CE  B  !
+      Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: 'AC',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: 'CE',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: 'x^',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '!',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      // (   )   %  ÷
+      Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '(',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: ')',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '%',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '÷',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      // 7   8   9  x
+      Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '7',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '8',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '9',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '×',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      // 4   5   6  -
+      Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '4',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '5',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '6',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '-',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      // 3   2   1  +
+      Expanded(
+        child: Row(
+          children: [
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '1',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '2',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '3',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '+',
+                  titelcolor: Theme.of(context).primaryColorLight,
+                  bottomcolor: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      // 00  0   .  =
+      Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '00',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '0',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '.',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).canvasColor,
+                ),
+              ),
+            ),
+            Expanded(
+              child: clickbutton(
+                ButtonModel(
+                  titel: '=',
+                  titelcolor: AppColor.bottomtitel,
+                  bottomcolor: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ]);
+  }
+
+  Widget clickbutton(ButtonModel model) {
+    return GestureDetector(
+      onTap: () {
+        BlocProvider.of<CalculatorBloc>(context).add(CalculatorEvent(
+          model.titel,
+        ));
+      },
+      child: Bottom(property: model),
     );
   }
 }

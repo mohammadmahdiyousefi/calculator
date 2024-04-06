@@ -1,12 +1,19 @@
-import 'package:adivery/adivery.dart';
+import 'dart:async';
+import 'package:adivery/adivery_ads.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/age/age_bloc.dart';
 import 'package:calculator/bloc/age/age_event.dart';
 import 'package:calculator/bloc/age/age_state.dart';
+import 'package:calculator/bloc/age/from_state.dart';
+import 'package:calculator/bloc/age/result_state.dart';
+import 'package:calculator/bloc/age/to_state.dart';
 import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
+import 'package:calculator/widgets/banner_ads.dart';
+import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AgeScreen extends StatefulWidget {
@@ -17,623 +24,505 @@ class AgeScreen extends StatefulWidget {
 }
 
 class _AgeScreenState extends State<AgeScreen> {
-//----------------- calender metod ---------------------------------------------
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: BlocProvider.of<AgeBloc>(context).birthday,
-      firstDate: DateTime(1930),
-      lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-            data: Theme.of(context).copyWith(
-              textTheme: TextTheme(
-                  headlineSmall: GoogleFonts.lato(), // Selected Date landscape
-                  titleLarge: GoogleFonts.lato(), // Selected Date portrait
-                  labelSmall: GoogleFonts.lato(), // Title - SELECT DATE
-                  titleMedium: GoogleFonts.lato(color: Colors.black), // input
-                  titleSmall: GoogleFonts.lato(), // month/year picker
-                  bodySmall: GoogleFonts.lato(), // days
-                  bodyLarge: GoogleFonts.lato()),
-              colorScheme: Theme.of(context).colorScheme.copyWith(
-                    // Title, selected date and day selection background (dark and light mode)
-                    surface: AppColor.brightorange,
-                    primary: AppColor.brightorange,
-                    // Title, selected date and month/year picker color (dark and light mode)
-                    onSurface: Colors.black,
-                    onPrimary: Colors.black,
-                  ),
-            ),
-            child: child!);
-      },
-    ).then(
-        (value) => {BlocProvider.of<AgeBloc>(context).add(AgeEvent(value!))});
-  }
-
-//------------------------------------------------------------------------------
+  late Timer timer;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _showInterstitial();
-  }
-  //---------------- ads ---------------------------------------------------------
-
-  void _showInterstitial() {
-    AdiveryPlugin.isLoaded('b27de982-c95c-4adf-b865-0b3720e32517').then(
-        (isLoaded) =>
-            showPlacement(isLoaded!, 'b27de982-c95c-4adf-b865-0b3720e32517'));
+    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      showInterstitial();
+      timer.cancel();
+    });
   }
 
-  void showPlacement(bool isLoaded, String placementId) {
-    if (isLoaded) {
-      AdiveryPlugin.show(placementId);
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
-//------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: appbarwidget(context: context, titel: 'Age'),
-        body: Column(
-          children: [
-            ///--------------------- today date -----------------------------------------///
-            Padding(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 29, top: 10, bottom: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      'Today',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const Spacer(),
-                    BlocBuilder<AgeBloc, IAgeState>(builder: (context, state) {
-                      return Column(
-                        children: [
-                          Text(
-                            state is AgeState
-                                ? '${state.curentdate.month},${state.curentdate.day},${state.curentdate.year} '
-                                : 'date',
-                            style: Theme.of(context).textTheme.labelSmall,
-                          ),
-                        ],
-                      );
-                    }),
-                  ],
-                )),
-
-            ///--------------------------------------------------------------------------///
-            ///--------------------- date of birth --------------------------------------///
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 5, top: 5, bottom: 100),
-              child: Row(
+    return BlocBuilder<AgeBloc, AgeState>(builder: (context, state) {
+      return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: appbarwidget(context: context, titel: 'Age'),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  Text(
-                    'Date of birth',
-                    style: Theme.of(context).textTheme.bodySmall,
+                  const Gap(32),
+                  _fromField(
+                    context: context,
+                    state: state.from,
                   ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      _showDatePicker();
-                    },
-                    child: SizedBox(
-                      child: BlocBuilder<AgeBloc, IAgeState>(
-                          builder: (context, state) {
-                        return Row(
-                          children: [
-                            Text(
-                              state is AgeState
-                                  ? '${state.birthdate.month},${state.birthdate.day},${state.birthdate.year} '
-                                  : 'date',
-                              style: GoogleFonts.lato(
-                                  fontSize: 21,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.orange),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Theme.of(context).unselectedWidgetColor,
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
+                  const Gap(16),
+                  _toField(
+                    context: context,
+                    state: state.to,
                   ),
+                  const Gap(24),
+                  ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<AgeBloc>(context)
+                            .add(AgeEventCalculate());
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.brightorange,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          minimumSize: const Size(double.infinity, 50)),
+                      child: Text(
+                        "calculate",
+                        style: Theme.of(context).textTheme.labelMedium,
+                      )),
+                  const Gap(24),
+                  _resultField(context: context, state: state.result),
+                  //----------------------------------------------------------------------------//
                 ],
               ),
             ),
+          ));
+    });
+  }
 
-            ///--------------------------------------------------------------------------///
-//------------------------ show detales view ---------------------------------//
-            BlocBuilder<AgeBloc, IAgeState>(builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
+  Widget _resultField(
+      {required BuildContext context, required ResultState state}) {
+    if (state is ResultStateCompleted) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            height: 130,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).cardColor),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Gap(32),
+                Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Text('Your Age',
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge!
+                            .copyWith(fontSize: 18)),
+                  ],
+                ),
+                const Gap(32),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        state.age.years.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(fontSize: 40),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('${state.age.months}',
+                              style: Theme.of(context).textTheme.bodySmall),
+                          const Gap(8),
+                          Text('Month | ',
+                              style: Theme.of(context).textTheme.bodySmall),
+                          Text('${state.age.days}',
+                              style: Theme.of(context).textTheme.bodySmall),
+                          const Gap(8),
+                          Text('Day',
+                              style: Theme.of(context).textTheme.bodySmall),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Gap(16),
+          Container(
+            height: 210,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).cardColor),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AutoSizeText('Next birthday ',
+                          minFontSize: 5,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayLarge!
+                              .copyWith(
+                                  fontSize: 18, color: AppColor.brightorange)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(state.nextbirthday.months.toString(),
+                              style: Theme.of(context).textTheme.bodySmall),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text('Month | ',
+                              style: Theme.of(context).textTheme.bodySmall),
+                          Text(state.nextbirthday.days.toString(),
+                              style: Theme.of(context).textTheme.bodySmall),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text('Day',
+                              style: Theme.of(context).textTheme.bodySmall),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  AutoSizeText(
+                    'Summary',
+                    minFontSize: 5,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge!
+                        .copyWith(fontSize: 18, color: AppColor.brightorange),
+                  ),
+                  const Gap(16),
+                  Expanded(
+                    child: Row(
                       children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height / 5,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  MediaQuery.of(context).size.shortestSide *
-                                      0.03),
-                              color: Theme.of(context).cardColor),
+                        Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05,
-                                  ),
-                                  Text(
-                                    'Age',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            12,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                ],
+                              AutoSizeText(
+                                'Year',
+                                minFontSize: 5,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.05,
-                                  ),
-                                  Text(
-                                    state is AgeState
-                                        ? '${state.age.years}'
-                                        : '',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            8,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.orange),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.02,
-                                  ),
-                                  Text(
-                                    'years',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            29,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    state is AgeState
-                                        ? '${state.age.months}'
-                                        : '',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'Month | ',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                  Text(
-                                    state is AgeState
-                                        ? '${state.age.days}'
-                                        : '',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'Day',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 2,
-                              ),
+                              AutoSizeText(state.diffrence.years.toString(),
+                                  minFontSize: 5,
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
                         ),
-                        Container(
-                          height: MediaQuery.of(context).size.height / 5,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  MediaQuery.of(context).size.shortestSide *
-                                      0.03),
-                              color: Theme.of(context).cardColor),
+                        Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               AutoSizeText(
-                                'Next birthday ',
+                                'month',
                                 minFontSize: 5,
-                                style: GoogleFonts.lato(
-                                    fontSize: MediaQuery.of(context)
-                                            .size
-                                            .shortestSide /
-                                        22,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.orange),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
-                              Icon(
-                                Icons.cake_outlined,
-                                color: Colors.orange,
-                                size: MediaQuery.of(context).size.longestSide *
-                                    0.06,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    state is AgeState
-                                        ? '${state.nextbirthday.months}'
-                                        : '',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'Month | ',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                  Text(
-                                    state is AgeState
-                                        ? '${state.nextbirthday.days}'
-                                        : '',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'Day',
-                                    style: GoogleFonts.lato(
-                                        fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide /
-                                            33,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        color: Theme.of(context)
-                                            .unselectedWidgetColor),
-                                  ),
-                                ],
-                              ),
+                              AutoSizeText(
+                                  (state.diffrence.years * 12 +
+                                          state.diffrence.months)
+                                      .toString(),
+                                  minFontSize: 5,
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
-                        )
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              AutoSizeText(
+                                'day',
+                                minFontSize: 5,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              AutoSizeText(state.summary.inDays.toString(),
+                                  minFontSize: 5,
+                                  style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height / 5,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              MediaQuery.of(context).size.shortestSide * 0.03),
-                          color: Theme.of(context).cardColor),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.005,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
                             children: [
                               AutoSizeText(
-                                'Summary',
+                                'hour',
                                 minFontSize: 5,
-                                style: GoogleFonts.lato(
-                                    fontSize: MediaQuery.of(context)
-                                            .size
-                                            .shortestSide /
-                                        18,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.orange),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'years',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      Text(
-                                        state is AgeState ? state.year : '',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.01,
-                                      ),
-                                      Text(
-                                        'Days',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      Text(
-                                        state is AgeState ? state.day : '',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Month',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      Text(
-                                        state is AgeState ? state.months : '',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.01,
-                                      ),
-                                      Text(
-                                        'Hours',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      Text(
-                                        state is AgeState ? state.hour : '',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.01,
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Week',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      Text(
-                                        state is AgeState ? state.week : '',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.01,
-                                      ),
-                                      Text(
-                                        'Minutes',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                      Text(
-                                        state is AgeState ? state.minuts : '',
-                                        style: GoogleFonts.lato(
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide /
-                                                33,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .unselectedWidgetColor),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
+                              AutoSizeText(state.summary.inHours.toString(),
+                                  minFontSize: 5,
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              AutoSizeText(
+                                'minuts',
+                                minFontSize: 5,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              AutoSizeText((state.summary.inMinutes).toString(),
+                                  minFontSize: 5,
+                                  style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              AutoSizeText(
+                                'seconds',
+                                minFontSize: 5,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              AutoSizeText(state.summary.inSeconds.toString(),
+                                  minFontSize: 5,
+                                  style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            }),
-//----------------------------------------------------------------------------//
-          ],
-        ));
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Gap(16),
+          creatabannerad(BannerAdSize.LARGE_BANNER) ?? const SizedBox(),
+          const Gap(16)
+        ],
+      );
+    } else if (state is ResultStateLoading) {
+      return CircularProgressIndicator(
+        color: Theme.of(context).primaryColor,
+      );
+    } else if (state is ResultStateError) {
+      return Text(state.error.toString());
+    } else {
+      return const Text("Error");
+    }
   }
-  //---------------- ads -------------------------------------------------------
 
-//------------------------------------------------------------------------------
+  Widget _toField({
+    required BuildContext context,
+    required ToState state,
+  }) {
+    if (state is ToStateSeted) {
+      return GestureDetector(
+        onTap: () async {
+          await showDatePicker(
+            context: context,
+            initialDate: state.to,
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2200),
+            builder: (context, child) {
+              return Theme(data: datetimepikertheme(), child: child!);
+            },
+          ).then((value) {
+            if (value != null) {
+              BlocProvider.of<AgeBloc>(context).add(AgeEventSetTo(value));
+            }
+          });
+        },
+        child: Row(
+          children: [
+            Text(
+              'end date',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+            Expanded(
+              child: Text(
+                '${state.to.month},${state.to.day},${state.to.year} ',
+                textAlign: TextAlign.end,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(fontSize: 18),
+              ),
+            ),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Theme.of(context).unselectedWidgetColor,
+            ),
+          ],
+        ),
+      );
+    } else if (state is ToStateLoading) {
+      return CircularProgressIndicator(
+        color: Theme.of(context).primaryColor,
+      );
+    } else if (state is ToStateError) {
+      return GestureDetector(
+          onTap: () async {
+            await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2200),
+              builder: (context, child) {
+                return Theme(data: datetimepikertheme(), child: child!);
+              },
+            ).then((value) {
+              if (value != null) {
+                BlocProvider.of<AgeBloc>(context).add(AgeEventSetTo(value));
+              }
+            });
+          },
+          child: Text(
+            state.error.toString(),
+            style: Theme.of(context).textTheme.labelMedium,
+          ));
+    } else {
+      return GestureDetector(
+          onTap: () async {
+            await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2200),
+              builder: (context, child) {
+                return Theme(data: datetimepikertheme(), child: child!);
+              },
+            ).then((value) {
+              if (value != null) {
+                BlocProvider.of<AgeBloc>(context).add(AgeEventSetTo(value));
+              }
+            });
+          },
+          child: Text(
+            'Error',
+            style: Theme.of(context).textTheme.labelMedium,
+          ));
+    }
+  }
+
+  Widget _fromField({
+    required BuildContext context,
+    required FromState state,
+  }) {
+    if (state is FromStateSeted) {
+      return GestureDetector(
+        onTap: () async {
+          await showDatePicker(
+            context: context,
+            initialDate: state.from,
+            firstDate: DateTime(1900),
+            lastDate: DateTime(2200),
+            builder: (context, child) {
+              return Theme(data: datetimepikertheme(), child: child!);
+            },
+          ).then((value) {
+            if (value != null) {
+              BlocProvider.of<AgeBloc>(context).add(AgeEventSetFrom(value));
+            }
+          });
+        },
+        child: Row(
+          children: [
+            Text(
+              'start date',
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+            Expanded(
+              child: Text(
+                '${state.from.month},${state.from.day},${state.from.year} ',
+                textAlign: TextAlign.end,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(fontSize: 18),
+              ),
+            ),
+            Icon(
+              Icons.arrow_drop_down,
+              color: Theme.of(context).unselectedWidgetColor,
+            ),
+          ],
+        ),
+      );
+    } else if (state is FromStateLoading) {
+      return CircularProgressIndicator(
+        color: Theme.of(context).primaryColor,
+      );
+    } else if (state is FromStateError) {
+      return GestureDetector(
+          onTap: () async {
+            await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2200),
+              builder: (context, child) {
+                return Theme(data: datetimepikertheme(), child: child!);
+              },
+            ).then((value) {
+              if (value != null) {
+                BlocProvider.of<AgeBloc>(context).add(AgeEventSetFrom(value));
+              }
+            });
+          },
+          child: Text(
+            state.error.toString(),
+            style: Theme.of(context).textTheme.labelMedium,
+          ));
+    } else {
+      return GestureDetector(
+          onTap: () async {
+            await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2200),
+              builder: (context, child) {
+                return Theme(data: datetimepikertheme(), child: child!);
+              },
+            ).then((value) {
+              if (value != null) {
+                BlocProvider.of<AgeBloc>(context).add(AgeEventSetFrom(value));
+              }
+            });
+          },
+          child: Text(
+            'Error',
+            style: Theme.of(context).textTheme.labelMedium,
+          ));
+    }
+  }
+
+  ThemeData datetimepikertheme() {
+    return Theme.of(context).copyWith(
+      textTheme: TextTheme(
+          headlineSmall: GoogleFonts.roboto(),
+          titleLarge: GoogleFonts.roboto(),
+          labelSmall: GoogleFonts.roboto(),
+          titleMedium: GoogleFonts.roboto(), // input
+          titleSmall: GoogleFonts.roboto(),
+          bodyMedium: GoogleFonts.roboto(),
+          displayLarge: GoogleFonts.roboto(),
+          displayMedium: GoogleFonts.roboto(),
+          displaySmall: GoogleFonts.roboto(),
+          bodySmall: GoogleFonts.roboto(),
+          bodyLarge: GoogleFonts.roboto()),
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+            surface: Theme.of(context).cardColor,
+            primary: AppColor.customorange,
+            surfaceTint: Colors.transparent,
+            onSurface: Theme.of(context).unselectedWidgetColor,
+            onSurfaceVariant: AppColor.customorange,
+          ),
+    );
+  }
 }

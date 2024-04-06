@@ -1,12 +1,13 @@
-import 'package:calculator/constanc/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 
-// ignore: must_be_immutable
 class Property extends StatefulWidget {
-  Property({super.key, this.boximage = '', this.titel = '', this.newpage});
-  String boximage;
-  String titel;
-  Widget? newpage;
+  const Property(
+      {super.key, this.boximage = '', this.titel = '', this.newpage});
+  final String boximage;
+  final String titel;
+  final Widget? newpage;
 
   @override
   State<Property> createState() => _PropertyState();
@@ -15,56 +16,45 @@ class Property extends StatefulWidget {
 class _PropertyState extends State<Property> {
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height / 8;
-    var width = (MediaQuery.of(context).size.width / 3);
-    return Padding(
-      padding: const EdgeInsets.only(top: 5, bottom: 5),
-      child: SizedBox(
+    var height = MediaQuery.of(context).size.height / 7.5;
+    var width = (MediaQuery.of(context).size.width / 3.5);
+    return GestureDetector(
+      onTap: () {
+        if (widget.newpage == null) {
+          openDialog();
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return widget.newpage!;
+            },
+          ));
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
         height: height,
         width: width,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              elevation: 0),
-          onPressed: () {
-            if (widget.newpage == null) {
-              openDialog();
-            } else {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return widget.newpage!;
-                },
-              ));
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-            height: height,
-            width: width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: height / 2.5,
-                  width: width,
-                  child: Image.asset(
-                    'assets/images/${widget.boximage}.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  widget.titel,
-                  style: TextStyle(
-                      color: Color(0xFFFFA500),
-                      fontSize: MediaQuery.of(context).size.width / 30,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: SvgPicture.asset(
+                'assets/svg/${widget.boximage}.svg',
+                height: height * 0.4,
+
+                // ignore: deprecated_member_use
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
-          ),
+            Text(widget.titel,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelSmall),
+            const Gap(9)
+          ],
         ),
       ),
     );

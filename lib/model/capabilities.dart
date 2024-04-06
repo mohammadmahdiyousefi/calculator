@@ -1,6 +1,7 @@
 class Capabilities {
-  String parameter;
-  String unit;
-  double amount;
-  Capabilities(this.parameter, this.unit, this.amount);
+  final String parameter;
+  final String convertunit;
+  final dynamic unit;
+
+  Capabilities(this.parameter, this.convertunit, this.unit);
 }

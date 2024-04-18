@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/gpa/gpa_bloc.dart';
 import 'package:calculator/bloc/gpa/gpa_event.dart';
 import 'package:calculator/bloc/gpa/gpa_state.dart';
@@ -25,6 +26,7 @@ class _GpaScreenState extends State<GpaScreen> {
   @override
   void initState() {
     super.initState();
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
     timer = Timer.periodic(const Duration(seconds: 6), (timer) {
       showInterstitial();
       timer.cancel();

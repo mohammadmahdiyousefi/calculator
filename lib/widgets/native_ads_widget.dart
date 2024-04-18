@@ -32,18 +32,20 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
     nativeAds.add(_loadNativeAd());
     nativeAds.add(_loadNativeAd());
     _pageController = PageController(viewportFraction: 0.83);
-    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
-      if ((_pageController.page!.toInt()) < nativeAds.length - 1) {
-        _currentPage = _pageController.page!.toInt() + 1;
-      } else {
-        _currentPage = 0;
-      }
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      if (nativeAds.any((element) => element.isLoaded == true)) {
+        if ((_pageController.page!.toInt()) < nativeAds.length - 1) {
+          _currentPage = _pageController.page!.toInt() + 1;
+        } else {
+          _currentPage = 0;
+        }
 
-      _pageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeIn,
-      );
+        _pageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeIn,
+        );
+      }
     });
   }
 

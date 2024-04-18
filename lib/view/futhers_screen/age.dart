@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/age/age_bloc.dart';
@@ -28,6 +29,7 @@ class _AgeScreenState extends State<AgeScreen> {
   @override
   void initState() {
     super.initState();
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
     timer = Timer.periodic(const Duration(seconds: 6), (timer) {
       showInterstitial();
       timer.cancel();

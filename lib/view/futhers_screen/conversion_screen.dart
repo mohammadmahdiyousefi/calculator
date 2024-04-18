@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:adivery/adivery.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/unitconversion/from_state.dart';
 import 'package:calculator/bloc/unitconversion/input_state.dart';
@@ -30,6 +31,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
   @override
   void initState() {
     super.initState();
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
     timer = Timer.periodic(const Duration(seconds: 6), (timer) {
       showInterstitial();
       timer.cancel();

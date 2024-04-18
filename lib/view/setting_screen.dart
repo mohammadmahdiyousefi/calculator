@@ -72,7 +72,7 @@ class SettingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16)),
               onTap: () async {
                 await Share.share(
-                    'https://cafebazaar.ir/app/com.example.calculator_pro_aseman');
+                    'https://myket.ir/app/com.example.calculator_pro_aseman');
               },
             ),
           ),

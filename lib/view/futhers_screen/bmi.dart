@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_event.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
@@ -29,6 +30,7 @@ class _BmiScreenState extends State<BmiScreen> {
   @override
   void initState() {
     super.initState();
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
     timer = Timer.periodic(const Duration(seconds: 6), (timer) {
       showInterstitial();
       timer.cancel();

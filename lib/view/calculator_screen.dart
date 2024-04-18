@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adivery/adivery.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/calculator/calculator_bloc.dart';
 import 'package:calculator/bloc/calculator/calculator_event.dart';
@@ -25,6 +26,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   void initState() {
     super.initState();
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
     timer = Timer.periodic(const Duration(seconds: 6), (timer) {
       showInterstitial();
       timer.cancel();

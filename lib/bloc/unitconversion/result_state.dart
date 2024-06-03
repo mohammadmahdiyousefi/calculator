@@ -8,7 +8,7 @@ abstract class ResultState extends Equatable {
 final class ResultStateInital extends ResultState {}
 
 final class ResultStateResult extends ResultState {
-  final double result;
+  final String result;
   ResultStateResult({required this.result});
   @override
   List<Object?> get props => [result];

@@ -28,9 +28,6 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
     nativeAds.add(_loadNativeAd());
     nativeAds.add(_loadNativeAd());
     nativeAds.add(_loadNativeAd());
-    nativeAds.add(_loadNativeAd());
-    nativeAds.add(_loadNativeAd());
-    nativeAds.add(_loadNativeAd());
     _pageController = PageController(viewportFraction: 0.83);
     _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (nativeAds.any((element) => element.isLoaded == true)) {

@@ -40,7 +40,7 @@ class SettingScreen extends StatelessWidget {
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:
                       return Text(
-                        'v${snapshot.data?.version ?? 0}',
+                        'v${snapshot.data?.version ?? "0.0.0"}',
                       );
                     default:
                       return const SizedBox();
@@ -72,7 +72,7 @@ class SettingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16)),
               onTap: () async {
                 await Share.share(
-                    'https://myket.ir/app/com.example.calculator_pro_aseman');
+                    'https://cafebazaar.ir/app/com.example.calculator_pro_aseman');
               },
             ),
           ),

@@ -19,7 +19,7 @@ import '../../bloc/unitconversion/unitconversion_bloc.dart';
 import '../../bloc/unitconversion/unitconversion_state.dart';
 
 class ConversionScreen extends StatefulWidget {
-  const ConversionScreen(this.items, this.titel, {Key? key}) : super(key: key);
+  const ConversionScreen(this.items, this.titel, {super.key});
   final List<Capabilities> items;
   final String titel;
   @override
@@ -32,16 +32,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
   void initState() {
     super.initState();
     AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
-    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
-      showInterstitial();
-      timer.cancel();
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
+    showInterstitial();
   }
 
   @override

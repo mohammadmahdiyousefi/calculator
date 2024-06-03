@@ -34,8 +34,9 @@ class UnitconversionBloc
       if (from != null && to != null) {
         result = unitConvert(inputuser, from, to);
         emit(state.copyWith(
-          newresult: ResultStateResult(result: result ?? 0),
-          newinput: InputStateUser(input: inputuser),
+          newresult: ResultStateResult(result: finalresult(result)),
+          newinput:
+              InputStateUser(input: finalresult(double.tryParse(inputuser))),
         ));
       }
     });
@@ -44,8 +45,9 @@ class UnitconversionBloc
         inputuser = '0';
         result = unitConvert(inputuser, from, to);
         emit(state.copyWith(
-          newinput: InputStateUser(input: inputuser),
-          newresult: ResultStateResult(result: result ?? 0),
+          newinput:
+              InputStateUser(input: finalresult(double.tryParse(inputuser))),
+          newresult: ResultStateResult(result: finalresult(result)),
         ));
       }
 
@@ -58,8 +60,9 @@ class UnitconversionBloc
         }
         result = unitConvert(inputuser, from, to);
         emit(state.copyWith(
-          newinput: InputStateUser(input: inputuser),
-          newresult: ResultStateResult(result: result ?? 0),
+          newinput:
+              InputStateUser(input: finalresult(double.tryParse(inputuser))),
+          newresult: ResultStateResult(result: finalresult(result)),
         ));
       }
 
@@ -72,8 +75,9 @@ class UnitconversionBloc
           to = change;
           result = unitConvert(inputuser, from, to);
           emit(state.copyWith(
-              newinput: InputStateUser(input: inputuser),
-              newresult: ResultStateResult(result: result ?? 0),
+              newinput: InputStateUser(
+                  input: finalresult(double.tryParse(inputuser))),
+              newresult: ResultStateResult(result: finalresult(result)),
               newfrom: FromStateUnit(unit: from!),
               newto: ToStateUnit(unit: to!)));
         }
@@ -90,8 +94,9 @@ class UnitconversionBloc
 
         result = unitConvert(inputuser, from, to);
         emit(state.copyWith(
-          newinput: InputStateUser(input: inputuser),
-          newresult: ResultStateResult(result: result ?? 0),
+          newinput:
+              InputStateUser(input: finalresult(double.tryParse(inputuser))),
+          newresult: ResultStateResult(result: finalresult(result)),
         ));
       }
 
@@ -107,8 +112,9 @@ class UnitconversionBloc
 
         result = unitConvert(inputuser, from, to);
         emit(state.copyWith(
-          newinput: InputStateUser(input: inputuser),
-          newresult: ResultStateResult(result: result ?? 0),
+          newinput:
+              InputStateUser(input: finalresult(double.tryParse(inputuser))),
+          newresult: ResultStateResult(result: finalresult(result)),
         ));
       }
     });
@@ -118,7 +124,7 @@ class UnitconversionBloc
       if (from != null && to != null) {
         result = unitConvert(inputuser, from, to);
         emit(state.copyWith(
-            newresult: ResultStateResult(result: result ?? 0),
+            newresult: ResultStateResult(result: finalresult(result)),
             newfrom: FromStateUnit(unit: from!)));
       }
     });
@@ -127,8 +133,9 @@ class UnitconversionBloc
       emit(state.copyWith(newto: ToStateUnit(unit: to!)));
       if (from != null && to != null) {
         result = unitConvert(inputuser, from, to);
+
         emit(state.copyWith(
-            newresult: ResultStateResult(result: result ?? 0),
+            newresult: ResultStateResult(result: finalresult(result)),
             newfrom: FromStateUnit(unit: from!)));
       }
     });
@@ -141,5 +148,27 @@ class UnitconversionBloc
       final double input = double.tryParse(inputuser) ?? 0;
       return input.convertFromTo(from!.unit, to!.unit);
     }
+  }
+
+  String finalresult(double? input) {
+    if (input == null) {
+      return "0";
+    } else {
+      return "${separateByComma(int.parse(input.toString().split(".")[0]))}.${input.toString().split(".")[1]}";
+    }
+  }
+
+  String separateByComma(int input) {
+    if (input < 1000) {
+      return input.toString();
+    }
+    String s = separateByComma(input ~/ 1000);
+    String r = (input % 1000).toString();
+    if (r.length == 1) {
+      r = "00$r";
+    } else if (r.length == 2) {
+      r = "0$r";
+    }
+    return "$s,$r";
   }
 }

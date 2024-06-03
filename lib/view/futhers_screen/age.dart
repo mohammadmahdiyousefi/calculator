@@ -25,21 +25,11 @@ class AgeScreen extends StatefulWidget {
 }
 
 class _AgeScreenState extends State<AgeScreen> {
-  late Timer timer;
   @override
   void initState() {
     super.initState();
     AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
-    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
-      showInterstitial();
-      timer.cancel();
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
+    showInterstitial();
   }
 
   @override

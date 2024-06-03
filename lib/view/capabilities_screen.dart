@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/unitconversion/unitconversion_bloc.dart';
 
 class SecoundScreen extends StatelessWidget {
-  const SecoundScreen({Key? key}) : super(key: key);
+  const SecoundScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +169,7 @@ class SecoundScreen extends StatelessWidget {
         ),
       ),
       Property(
-        boximage: "arm-dumbbell-svgrepo-com",
+        boximage: "arm-svgrepo-com",
         titel: 'Force',
         newpage: BlocProvider(
           create: (context) {

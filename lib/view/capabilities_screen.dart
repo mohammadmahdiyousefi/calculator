@@ -3,7 +3,6 @@ import 'package:calculator/bloc/age/age_bloc.dart';
 import 'package:calculator/bloc/gpa/gpa_bloc.dart';
 import 'package:calculator/bloc/gpa/gpa_state.dart';
 import 'package:calculator/bloc/unitconversion/unitconversion_event.dart';
-import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/service/local/unit_local_date.dart';
 import 'package:calculator/view/futhers_screen/age.dart';
 import 'package:calculator/view/futhers_screen/gpa_calculator.dart';
@@ -352,39 +351,4 @@ class SecoundScreen extends StatelessWidget {
   }
 
 //------------------------------------------------------------------------------------
-  Widget bottom(BuildContext context,
-      {IconData boxicon = Icons.category, String titel = '', Widget? newpage}) {
-    return Padding(
-      padding: const EdgeInsets.all(5),
-      child: SizedBox(
-        height: 130,
-        width: (MediaQuery.of(context).size.width / 3) - 10,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              elevation: 0),
-          onPressed: () {
-            nextpage(context, newpage!);
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                boxicon,
-                color: AppColor.iconcolor,
-                size: 40,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Text(
-                titel,
-                style: TextStyle(color: AppColor.iconcolor),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

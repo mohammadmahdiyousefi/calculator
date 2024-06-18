@@ -6,10 +6,9 @@ import 'package:calculator/bloc/unitconversion/input_state.dart';
 import 'package:calculator/bloc/unitconversion/result_state.dart';
 import 'package:calculator/bloc/unitconversion/to_state.dart';
 import 'package:calculator/bloc/unitconversion/unitconversion_event.dart';
-import 'package:calculator/model/bottom_model.dart';
 import 'package:calculator/model/capabilities.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
-import 'package:calculator/widgets/bottom.dart';
+import 'package:calculator/widgets/button.dart';
 import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +26,6 @@ class ConversionScreen extends StatefulWidget {
 }
 
 class _ConversionScreenState extends State<ConversionScreen> {
-  late Timer timer;
   @override
   void initState() {
     super.initState();
@@ -40,121 +38,93 @@ class _ConversionScreenState extends State<ConversionScreen> {
     return BlocBuilder<UnitconversionBloc, UnitconversionState>(
       builder: (context, state) {
         return Scaffold(
-          //------------ App Bar ---------------------------------------------------------
-
           appBar: appbarwidget(
             context: context,
             titel: widget.titel,
           ),
-
-          //----------Area Screen body ---------------------------------------------------
-          body: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: SizedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Gap(16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _frombottomsheet(
-                                      context,
-                                      widget.items,
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 16),
+          body: Padding(
+            padding:
+                const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 8),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  _frombottomsheet(
+                                    context,
+                                    widget.items,
+                                  );
+                                },
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.only(right: 16, left: 8),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 16, right: 8),
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8))),
+                                  child: _fromBottomUnit(state.from),
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Theme.of(context).primaryColor,
+                              size: 30,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  _tobottomsheet(context, widget.items);
+                                },
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 16, right: 8),
                                     padding: const EdgeInsets.only(
                                         top: 8, bottom: 8, left: 16, right: 8),
                                     decoration: BoxDecoration(
                                         color: Theme.of(context).cardColor,
                                         borderRadius: const BorderRadius.all(
-                                            Radius.circular(9))),
-                                    child:
-                                        _fromBottomSheet(context, state.from),
-                                  ),
-                                ),
+                                            Radius.circular(8))),
+                                    child: _toBottomUnit(state.to)),
                               ),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Theme.of(context).primaryColor,
-                                size: 30,
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _tobottomsheet(context, widget.items);
-                                  },
-                                  child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 16),
-                                      padding: const EdgeInsets.only(
-                                          top: 8,
-                                          bottom: 8,
-                                          left: 16,
-                                          right: 8),
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context).cardColor,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(9))),
-                                      child: _toBottomSheet(context, state.to)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Gap(25),
-                          const Divider(
-                            indent: 16,
-                            endIndent: 16,
-                          ),
-                          _fromUnit(context, state.from),
-                          Expanded(child: _inputuser(context, state.input)),
-                          const Divider(
-                            indent: 16,
-                            endIndent: 16,
-                          ),
-                          _toUnit(context, state.to),
-                          Expanded(child: _result(context, state.result)),
-                          const Divider(
-                            indent: 16,
-                            endIndent: 16,
-                          ),
-                          const Gap(25),
-                        ]),
-                  ),
+                            ),
+                          ],
+                        ),
+                        const Gap(25),
+                        _fromUnit(state.from),
+                        const Gap(8),
+                        Expanded(child: _inputuser(state.input)),
+                        _toUnit(state.to),
+                        const Gap(8),
+                        Expanded(child: _result(state.result)),
+                        const Gap(16),
+                      ]),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: const Buttons(),
-                ),
-              )
-            ],
+                Expanded(
+                  flex: 1,
+                  child: _keypad(),
+                )
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _fromBottomSheet(BuildContext context, FromState statefrom) {
+  Widget _fromBottomUnit(FromState statefrom) {
     return Row(
       children: [
         Expanded(
@@ -166,7 +136,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
             overflow: TextOverflow.ellipsis,
             textDirection: TextDirection.ltr,
             minFontSize: 5,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: Theme.of(context).listTileTheme.titleTextStyle,
           ),
         ),
         const Icon(Icons.keyboard_arrow_down)
@@ -174,7 +144,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
     );
   }
 
-  Widget _fromUnit(BuildContext context, FromState statefrom) {
+  Widget _fromUnit(FromState statefrom) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -189,7 +159,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
     );
   }
 
-  Widget _toUnit(BuildContext context, ToState stateto) {
+  Widget _toUnit(ToState stateto) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -204,7 +174,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
     );
   }
 
-  Widget _toBottomSheet(BuildContext context, ToState stateto) {
+  Widget _toBottomUnit(ToState stateto) {
     return Row(
       children: [
         Expanded(
@@ -213,7 +183,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             minFontSize: 5,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: Theme.of(context).listTileTheme.titleTextStyle,
           ),
         ),
         const Icon(Icons.keyboard_arrow_down)
@@ -221,7 +191,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
     );
   }
 
-  Widget _inputuser(BuildContext context, InputState stateinput) {
+  Widget _inputuser(InputState stateinput) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -229,22 +199,25 @@ class _ConversionScreenState extends State<ConversionScreen> {
       child: AutoSizeText(
         stateinput is InputStateUser ? stateinput.input : "",
         minFontSize: 5,
-        style: Theme.of(context).textTheme.bodyLarge,
+        style: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: Theme.of(context).primaryColor),
         textAlign: TextAlign.end,
       ),
     );
   }
 
-  Widget _result(BuildContext context, ResultState stateResult) {
+  Widget _result(ResultState stateResult) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
       ),
       child: AutoSizeText(
-        stateResult is ResultStateResult ? "${stateResult.result}" : "",
+        stateResult is ResultStateResult ? stateResult.result : "",
         minFontSize: 5,
         textDirection: TextDirection.ltr,
-        style: Theme.of(context).textTheme.bodyMedium,
+        style: Theme.of(context).textTheme.displayMedium,
         textAlign: TextAlign.end,
       ),
     );
@@ -264,6 +237,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
           topRight: Radius.circular(26),
         ),
       ),
+      elevation: 0,
       context: ctx,
       builder: (context) {
         return Column(
@@ -291,15 +265,12 @@ class _ConversionScreenState extends State<ConversionScreen> {
                       },
                       title: Text(
                         item[index].parameter,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).listTileTheme.titleTextStyle,
                       ),
-                      trailing: Text(
-                        item[index].convertunit,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelSmall!
-                            .copyWith(color: Colors.grey),
-                      ),
+                      trailing: Text(item[index].convertunit,
+                          style: Theme.of(context)
+                              .listTileTheme
+                              .leadingAndTrailingTextStyle),
                     );
                   }),
             ),
@@ -323,6 +294,7 @@ class _ConversionScreenState extends State<ConversionScreen> {
           topRight: Radius.circular(26),
         ),
       ),
+      elevation: 0,
       context: ctx,
       builder: (context) {
         return Column(
@@ -351,13 +323,12 @@ class _ConversionScreenState extends State<ConversionScreen> {
                       },
                       title: Text(
                         item[index].parameter,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).listTileTheme.titleTextStyle,
                       ),
                       trailing: Text(item[index].convertunit,
                           style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(color: Colors.grey)),
+                              .listTileTheme
+                              .leadingAndTrailingTextStyle),
                     );
                   }),
             ),
@@ -366,223 +337,93 @@ class _ConversionScreenState extends State<ConversionScreen> {
       },
     );
   }
-}
 
-//---------------- button widget -----------------------------------------------
-class Buttons extends StatelessWidget {
-  const Buttons({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 7,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '7',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '8',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '9',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+  Widget _keypad() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 7,
+          child: Column(children: [
+            Expanded(child: buildNumberRow('7', '8', '9')),
+            Expanded(child: buildNumberRow('4', '5', '6')),
+            Expanded(child: buildNumberRow('1', '2', '3')),
+            Expanded(child: buildNumberRow('00', '0', '.')),
+          ]),
+        ),
+        Expanded(
+          flex: 2,
+          child: Column(
+            children: [
+              Expanded(
+                  child: buildFunctionButton('AC',
+                      backgroundColor: Theme.of(context).cardColor,
+                      titel: Theme.of(context).primaryColor)),
+              Expanded(
+                  child: buildFunctionButton('CE',
+                      backgroundColor: Theme.of(context).cardColor,
+                      titel: Theme.of(context).primaryColor)),
+              Expanded(
+                child: Button(
+                  icon: const Icon(Icons.sync_alt_sharp,
+                      color: Colors.white, size: 34),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onTap: () => BlocProvider.of<UnitconversionBloc>(context)
+                      .add(UnitconversionChange()),
                 ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '4',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '5',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '6',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '1',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '2',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '3',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '00',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '0',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '.',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: [
-                Expanded(
-                  child: clikbutton(
-                    context,
-                    ButtonModel(
-                      titel: 'AC',
-                      titelcolor: Theme.of(context).primaryColorLight,
-                      bottomcolor: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: clikbutton(
-                    context,
-                    ButtonModel(
-                      titel: 'CE',
-                      titelcolor: Theme.of(context).primaryColorLight,
-                      bottomcolor: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: clikbutton(
-                    context,
-                    ButtonModel(
-                      titel: '⇌',
-                      titelcolor: Colors.white,
-                      bottomcolor: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  //---------------- Clicking buttons -----------------------------------------
-  Widget clikbutton(BuildContext context, ButtonModel model) {
-    return GestureDetector(
-      onTap: () {
-        BlocProvider.of<UnitconversionBloc>(context).add(Unitconversion(
-          model.titel,
-        ));
-      },
-      child: Bottom(property: model),
+  Widget buildFunctionButton(String label,
+      {Color backgroundColor = Colors.black, Color titel = Colors.black}) {
+    return Button(
+      icon: AutoSizeText(
+        label,
+        minFontSize: 10,
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium!
+            .copyWith(color: titel, fontSize: 24),
+      ),
+      backgroundColor: backgroundColor,
+      onTap: () => BlocProvider.of<UnitconversionBloc>(context)
+          .add(label == 'AC' ? UnitconversionAC() : UnitconversionCE()),
+      onLongPress: () => label == 'CE'
+          ? BlocProvider.of<UnitconversionBloc>(context)
+              .add(UnitconversionCETimer())
+          : null,
+      onLongPressEnd: (p0) => label == 'CE'
+          ? BlocProvider.of<UnitconversionBloc>(context)
+              .add(UnitconversionCETimerCancel())
+          : null,
     );
   }
-//------------------------------------------------------------------------------
+
+  Widget buildNumberRow(
+      String rowNumber1, String rowNumber2, String rowNumber3) {
+    return Row(
+      children: [
+        Expanded(child: buildNumberButton(rowNumber1)),
+        Expanded(child: buildNumberButton(rowNumber2)),
+        Expanded(child: buildNumberButton(rowNumber3)),
+      ],
+    );
+  }
+
+  Widget buildNumberButton(String number) {
+    return Button(
+      icon: AutoSizeText(
+        number,
+        minFontSize: 8,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      onTap: () => BlocProvider.of<UnitconversionBloc>(context)
+          .add(Unitconversion(number)),
+    );
+  }
 }

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -8,14 +7,12 @@ import 'package:calculator/bloc/age/age_state.dart';
 import 'package:calculator/bloc/age/from_state.dart';
 import 'package:calculator/bloc/age/result_state.dart';
 import 'package:calculator/bloc/age/to_state.dart';
-import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
 import 'package:calculator/widgets/banner_ads.dart';
 import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AgeScreen extends StatefulWidget {
   const AgeScreen({super.key});
@@ -60,7 +57,7 @@ class _AgeScreenState extends State<AgeScreen> {
                             .add(AgeEventCalculate());
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.brightorange,
+                          backgroundColor: Theme.of(context).primaryColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
                           minimumSize: const Size(double.infinity, 50)),
@@ -157,7 +154,8 @@ class _AgeScreenState extends State<AgeScreen> {
                               .textTheme
                               .displayLarge!
                               .copyWith(
-                                  fontSize: 18, color: AppColor.brightorange)),
+                                  fontSize: 18,
+                                  color: Theme.of(context).primaryColor)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -183,10 +181,8 @@ class _AgeScreenState extends State<AgeScreen> {
                   AutoSizeText(
                     'Summary',
                     minFontSize: 5,
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge!
-                        .copyWith(fontSize: 18, color: AppColor.brightorange),
+                    style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                        fontSize: 18, color: Theme.of(context).primaryColor),
                   ),
                   const Gap(16),
                   Expanded(
@@ -496,24 +492,24 @@ class _AgeScreenState extends State<AgeScreen> {
 
   ThemeData datetimepikertheme() {
     return Theme.of(context).copyWith(
-      textTheme: TextTheme(
-          headlineSmall: GoogleFonts.roboto(),
-          titleLarge: GoogleFonts.roboto(),
-          labelSmall: GoogleFonts.roboto(),
-          titleMedium: GoogleFonts.roboto(), // input
-          titleSmall: GoogleFonts.roboto(),
-          bodyMedium: GoogleFonts.roboto(),
-          displayLarge: GoogleFonts.roboto(),
-          displayMedium: GoogleFonts.roboto(),
-          displaySmall: GoogleFonts.roboto(),
-          bodySmall: GoogleFonts.roboto(),
-          bodyLarge: GoogleFonts.roboto()),
+      textTheme: const TextTheme(
+          headlineSmall: TextStyle(fontFamily: 'ROBM'),
+          titleLarge: TextStyle(fontFamily: 'ROBM'),
+          labelSmall: TextStyle(fontFamily: 'ROBM'),
+          titleMedium: TextStyle(fontFamily: 'ROBM'), // input
+          titleSmall: TextStyle(fontFamily: 'ROBM'),
+          bodyMedium: TextStyle(fontFamily: 'ROBM'),
+          displayLarge: TextStyle(fontFamily: 'ROBM'),
+          displayMedium: TextStyle(fontFamily: 'ROBM'),
+          displaySmall: TextStyle(fontFamily: 'ROBM'),
+          bodySmall: TextStyle(fontFamily: 'ROBM'),
+          bodyLarge: TextStyle(fontFamily: 'ROBM')),
       colorScheme: Theme.of(context).colorScheme.copyWith(
             surface: Theme.of(context).cardColor,
-            primary: AppColor.customorange,
+            primary: Theme.of(context).primaryColor,
             surfaceTint: Colors.transparent,
             onSurface: Theme.of(context).unselectedWidgetColor,
-            onSurfaceVariant: AppColor.customorange,
+            onSurfaceVariant: Theme.of(context).primaryColor,
           ),
     );
   }

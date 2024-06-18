@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'package:adivery/adivery.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/bmi/bmi_bloc.dart';
 import 'package:calculator/bloc/bmi/bmi_event.dart';
 import 'package:calculator/bloc/bmi/bmi_state.dart';
 import 'package:calculator/constanc/snackbar_message.dart';
-import 'package:calculator/model/bottom_model.dart';
 import 'package:calculator/widgets/appbar_widget.dart';
-import 'package:calculator/widgets/bottom.dart';
+import 'package:calculator/widgets/button.dart';
 import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class BmiScreen extends StatefulWidget {
-  const BmiScreen({Key? key}) : super(key: key);
+  const BmiScreen({super.key});
 
   @override
   State<BmiScreen> createState() => _BmiScreenState();
@@ -37,446 +37,292 @@ class _BmiScreenState extends State<BmiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarwidget(context: context, titel: 'BMI'),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: const BoxDecoration(),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: Text("your Height",
-                                style: Theme.of(context).textTheme.labelLarge),
-                          ),
-                          Expanded(
-                              flex: 4,
-                              child: SizedBox(
-                                height: 50,
-                                child: TextField(
-                                  cursorColor: Theme.of(context).primaryColor,
-                                  focusNode: heightnode,
-                                  controller: seth,
-                                  keyboardType: TextInputType.none,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(fontSize: 18),
-                                  decoration: InputDecoration(
-                                      hintText: "Height",
-                                      hintStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall!
-                                          .copyWith(color: Colors.grey),
-                                      filled: true,
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 16, right: 16),
-                                      fillColor: Theme.of(context).cardColor,
-                                      suffixIconConstraints:
-                                          const BoxConstraints(minWidth: 32),
-                                      suffixIcon: Text(
-                                        "cm",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .copyWith(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          borderSide: BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColor)),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      )),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: Text("your Weight",
-                                style: Theme.of(context).textTheme.labelLarge),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: TextField(
-                              cursorColor: Theme.of(context).primaryColor,
-                              focusNode: weightnode,
-                              controller: setw,
-                              keyboardType: TextInputType.none,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextField(
+                        cursorColor: Theme.of(context).primaryColor,
+                        focusNode: heightnode,
+                        controller: seth,
+                        keyboardType: TextInputType.none,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(fontSize: 16),
+                        decoration: InputDecoration(
+                            hintText: "Height",
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.grey),
+                            filled: true,
+                            contentPadding:
+                                const EdgeInsets.only(left: 16, right: 16),
+                            fillColor: Theme.of(context).cardColor,
+                            suffixIconConstraints:
+                                const BoxConstraints(minWidth: 32),
+                            suffixIcon: Text(
+                              "cm",
                               style: Theme.of(context)
                                   .textTheme
-                                  .labelLarge!
-                                  .copyWith(fontSize: 18),
-                              decoration: InputDecoration(
-                                  hintText: "Weight",
-                                  hintStyle: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall!
-                                      .copyWith(color: Colors.grey),
-                                  filled: true,
-                                  contentPadding: const EdgeInsets.only(
-                                    left: 16,
-                                    right: 16,
-                                  ),
-                                  fillColor: Theme.of(context).cardColor,
-                                  suffixIconConstraints:
-                                      const BoxConstraints(minWidth: 32),
-                                  suffixIcon: Text(
-                                    "kg",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall!
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                      borderSide: BorderSide(
-                                          color:
-                                              Theme.of(context).primaryColor)),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(100),
-                                  )),
+                                  .bodySmall!
+                                  .copyWith(color: Colors.grey),
                             ),
-                          ),
-                        ],
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor)),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(12),
+                            )),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: Text("your Age",
-                                style: Theme.of(context).textTheme.labelLarge),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: TextField(
-                              cursorColor: Theme.of(context).primaryColor,
-                              focusNode: agenode,
-                              controller: seta,
-                              keyboardType: TextInputType.none,
+                      TextField(
+                        cursorColor: Theme.of(context).primaryColor,
+                        focusNode: weightnode,
+                        controller: setw,
+                        keyboardType: TextInputType.none,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(fontSize: 16),
+                        decoration: InputDecoration(
+                            hintText: "Weight",
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.grey),
+                            filled: true,
+                            contentPadding: const EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                            ),
+                            fillColor: Theme.of(context).cardColor,
+                            suffixIconConstraints:
+                                const BoxConstraints(minWidth: 32),
+                            suffixIcon: Text(
+                              "kg",
                               style: Theme.of(context)
                                   .textTheme
-                                  .labelLarge!
-                                  .copyWith(fontSize: 18),
-                              decoration: InputDecoration(
-                                  hintText: "Age",
-                                  hintStyle: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall!
-                                      .copyWith(color: Colors.grey),
-                                  filled: true,
-                                  contentPadding: const EdgeInsets.only(
-                                    left: 16,
-                                    right: 16,
-                                  ),
-                                  fillColor: Theme.of(context).cardColor,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                      borderSide: BorderSide(
-                                          color:
-                                              Theme.of(context).primaryColor)),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(100),
-                                  )),
+                                  .bodySmall!
+                                  .copyWith(color: Colors.grey),
                             ),
-                          ),
-                        ],
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor)),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(12),
+                            )),
                       ),
-                    ),
-                  ]),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
+                      TextField(
+                        cursorColor: Theme.of(context).primaryColor,
+                        focusNode: agenode,
+                        controller: seta,
+                        keyboardType: TextInputType.none,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(fontSize: 16),
+                        decoration: InputDecoration(
+                            hintText: "Age",
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.grey),
+                            filled: true,
+                            contentPadding: const EdgeInsets.only(
+                              left: 16,
+                              right: 16,
+                            ),
+                            fillColor: Theme.of(context).cardColor,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor)),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(12),
+                            )),
+                      ),
+                    ]),
               ),
-              child: buttons(context),
             ),
-          )
-        ],
+            Expanded(
+              flex: 1,
+              child: _keypad(context),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget buttons(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 7,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '7',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '8',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '9',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '4',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '5',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '6',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '1',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '2',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '3',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '00',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '0',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: clikbutton(
-                          context,
-                          ButtonModel(
-                            titel: '.',
-                            titelcolor: Colors.white,
-                            bottomcolor: Theme.of(context).canvasColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+  Widget _keypad(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 7,
+          child: Column(
+            children: [
+              Expanded(child: buildNumberRow('7', '8', '9')),
+              Expanded(child: buildNumberRow('4', '5', '6')),
+              Expanded(child: buildNumberRow('1', '2', '3')),
+              Expanded(child: buildNumberRow('00', '0', '.')),
+            ],
           ),
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: [
-                Expanded(
-                  child: clikbutton(
-                    context,
-                    ButtonModel(
-                      titel: 'AC',
-                      titelcolor: Theme.of(context).primaryColorLight,
-                      bottomcolor: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: clikbutton(
-                    context,
-                    ButtonModel(
-                      titel: 'CE',
-                      titelcolor: Theme.of(context).primaryColorLight,
-                      bottomcolor: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: clikbutton(
-                    context,
-                    ButtonModel(
-                      titel: 'GO',
-                      titelcolor: Colors.white,
-                      bottomcolor: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Column(
+            children: [
+              Expanded(
+                  child: buildFunctionButton('AC',
+                      backgroundColor: Theme.of(context).cardColor,
+                      titel: Theme.of(context).primaryColor)),
+              Expanded(
+                  child: buildFunctionButton('CE',
+                      backgroundColor: Theme.of(context).cardColor,
+                      titel: Theme.of(context).primaryColor)),
+              Expanded(
+                  child: buildFunctionButton('GO',
+                      titel: Colors.white,
+                      backgroundColor: Theme.of(context).primaryColor)),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  Widget clikbutton(BuildContext context, ButtonModel model) {
-    return GestureDetector(
-      onTap: () {
-        if (model.titel == "AC") {
-          if (heightnode.hasFocus) {
-            seth.text = '';
-          } else if (weightnode.hasFocus) {
-            setw.text = '';
-          } else if (agenode.hasFocus) {
-            seta.text = '';
-          }
-          setState(() {});
-        } else if (model.titel == "CE") {
-          if (heightnode.hasFocus && seth.text.isNotEmpty) {
-            seth.text = seth.text.substring(0, seth.text.length - 1);
-          } else if (weightnode.hasFocus && setw.text.isNotEmpty) {
-            setw.text = setw.text.substring(0, setw.text.length - 1);
-          } else if (agenode.hasFocus && seta.text.isNotEmpty) {
-            seta.text = seta.text.substring(0, seta.text.length - 1);
-          }
-          setState(() {});
-        } else if (model.titel == "GO") {
-          if (seth.text.isEmpty || setw.text.isEmpty || seta.text.isEmpty) {
-            SnackbarMessage.customsnackbar(
-                context, "Please complete all fields", Colors.red);
-          } else {
-            final double? height = double.tryParse(seth.text);
-            final double? weight = double.tryParse(setw.text);
-            final int? age = int.tryParse(seta.text);
-            if (height == null) {
-              SnackbarMessage.customsnackbar(
-                  context, "Please enter a valid height", Colors.red);
-            } else if (weight == null) {
-              SnackbarMessage.customsnackbar(
-                  context, "Please enter a valid weight", Colors.red);
-            } else if (age == null) {
-              SnackbarMessage.customsnackbar(
-                  context, "Please enter a valid age", Colors.red);
-            } else {
-              showCustomDialog(context, int.parse(seta.text),
-                  double.parse(seth.text), double.parse(setw.text));
-            }
-          }
-        } else {
-          if (heightnode.hasFocus) {
-            seth.text = seth.text + model.titel;
-          } else if (weightnode.hasFocus) {
-            setw.text = setw.text + model.titel;
-          } else if (agenode.hasFocus) {
-            seta.text = seta.text + model.titel;
-          }
-          setState(() {});
-        }
-      },
-      child: Bottom(property: model),
+  Widget buildNumberRow(
+      String rowNumber1, String rowNumber2, String rowNumber3) {
+    return Row(
+      children: [
+        Expanded(child: buildNumberButton(rowNumber1)),
+        Expanded(child: buildNumberButton(rowNumber2)),
+        Expanded(child: buildNumberButton(rowNumber3)),
+      ],
     );
+  }
+
+  Widget buildNumberButton(String number) {
+    return Button(
+      icon: AutoSizeText(
+        number,
+        minFontSize: 8,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      backgroundColor: Theme.of(context).cardColor,
+      onTap: onTap(context, number),
+    );
+  }
+
+  Widget buildFunctionButton(String label,
+      {Color backgroundColor = Colors.black, Color titel = Colors.black}) {
+    return Button(
+      icon: AutoSizeText(
+        label,
+        minFontSize: 10,
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium!
+            .copyWith(color: titel, fontSize: 24),
+      ),
+      backgroundColor: backgroundColor,
+      onTap: onTap(context, label),
+    );
+  }
+
+  void Function()? onTap(BuildContext context, String titel) {
+    return () {
+      switch (titel) {
+        case 'AC':
+          _clearTextFields();
+          break;
+        case 'CE':
+          _deleteFocusedTextField();
+          break;
+        case 'GO':
+          _validateAndProcessInput();
+          break;
+        default:
+          _appendTextToFocusedField(titel);
+          break;
+      }
+
+      setState(() {});
+    };
+  }
+
+  void _clearTextFields() {
+    seth.text = "";
+    setw.text = "";
+    seta.text = "";
+  }
+
+  void _deleteFocusedTextField() {
+    if (heightnode.hasFocus && seth.text.isNotEmpty) {
+      seth.text = seth.text.substring(0, seth.text.length - 1);
+    } else if (weightnode.hasFocus && setw.text.isNotEmpty) {
+      setw.text = setw.text.substring(0, setw.text.length - 1);
+    } else if (agenode.hasFocus && seta.text.isNotEmpty) {
+      seta.text = seta.text.substring(0, seta.text.length - 1);
+    }
+  }
+
+  void _validateAndProcessInput() {
+    if (seth.text.isEmpty && setw.text.isEmpty && seta.text.isEmpty) {
+      SnackbarMessage.customsnackbar(
+          context, "Please complete all fields", Colors.red);
+      return;
+    }
+
+    final double? height = double.tryParse(seth.text);
+    if (height == null) {
+      SnackbarMessage.customsnackbar(
+          context, "Please enter a valid height", Colors.red);
+      return;
+    }
+
+    final double? weight = double.tryParse(setw.text);
+    if (weight == null) {
+      SnackbarMessage.customsnackbar(
+          context, "Please enter a valid weight", Colors.red);
+      return;
+    }
+
+    final int? age = int.tryParse(seta.text);
+    if (age == null) {
+      SnackbarMessage.customsnackbar(
+          context, "Please enter a valid age", Colors.red);
+      return;
+    }
+
+    showCustomDialog(context, age, height, weight);
+  }
+
+  void _appendTextToFocusedField(String text) {
+    if (heightnode.hasFocus) {
+      seth.text += text;
+    } else if (weightnode.hasFocus) {
+      setw.text += text;
+    } else if (agenode.hasFocus) {
+      seta.text += text;
+    }
   }
 
   Future<void> showCustomDialog(
@@ -526,7 +372,12 @@ class _BmiScreenState extends State<BmiScreen> {
                               children: [
                                 Text(
                                   "BMI",
-                                  style: Theme.of(context).textTheme.labelLarge,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                          color:
+                                              Theme.of(context).primaryColor),
                                 ),
                                 Text(
                                   state.bodystatus,
@@ -566,14 +417,14 @@ class _BmiScreenState extends State<BmiScreen> {
                         const Gap(24),
                         Text(
                           "BMI categorise : ",
-                          style: Theme.of(context).textTheme.labelSmall,
+                          style: Theme.of(context).textTheme.labelMedium,
                         ),
                         const Gap(8),
                         Text(
                           "Underweight = 18.5 <",
                           style: Theme.of(context)
                               .textTheme
-                              .labelSmall!
+                              .bodySmall!
                               .copyWith(color: const Color(0xFF2196F3)),
                         ),
                         const Gap(8),
@@ -581,7 +432,7 @@ class _BmiScreenState extends State<BmiScreen> {
                           "Healthy Weight = 18.5-24.9",
                           style: Theme.of(context)
                               .textTheme
-                              .labelSmall!
+                              .bodySmall!
                               .copyWith(color: const Color(0xFF4CAF50)),
                         ),
                         const Gap(8),
@@ -589,7 +440,7 @@ class _BmiScreenState extends State<BmiScreen> {
                           "OverWeight = 25-29.9",
                           style: Theme.of(context)
                               .textTheme
-                              .labelSmall!
+                              .bodySmall!
                               .copyWith(color: const Color(0xFFFF7552)),
                         ),
                         const Gap(8),
@@ -597,7 +448,7 @@ class _BmiScreenState extends State<BmiScreen> {
                           "Obesity = <30",
                           style: Theme.of(context)
                               .textTheme
-                              .labelSmall!
+                              .bodySmall!
                               .copyWith(color: const Color(0xFFF44336)),
                         ),
                       ],
@@ -614,7 +465,7 @@ class _BmiScreenState extends State<BmiScreen> {
                 } else if (state is BmiErrorState) {
                   return Text(
                     state.error,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.bodySmall,
                   );
                 } else {
                   return CircularProgressIndicator(

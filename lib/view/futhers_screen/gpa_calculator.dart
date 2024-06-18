@@ -1,16 +1,12 @@
 import 'dart:async';
-
 import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/gpa/gpa_bloc.dart';
 import 'package:calculator/bloc/gpa/gpa_event.dart';
 import 'package:calculator/bloc/gpa/gpa_state.dart';
-import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/model/gpa_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../widgets/appbar_widget.dart';
 import '../../widgets/prepare_interstitial_ad.dart';
 
@@ -57,13 +53,13 @@ class _GpaScreenState extends State<GpaScreen> {
                           flex: 2,
                           child: Text(
                             state is GpaStateComplet
-                                ? state.grade.toString()
+                                ? state.grade.toStringAsFixed(2)
                                 : "0",
                             style: Theme.of(context)
                                 .textTheme
                                 .displayLarge!
                                 .copyWith(
-                                    color: AppColor.customorange,
+                                    color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 40),
                           ),
@@ -125,125 +121,198 @@ class _GpaScreenState extends State<GpaScreen> {
                     ? ListView.builder(
                         itemCount: state.gpas.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            height: 115,
-                            padding: const EdgeInsets.all(8),
-                            margin: const EdgeInsets.symmetric(
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Theme.of(context).cardColor,
-                                width: 3,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                            child: SizedBox(
+                              height: 170,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              state.gpas[index].coursename,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelMedium!
+                                                  .copyWith(fontSize: 20),
+                                            ),
+                                          ),
+                                          const Divider(),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Grade",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelMedium,
+                                                      ),
+                                                      const Gap(6),
+                                                      Text(
+                                                        state.gpas[index].grade
+                                                            .toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelMedium!
+                                                            .copyWith(
+                                                              fontSize: 24,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                            ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Creadits",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelMedium,
+                                                      ),
+                                                      const Gap(6),
+                                                      Text(
+                                                        state
+                                                            .gpas[index].credits
+                                                            .toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .displayMedium!
+                                                            .copyWith(
+                                                                fontSize: 24),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
                                     children: [
                                       Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          state.gpas[index].coursename,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium!
-                                              .copyWith(fontSize: 20),
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            await openEditdiolog(context,
+                                                state.gpas[index], index);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Theme.of(context).cardColor,
+                                              elevation: 0,
+                                              shadowColor: Theme.of(context)
+                                                  .primaryColor,
+                                              surfaceTintColor:
+                                                  Theme.of(context)
+                                                      .primaryColor,
+                                              foregroundColor: Theme.of(context)
+                                                  .primaryColor,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12))),
+                                          child: const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.blue,
+                                                size: 20,
+                                              ),
+                                              Gap(6),
+                                              Text(
+                                                "Edit",
+                                                style: TextStyle(
+                                                  color: Colors.blue,
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
+                                      const Gap(16),
                                       Expanded(
-                                        flex: 2,
-                                        child: Row(
+                                          child: ElevatedButton(
+                                        onPressed: () async {
+                                          BlocProvider.of<GpaBloc>(context).add(
+                                              DeletGpaEvent(state.gpas[index]));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Theme.of(context).cardColor,
+                                            elevation: 0,
+                                            shadowColor:
+                                                Theme.of(context).primaryColor,
+                                            surfaceTintColor:
+                                                Theme.of(context).primaryColor,
+                                            foregroundColor:
+                                                Theme.of(context).primaryColor,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12))),
+                                        child: const Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    "Creadits",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelMedium,
-                                                  ),
-                                                  Text(
-                                                    state.gpas[index].credits
-                                                        .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelLarge!
-                                                        .copyWith(fontSize: 24),
-                                                  )
-                                                ],
-                                              ),
+                                            Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                              size: 20,
                                             ),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    "Grade",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelMedium,
-                                                  ),
-                                                  Text(
-                                                    state.gpas[index].grade
-                                                        .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelLarge!
-                                                        .copyWith(fontSize: 24),
-                                                  )
-                                                ],
+                                            Gap(6),
+                                            Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                color: Colors.red,
                                               ),
                                             )
                                           ],
                                         ),
-                                      )
+                                      ))
                                     ],
                                   ),
-                                ),
-                                Expanded(
-                                    flex: 2,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                            onPressed: () async {
-                                              await openEditdiolog(context,
-                                                  state.gpas[index], index);
-                                            },
-                                            icon: const Icon(
-                                              Icons.edit,
-                                              color: Colors.green,
-                                            )),
-                                        IconButton(
-                                            onPressed: () {
-                                              BlocProvider.of<GpaBloc>(context)
-                                                  .add(DeletGpaEvent(
-                                                      state.gpas[index]));
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ))
-                                      ],
-                                    ))
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -273,24 +342,21 @@ class _GpaScreenState extends State<GpaScreen> {
           buttonPadding: const EdgeInsets.all(0),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Theme.of(context).cardColor,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: course,
                 cursorColor: Theme.of(context).primaryColor,
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelMedium,
                 decoration: InputDecoration(
                     labelText: "Course",
-                    labelStyle: GoogleFonts.lato(
-                        fontSize: 13,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.orange),
+                    labelStyle: Theme.of(context).textTheme.labelMedium,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.orange),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -298,28 +364,26 @@ class _GpaScreenState extends State<GpaScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.orange),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     )),
               ),
-              const Gap(8),
+              const Gap(16),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: credits,
                       cursorColor: Theme.of(context).primaryColor,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           labelText: "Credits",
-                          labelStyle: GoogleFonts.lato(
-                              fontSize: 13,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.orange),
+                          labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -327,7 +391,8 @@ class _GpaScreenState extends State<GpaScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           )),
                     ),
                   ),
@@ -336,18 +401,15 @@ class _GpaScreenState extends State<GpaScreen> {
                     child: TextField(
                       controller: grade,
                       cursorColor: Theme.of(context).primaryColor,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           labelText: "Grade",
-                          labelStyle: GoogleFonts.lato(
-                              fontSize: 13,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.orange),
+                          labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -355,7 +417,8 @@ class _GpaScreenState extends State<GpaScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           )),
                     ),
                   ),
@@ -364,6 +427,15 @@ class _GpaScreenState extends State<GpaScreen> {
             ],
           ),
           actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Cancel",
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
             TextButton(
               onPressed: () {
                 BlocProvider.of<GpaBloc>(ctx).add(
@@ -381,9 +453,9 @@ class _GpaScreenState extends State<GpaScreen> {
               },
               child: Text(
                 "Edit",
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-            )
+            ),
           ],
         );
       },
@@ -407,24 +479,21 @@ class _GpaScreenState extends State<GpaScreen> {
           buttonPadding: const EdgeInsets.all(0),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Theme.of(context).cardColor,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: course,
                 cursorColor: Theme.of(context).primaryColor,
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelMedium,
                 decoration: InputDecoration(
                     labelText: "Course",
-                    labelStyle: GoogleFonts.lato(
-                        fontSize: 13,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.orange),
+                    labelStyle: Theme.of(context).textTheme.labelMedium,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.orange),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -432,28 +501,26 @@ class _GpaScreenState extends State<GpaScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.orange),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
                     )),
               ),
-              const Gap(8),
+              const Gap(16),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: credits,
                       cursorColor: Theme.of(context).primaryColor,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           labelText: "Credits",
-                          labelStyle: GoogleFonts.lato(
-                              fontSize: 13,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.orange),
+                          labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -461,7 +528,8 @@ class _GpaScreenState extends State<GpaScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           )),
                     ),
                   ),
@@ -470,18 +538,15 @@ class _GpaScreenState extends State<GpaScreen> {
                     child: TextField(
                       controller: grade,
                       cursorColor: Theme.of(context).primaryColor,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           labelText: "Grade",
-                          labelStyle: GoogleFonts.lato(
-                              fontSize: 13,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.orange),
+                          labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -489,7 +554,8 @@ class _GpaScreenState extends State<GpaScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: const BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor),
                           )),
                     ),
                   ),
@@ -504,7 +570,7 @@ class _GpaScreenState extends State<GpaScreen> {
               },
               child: Text(
                 "Cancel",
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
             TextButton(
@@ -522,7 +588,7 @@ class _GpaScreenState extends State<GpaScreen> {
               },
               child: Text(
                 "Add",
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             )
           ],

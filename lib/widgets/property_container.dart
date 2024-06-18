@@ -52,7 +52,7 @@ class _PropertyState extends State<Property> {
             ),
             Text(widget.titel,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelSmall),
+                style: Theme.of(context).textTheme.bodySmall),
             const Gap(9)
           ],
         ),

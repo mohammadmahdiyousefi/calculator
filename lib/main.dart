@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:adivery/adivery.dart';
 import 'package:calculator/bloc/calculator/calculator_event.dart';
 
 import 'package:calculator/bloc/theme/theme_bloc.dart';
 import 'package:calculator/bloc/theme/theme_event.dart';
 import 'package:calculator/bloc/theme/theme_state.dart';
-import 'package:calculator/constanc/app_colors.dart';
 import 'package:calculator/theme/theme.dart';
 import 'package:calculator/view/calculator_screen.dart';
 import 'package:calculator/view/capabilities_screen.dart';
 import 'package:calculator/view/setting_screen.dart';
+import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +29,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,21 +63,29 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
-//------------------ tabcontrol use for TabBarView state -----------------------
   TabController? tabcontrol;
-//------------------------------------------------------------------------------
+  late Timer timer;
   @override
   void initState() {
     super.initState();
     tabcontrol = TabController(length: 2, vsync: this);
+    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
+    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
+      showInterstitial();
+      timer.cancel();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//---------------------- Scaffold backgroundColor ------------------------------
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-//--------------------- main appbar TabBarwidget view --------------------------
       appBar: AppBar(
         elevation: 0,
         title: TabBarwidget(tabcontrol),
@@ -166,18 +176,20 @@ class TabBarwidget extends StatelessWidget {
       ),
       splashBorderRadius: BorderRadius.circular(1000),
       indicatorColor: Colors.transparent,
-      labelColor: AppColor.iconcolor,
+      labelColor: Theme.of(context).primaryColor,
       dividerColor: Colors.transparent,
       unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
       tabs: const [
         Tab(
           icon: Icon(
             Icons.calculate_outlined,
+            size: 26,
           ),
         ),
         Tab(
           icon: Icon(
             Icons.category_outlined,
+            size: 26,
           ),
         ),
       ],

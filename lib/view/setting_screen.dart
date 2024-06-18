@@ -116,7 +116,7 @@ class SettingScreen extends StatelessWidget {
                 Text(
                   "Made with    ",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const Icon(
                   Icons.favorite,
@@ -126,7 +126,7 @@ class SettingScreen extends StatelessWidget {
                 Text(
                   "by Mohammad Mahdi    ",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),

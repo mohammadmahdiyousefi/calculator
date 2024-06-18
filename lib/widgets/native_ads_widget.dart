@@ -4,7 +4,6 @@ import 'package:adivery/adivery.dart';
 import 'package:adivery/adivery_ads.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class NativeAdWidget extends StatefulWidget {
   const NativeAdWidget({super.key});
@@ -115,7 +114,8 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
                                   nativeAds[index].callToAction!,
                                   overflow: TextOverflow.ellipsis,
                                   textDirection: TextDirection.rtl,
-                                  style: GoogleFonts.roboto(
+                                  style: TextStyle(
+                                      fontFamily: 'ROBR',
                                       fontSize: 10,
                                       fontWeight: FontWeight.w600,
                                       color: Theme.of(context).primaryColor),

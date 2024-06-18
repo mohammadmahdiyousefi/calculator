@@ -1,51 +1,23 @@
-import 'dart:async';
-
-import 'package:adivery/adivery.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calculator/bloc/calculator/calculator_bloc.dart';
 import 'package:calculator/bloc/calculator/calculator_event.dart';
 import 'package:calculator/bloc/calculator/input_calculator.dart';
 import 'package:calculator/bloc/calculator/result_calculator.dart';
-import 'package:calculator/model/bottom_model.dart';
-import 'package:calculator/widgets/bottom.dart';
-import 'package:calculator/widgets/prepare_interstitial_ad.dart';
+import 'package:calculator/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import '../bloc/calculator/calculator_state.dart';
-import '../constanc/app_colors.dart';
 
-class CalculatorScreen extends StatefulWidget {
-  const CalculatorScreen({Key? key}) : super(key: key);
-
-  @override
-  State<CalculatorScreen> createState() => _CalculatorScreenState();
-}
-
-class _CalculatorScreenState extends State<CalculatorScreen> {
-  late Timer timer;
-  @override
-  void initState() {
-    super.initState();
-    AdiveryPlugin.prepareInterstitialAd('b27de982-c95c-4adf-b865-0b3720e32517');
-    timer = Timer.periodic(const Duration(seconds: 6), (timer) {
-      showInterstitial();
-      timer.cancel();
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
-  }
-
+class CalculatorScreen extends StatelessWidget {
+  const CalculatorScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           Expanded(
-            flex: 8,
+            flex: 9,
             child: BlocBuilder<CalculatorBloc, CalculatorState>(
                 builder: (context, state) {
               return Padding(
@@ -55,24 +27,18 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(
-                          flex: 2, child: _inputuser(context, state.input)),
+                          flex: 6, child: _inputuser(context, state.input)),
+                      const Gap(8),
                       Expanded(
-                          flex: 1, child: _resultuser(context, state.result)),
+                          flex: 2, child: _resultuser(context, state.result)),
                     ]),
               );
             }),
           ),
           Expanded(
-            flex: 16,
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
+            flex: 18,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: _keypad(context),
             ),
           ),
@@ -90,7 +56,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               Expanded(
                 child: AutoSizeText(
                   state.resultCalculator,
-                  minFontSize: 15,
+                  minFontSize: 10,
                   style: Theme.of(context).textTheme.displayMedium,
                   textAlign: TextAlign.end,
                   textDirection: TextDirection.ltr,
@@ -101,7 +67,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         : state is ResultCalculatorStateError
             ? AutoSizeText(
                 state.error,
-                minFontSize: 20,
+                minFontSize: 10,
                 style: Theme.of(context).textTheme.displayMedium!.copyWith(
                       color: Colors.red,
                     ),
@@ -139,39 +105,75 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         child: Row(
           children: [
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: 'AC',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).primaryColor,
+              child: Button(
+                icon: AutoSizeText(
+                  "AC",
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.white, fontSize: 25),
                 ),
+                backgroundColor: Theme.of(context).primaryColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context).add(CalculatorAC());
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: 'CE',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).primaryColor,
+              child: Button(
+                icon: AutoSizeText(
+                  "CE",
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.white, fontSize: 25),
                 ),
+                backgroundColor: Theme.of(context).primaryColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context).add(CalculatorCE());
+                },
+                onLongPress: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorCETimer());
+                },
+                onLongPressEnd: (p0) {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorCETimerCancel());
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: 'x^',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  'x^',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('x^'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '!',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '!',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('!'));
+                },
               ),
             ),
           ],
@@ -182,39 +184,67 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         child: Row(
           children: [
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '(',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '(',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('('));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: ')',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  ')',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent(')'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '%',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '%',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('%'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '÷',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '÷',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('÷'));
+                },
               ),
             ),
           ],
@@ -225,39 +255,70 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         child: Row(
           children: [
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '7',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '7',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('7'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '8',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '8',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('8'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '9',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '9',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('9'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '×',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '×',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('×'));
+                },
               ),
             ),
           ],
@@ -268,39 +329,70 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         child: Row(
           children: [
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '4',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '4',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('4'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '5',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '5',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('5'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '6',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '6',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('6'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '-',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '-',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('-'));
+                },
               ),
             ),
           ],
@@ -311,39 +403,70 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         child: Row(
           children: [
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '1',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '1',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('1'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '2',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '2',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('2'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '3',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '3',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('3'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '+',
-                  titelcolor: Theme.of(context).primaryColorLight,
-                  bottomcolor: Theme.of(context).primaryColorDark,
+              child: Button(
+                icon: AutoSizeText(
+                  '+',
+                  minFontSize: 5,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('+'));
+                },
               ),
             ),
           ],
@@ -355,55 +478,76 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '00',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '00',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('00'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '0',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '0',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('0'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '.',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).canvasColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '.',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Theme.of(context).unselectedWidgetColor),
                 ),
+                backgroundColor: Theme.of(context).cardColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEvent('.'));
+                },
               ),
             ),
             Expanded(
-              child: clickbutton(
-                ButtonModel(
-                  titel: '=',
-                  titelcolor: AppColor.bottomtitel,
-                  bottomcolor: Theme.of(context).primaryColor,
+              child: Button(
+                icon: AutoSizeText(
+                  '=',
+                  minFontSize: 5,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.white, fontSize: 32),
                 ),
+                backgroundColor: Theme.of(context).primaryColor,
+                onTap: () {
+                  BlocProvider.of<CalculatorBloc>(context)
+                      .add(CalculatorEqual());
+                },
               ),
             ),
           ],
         ),
       ),
     ]);
-  }
-
-  Widget clickbutton(ButtonModel model) {
-    return GestureDetector(
-      onTap: () {
-        BlocProvider.of<CalculatorBloc>(context).add(CalculatorEvent(
-          model.titel,
-        ));
-      },
-      child: Bottom(property: model),
-    );
   }
 }

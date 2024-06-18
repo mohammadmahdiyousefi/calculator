@@ -13,6 +13,16 @@ final class Unitconversion extends IUnitconversionEvent {
   Unitconversion(this.input);
 }
 
+final class UnitconversionAC extends IUnitconversionEvent {}
+
+final class UnitconversionCE extends IUnitconversionEvent {}
+
+final class UnitconversionCETimer extends IUnitconversionEvent {}
+
+final class UnitconversionCETimerCancel extends IUnitconversionEvent {}
+
+final class UnitconversionChange extends IUnitconversionEvent {}
+
 final class FromUnit extends IUnitconversionEvent {
   final Capabilities from;
   FromUnit(this.from);

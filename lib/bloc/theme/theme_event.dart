@@ -12,3 +12,8 @@ class SetcolorEvent extends ThemeEvent {
   String color;
   SetcolorEvent(this.color);
 }
+
+class SetLanguage extends ThemeEvent {
+  final String language;
+  SetLanguage(this.language);
+}

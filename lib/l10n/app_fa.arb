@@ -1,0 +1,76 @@
+{
+    "unitConvert"       : "تبدیل واحد",
+    "length"            : "طول",
+    "area"              : "مساحت",
+    "volume"            : "حجم",
+    "time"              : "زمان",
+    "temperature"       : "دما",
+    "speed"             : "سرعت",
+    "mass"              : "جرم",
+    "force"             : "نیرو",
+    "preassure"         : "فشار",
+    "density"           : "چگالی",
+    "amountofsubstance" : "مقدار ماده",
+    "molarmass"         : "جرم مولی",
+    "angle"             : "زاویه",
+    "energy"            : "انرژی",
+    "power"             : "توان",
+    "digitaldate"       : "داده های دیجیتال",
+    "shoesize"          : "سایز کفش",
+    "siprefixes"        : "پیشوندهای Si",
+    "torque"            : "گشتاور",
+    "utilitytools"      : "ابزارهای کاربردی",
+    "bmi"               : "شاخص توده بدنی",
+    "age"               : "سن",
+    "gpa"               : "معدل",
+    "yourgpa"           : "معدل شما",
+    "unitsTotal"        : "مجموع واحدها",
+    "newCourse"         : "درس جدید +",
+    "coursename"        : "نام درس",
+    "grade"             : "نمره",
+    "unit"              : "واحد",
+    "add"               : "اضافه کردن",
+    "cancel"            : "لغو",
+    "delete"            : "حذف",
+    "edit"              : "ویرایش",
+    "startdate"         : "تاریخ شروع",
+    "enddate"           : "تاریخ پایان",
+    "calculate"         : "محاسبه",
+    "yourage"           : "سن شما",
+    "day"               : "روز",
+    "month"             : "ماه",
+    "nextbirthday"      : "تولد بعدی",
+    "year"              : "سال",
+    "seconds"           : "ثانیه",
+    "minuts"            : "دقیقه",
+    "hour"              : "ساعت",
+    "summary"           : "خلاصه",
+    "heigth"            : "قد",
+    "weight"            : "وزن",
+    "underweight"       : "کسر وزن",
+    "healthyweight"     : "وزن متناسب",
+    "overweight"        : "اضافه وزن",
+    "obesity"           : "چاقی",
+    "bmicategories"     : "دسته بندی توده بدنی",
+    "setting"           : "تنظیمات",
+    "version"           : "نسخه",
+    "taptoupdate"       : "برای بررسی به‌روزرسانی ضربه بزنید",
+    "shareapp"          : "نرم افزار اشتراک گذاری",
+    "shareappsubtitle"  : "به شما اجازه دهید این برنامه را به اشتراک بگذارید",
+    "likework"          : "از کارم خوشت اومد",
+    "buycoffee"         : "برام قهوه بخر",
+    "language"          : "زبان"
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

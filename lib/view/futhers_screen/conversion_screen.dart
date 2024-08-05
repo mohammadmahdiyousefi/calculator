@@ -42,81 +42,87 @@ class _ConversionScreenState extends State<ConversionScreen> {
             context: context,
             titel: widget.titel,
           ),
-          body: Padding(
-            padding:
-                const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 8),
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _frombottomsheet(
-                                    context,
-                                    widget.items,
-                                  );
-                                },
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.only(right: 16, left: 8),
-                                  padding: const EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 16, right: 8),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(8))),
-                                  child: _fromBottomUnit(state.from),
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Theme.of(context).primaryColor,
-                              size: 30,
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _tobottomsheet(context, widget.items);
-                                },
-                                child: Container(
+          body: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 8),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _frombottomsheet(
+                                      context,
+                                      widget.items,
+                                    );
+                                  },
+                                  child: Container(
                                     margin: const EdgeInsets.only(
-                                        left: 16, right: 8),
+                                        right: 16, left: 8),
                                     padding: const EdgeInsets.only(
                                         top: 8, bottom: 8, left: 16, right: 8),
                                     decoration: BoxDecoration(
                                         color: Theme.of(context).cardColor,
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(8))),
-                                    child: _toBottomUnit(state.to)),
+                                    child: _fromBottomUnit(state.from),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const Gap(25),
-                        _fromUnit(state.from),
-                        const Gap(8),
-                        Expanded(child: _inputuser(state.input)),
-                        _toUnit(state.to),
-                        const Gap(8),
-                        Expanded(child: _result(state.result)),
-                        const Gap(16),
-                      ]),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: _keypad(),
-                )
-              ],
+                              Icon(
+                                Icons.arrow_forward,
+                                color: Theme.of(context).primaryColor,
+                                size: 30,
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _tobottomsheet(context, widget.items);
+                                  },
+                                  child: Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 16, right: 8),
+                                      padding: const EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 16,
+                                          right: 8),
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(8))),
+                                      child: _toBottomUnit(state.to)),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(25),
+                          _fromUnit(state.from),
+                          const Gap(8),
+                          Expanded(child: _inputuser(state.input)),
+                          _toUnit(state.to),
+                          const Gap(8),
+                          Expanded(child: _result(state.result)),
+                          const Gap(16),
+                        ]),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: _keypad(),
+                  )
+                ],
+              ),
             ),
           ),
         );

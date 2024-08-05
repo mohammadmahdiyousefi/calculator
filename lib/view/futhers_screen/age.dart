@@ -13,6 +13,7 @@ import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AgeScreen extends StatefulWidget {
   const AgeScreen({super.key});
@@ -31,10 +32,12 @@ class _AgeScreenState extends State<AgeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localText = AppLocalizations.of(context)!;
+
     return BlocBuilder<AgeBloc, AgeState>(builder: (context, state) {
       return Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: appbarwidget(context: context, titel: 'Age'),
+          appBar: appbarwidget(context: context, titel: localText.age),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: SingleChildScrollView(
@@ -42,11 +45,13 @@ class _AgeScreenState extends State<AgeScreen> {
                 children: [
                   const Gap(32),
                   _fromField(
+                    localText,
                     context: context,
                     state: state.from,
                   ),
                   const Gap(16),
                   _toField(
+                    localText,
                     context: context,
                     state: state.to,
                   ),
@@ -62,11 +67,15 @@ class _AgeScreenState extends State<AgeScreen> {
                               borderRadius: BorderRadius.circular(12)),
                           minimumSize: const Size(double.infinity, 50)),
                       child: Text(
-                        "calculate",
-                        style: Theme.of(context).textTheme.labelMedium,
+                        localText.calculate,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(color: Colors.white),
                       )),
                   const Gap(24),
-                  _resultField(context: context, state: state.result),
+                  _resultField(localText,
+                      context: context, state: state.result),
                   //----------------------------------------------------------------------------//
                 ],
               ),
@@ -75,7 +84,7 @@ class _AgeScreenState extends State<AgeScreen> {
     });
   }
 
-  Widget _resultField(
+  Widget _resultField(AppLocalizations localText,
       {required BuildContext context, required ResultState state}) {
     if (state is ResultStateCompleted) {
       return Column(
@@ -94,7 +103,7 @@ class _AgeScreenState extends State<AgeScreen> {
                 const Gap(32),
                 Row(
                   children: [
-                    Text('Your Age',
+                    Text(localText.yourage,
                         style: Theme.of(context)
                             .textTheme
                             .displayLarge!
@@ -120,12 +129,12 @@ class _AgeScreenState extends State<AgeScreen> {
                           Text('${state.age.months}',
                               style: Theme.of(context).textTheme.bodySmall),
                           const Gap(8),
-                          Text('Month | ',
+                          Text('${localText.month} | ',
                               style: Theme.of(context).textTheme.bodySmall),
                           Text('${state.age.days}',
                               style: Theme.of(context).textTheme.bodySmall),
                           const Gap(8),
-                          Text('Day',
+                          Text(localText.day,
                               style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
@@ -148,7 +157,7 @@ class _AgeScreenState extends State<AgeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      AutoSizeText('Next birthday ',
+                      AutoSizeText(localText.nextbirthday,
                           minFontSize: 5,
                           style: Theme.of(context)
                               .textTheme
@@ -164,14 +173,14 @@ class _AgeScreenState extends State<AgeScreen> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text('Month | ',
+                          Text('${localText.month} | ',
                               style: Theme.of(context).textTheme.bodySmall),
                           Text(state.nextbirthday.days.toString(),
                               style: Theme.of(context).textTheme.bodySmall),
                           const SizedBox(
                             width: 5,
                           ),
-                          Text('Day',
+                          Text(localText.day,
                               style: Theme.of(context).textTheme.bodySmall),
                         ],
                       ),
@@ -179,7 +188,7 @@ class _AgeScreenState extends State<AgeScreen> {
                   ),
                   const Divider(),
                   AutoSizeText(
-                    'Summary',
+                    localText.summary,
                     minFontSize: 5,
                     style: Theme.of(context).textTheme.displayLarge!.copyWith(
                         fontSize: 18, color: Theme.of(context).primaryColor),
@@ -192,7 +201,7 @@ class _AgeScreenState extends State<AgeScreen> {
                           child: Column(
                             children: [
                               AutoSizeText(
-                                'Year',
+                                localText.year,
                                 minFontSize: 5,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
@@ -206,7 +215,7 @@ class _AgeScreenState extends State<AgeScreen> {
                           child: Column(
                             children: [
                               AutoSizeText(
-                                'month',
+                                localText.month,
                                 minFontSize: 5,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
@@ -223,7 +232,7 @@ class _AgeScreenState extends State<AgeScreen> {
                           child: Column(
                             children: [
                               AutoSizeText(
-                                'day',
+                                localText.day,
                                 minFontSize: 5,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
@@ -243,7 +252,7 @@ class _AgeScreenState extends State<AgeScreen> {
                           child: Column(
                             children: [
                               AutoSizeText(
-                                'hour',
+                                localText.hour,
                                 minFontSize: 5,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
@@ -257,7 +266,7 @@ class _AgeScreenState extends State<AgeScreen> {
                           child: Column(
                             children: [
                               AutoSizeText(
-                                'minuts',
+                                localText.minuts,
                                 minFontSize: 5,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
@@ -271,7 +280,7 @@ class _AgeScreenState extends State<AgeScreen> {
                           child: Column(
                             children: [
                               AutoSizeText(
-                                'seconds',
+                                localText.seconds,
                                 minFontSize: 5,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
@@ -304,7 +313,8 @@ class _AgeScreenState extends State<AgeScreen> {
     }
   }
 
-  Widget _toField({
+  Widget _toField(
+    AppLocalizations localText, {
     required BuildContext context,
     required ToState state,
   }) {
@@ -328,7 +338,7 @@ class _AgeScreenState extends State<AgeScreen> {
         child: Row(
           children: [
             Text(
-              'end date',
+              localText.enddate,
               style: Theme.of(context).textTheme.labelMedium,
             ),
             Expanded(
@@ -397,7 +407,8 @@ class _AgeScreenState extends State<AgeScreen> {
     }
   }
 
-  Widget _fromField({
+  Widget _fromField(
+    AppLocalizations localText, {
     required BuildContext context,
     required FromState state,
   }) {
@@ -421,7 +432,7 @@ class _AgeScreenState extends State<AgeScreen> {
         child: Row(
           children: [
             Text(
-              'start date',
+              localText.startdate,
               style: Theme.of(context).textTheme.labelMedium,
             ),
             Expanded(
@@ -504,13 +515,13 @@ class _AgeScreenState extends State<AgeScreen> {
           displaySmall: TextStyle(fontFamily: 'ROBM'),
           bodySmall: TextStyle(fontFamily: 'ROBM'),
           bodyLarge: TextStyle(fontFamily: 'ROBM')),
-      colorScheme: Theme.of(context).colorScheme.copyWith(
-            surface: Theme.of(context).cardColor,
-            primary: Theme.of(context).primaryColor,
-            surfaceTint: Colors.transparent,
-            onSurface: Theme.of(context).unselectedWidgetColor,
-            onSurfaceVariant: Theme.of(context).primaryColor,
-          ),
+      colorScheme: ColorScheme.light(
+        surface: Theme.of(context).cardColor,
+        primary: Theme.of(context).primaryColor,
+        surfaceTint: Colors.transparent,
+        onSurface: Theme.of(context).unselectedWidgetColor,
+        onSurfaceVariant: Theme.of(context).primaryColor,
+      ),
     );
   }
 }

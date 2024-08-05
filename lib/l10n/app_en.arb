@@ -1,0 +1,80 @@
+{
+    "unitConvert"       : "unit convert",
+    "length"            : "Length",
+    "area"              : "Area",
+    "volume"            : "Volume",
+    "time"              : "Time",
+    "temperature"       : "Temperature",
+    "speed"             : "Speed",
+    "mass"              : "Mass",
+    "force"             : "Force",
+    "preassure"         : "Preassure",
+    "density"           : "Density",
+    "amountofsubstance" : "Amount of substance",
+    "molarmass"         : "Molar mass",
+    "angle"             : "Angle",
+    "energy"            : "Energy",
+    "power"             : "Power",
+    "digitaldate"       : "Digital Date",
+    "shoesize"          : "Shoe size",
+    "siprefixes"        : "Si prefixes",
+    "torque"            : "Torque",
+    "utilitytools"      : "Utility tools",
+    "bmi"               : "BMI",
+    "age"               : "Age",
+    "gpa"               : "GPA",
+    "yourgpa"           : "Your GPA",
+    "unitsTotal"        : "Units Total",
+    "newCourse"         : "New Course +",
+    "coursename"        : "Name of Course",
+    "grade"             : "grade",
+    "unit"              : "Unit",
+    "add"               : "Add",
+    "cancel"            : "Cancel",
+    "delete"            : "Delete",
+    "edit"              : "Edit",
+    "startdate"         : "Start date",
+    "enddate"           : "End Date",
+    "calculate"         : "Calculate",
+    "yourage"           : "Your Age",
+    "day"               : "Day",
+    "month"             : "Month",
+    "nextbirthday"      : "Next birthday",
+    "year"              : "Year",
+    "seconds"           : "Seconds",
+    "minuts"            : "Minuts",
+    "hour"              : "Hour",
+    "summary"           : "Summary",
+    "heigth"            : "Heigth",
+    "weight"            : "Weight",
+    "underweight"       : "Under Weight",
+    "healthyweight"     : "Healthy Weight",
+    "overweight"        : "Over Weight",
+    "obesity"           : "Obesity",
+    "bmicategories"     : "BMI Categorise",
+    "setting"           : "Settings",
+    "version"           : "Version",
+    "taptoupdate"       : "Tap to check for update",
+    "shareapp"          : "Share App",
+    "shareappsubtitle"  : "Let you friend share this App",
+    "likework"          : "Liked my work",
+    "buycoffee"         : "Buy me a coffee",
+    "language"          : "Language"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

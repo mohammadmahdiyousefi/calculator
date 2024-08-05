@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../../widgets/appbar_widget.dart';
 import '../../widgets/prepare_interstitial_ad.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GpaScreen extends StatefulWidget {
   const GpaScreen({super.key});
@@ -28,9 +29,11 @@ class _GpaScreenState extends State<GpaScreen> {
 //------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localText = AppLocalizations.of(context)!;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: appbarwidget(context: context, titel: 'GPA'),
+      appBar: appbarwidget(context: context, titel: localText.gpa),
       body: BlocBuilder<GpaBloc, GpaState>(builder: (context, state) {
         return Column(
           children: [
@@ -45,7 +48,7 @@ class _GpaScreenState extends State<GpaScreen> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "Your GPA",
+                            localText.yourgpa,
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
                         ),
@@ -74,7 +77,7 @@ class _GpaScreenState extends State<GpaScreen> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "Units Total",
+                            localText.unitsTotal,
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
                         ),
@@ -97,10 +100,11 @@ class _GpaScreenState extends State<GpaScreen> {
                 openAddiolog(
                     context,
                     GPA(
-                      "course",
+                      localText.coursename,
                       0,
                       0,
-                    ));
+                    ),
+                    localText);
               },
               child: Container(
                 height: 45,
@@ -111,7 +115,7 @@ class _GpaScreenState extends State<GpaScreen> {
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12)),
                 child: Center(
-                  child: Text("+ New Course",
+                  child: Text(localText.newCourse,
                       style: Theme.of(context).textTheme.labelMedium),
                 ),
               ),
@@ -125,12 +129,13 @@ class _GpaScreenState extends State<GpaScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
                             child: SizedBox(
-                              height: 170,
+                              height: 175,
                               child: Column(
                                 children: [
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
                                       margin: const EdgeInsets.symmetric(
                                           vertical: 4),
                                       decoration: BoxDecoration(
@@ -140,19 +145,21 @@ class _GpaScreenState extends State<GpaScreen> {
                                       child: Column(
                                         children: [
                                           Expanded(
-                                            flex: 1,
+                                            flex: 2,
                                             child: Text(
                                               state.gpas[index].coursename,
                                               overflow: TextOverflow.ellipsis,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelMedium!
-                                                  .copyWith(fontSize: 20),
+                                                  .copyWith(fontSize: 18),
                                             ),
                                           ),
-                                          const Divider(),
+                                          const Divider(
+                                            height: 0,
+                                          ),
                                           Expanded(
-                                            flex: 3,
+                                            flex: 5,
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -169,7 +176,7 @@ class _GpaScreenState extends State<GpaScreen> {
                                                             .center,
                                                     children: [
                                                       Text(
-                                                        "Grade",
+                                                        localText.grade,
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .labelMedium,
@@ -201,7 +208,7 @@ class _GpaScreenState extends State<GpaScreen> {
                                                             .center,
                                                     children: [
                                                       Text(
-                                                        "Creadits",
+                                                        localText.unit,
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .labelMedium,
@@ -232,8 +239,11 @@ class _GpaScreenState extends State<GpaScreen> {
                                       Expanded(
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                            await openEditdiolog(context,
-                                                state.gpas[index], index);
+                                            await openEditdiolog(
+                                                context,
+                                                state.gpas[index],
+                                                index,
+                                                localText);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               backgroundColor:
@@ -250,19 +260,19 @@ class _GpaScreenState extends State<GpaScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12))),
-                                          child: const Row(
+                                          child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.edit,
                                                 color: Colors.blue,
                                                 size: 20,
                                               ),
-                                              Gap(6),
+                                              const Gap(6),
                                               Text(
-                                                "Edit",
-                                                style: TextStyle(
+                                                localText.edit,
+                                                style: const TextStyle(
                                                   color: Colors.blue,
                                                 ),
                                               )
@@ -290,19 +300,19 @@ class _GpaScreenState extends State<GpaScreen> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12))),
-                                        child: const Row(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               Icons.delete,
                                               color: Colors.red,
                                               size: 20,
                                             ),
-                                            Gap(6),
+                                            const Gap(6),
                                             Text(
-                                              "Delete",
-                                              style: TextStyle(
+                                              localText.delete,
+                                              style: const TextStyle(
                                                 color: Colors.red,
                                               ),
                                             )
@@ -324,7 +334,8 @@ class _GpaScreenState extends State<GpaScreen> {
     );
   }
 
-  Future openEditdiolog(BuildContext ctx, GPA gpa, int index) {
+  Future openEditdiolog(
+      BuildContext ctx, GPA gpa, int index, AppLocalizations localText) {
     TextEditingController course = TextEditingController(text: gpa.coursename);
     TextEditingController credits =
         TextEditingController(text: gpa.credits.toString());
@@ -351,7 +362,7 @@ class _GpaScreenState extends State<GpaScreen> {
                 cursorColor: Theme.of(context).primaryColor,
                 style: Theme.of(context).textTheme.labelMedium,
                 decoration: InputDecoration(
-                    labelText: "Course",
+                    labelText: localText.coursename,
                     labelStyle: Theme.of(context).textTheme.labelMedium,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -378,7 +389,7 @@ class _GpaScreenState extends State<GpaScreen> {
                       style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          labelText: "Credits",
+                          labelText: localText.unit,
                           labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -404,7 +415,7 @@ class _GpaScreenState extends State<GpaScreen> {
                       style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          labelText: "Grade",
+                          labelText: localText.grade,
                           labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -432,7 +443,7 @@ class _GpaScreenState extends State<GpaScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                "Cancel",
+                localText.cancel,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -452,7 +463,7 @@ class _GpaScreenState extends State<GpaScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                "Edit",
+                localText.edit,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -462,7 +473,7 @@ class _GpaScreenState extends State<GpaScreen> {
     );
   }
 
-  Future openAddiolog(BuildContext ctx, GPA gpa) {
+  Future openAddiolog(BuildContext ctx, GPA gpa, AppLocalizations localText) {
     TextEditingController course = TextEditingController(text: gpa.coursename);
     TextEditingController credits =
         TextEditingController(text: gpa.credits.toString());
@@ -488,7 +499,7 @@ class _GpaScreenState extends State<GpaScreen> {
                 cursorColor: Theme.of(context).primaryColor,
                 style: Theme.of(context).textTheme.labelMedium,
                 decoration: InputDecoration(
-                    labelText: "Course",
+                    labelText: localText.coursename,
                     labelStyle: Theme.of(context).textTheme.labelMedium,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -515,7 +526,7 @@ class _GpaScreenState extends State<GpaScreen> {
                       style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          labelText: "Credits",
+                          labelText: localText.unit,
                           labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -541,7 +552,7 @@ class _GpaScreenState extends State<GpaScreen> {
                       style: Theme.of(context).textTheme.labelMedium,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          labelText: "Grade",
+                          labelText: localText.grade,
                           labelStyle: Theme.of(context).textTheme.labelMedium,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -569,7 +580,7 @@ class _GpaScreenState extends State<GpaScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                "Cancel",
+                localText.cancel,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
@@ -587,7 +598,7 @@ class _GpaScreenState extends State<GpaScreen> {
                 Navigator.pop(context);
               },
               child: Text(
-                "Add",
+                localText.add,
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             )

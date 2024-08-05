@@ -1,27 +1,25 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-abstract class ThemeState extends Equatable {
+class ThemeState extends Equatable {
   final ThemeMode mode;
-  const ThemeState(this.mode);
-  @override
-  List<Object> get props => [mode];
-}
+  final String appLanguage;
 
-class LightThemeState extends ThemeState {
-  const LightThemeState(super.mode);
-  @override
-  List<Object> get props => [mode];
-}
+  const ThemeState({
+    required this.mode,
+    required this.appLanguage,
+  });
 
-class DarkThemeState extends ThemeState {
-  const DarkThemeState(super.mode);
   @override
-  List<Object> get props => [mode];
-}
+  List<Object?> get props => [mode, appLanguage];
 
-class SystemThemeModeState extends ThemeState {
-  const SystemThemeModeState(super.mode);
-  @override
-  List<Object> get props => [mode];
+  ThemeState copyWith({
+    String? appLanguage,
+    ThemeMode? mode,
+  }) {
+    return ThemeState(
+      mode: mode ?? this.mode,
+      appLanguage: appLanguage ?? this.appLanguage,
+    );
+  }
 }

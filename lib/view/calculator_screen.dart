@@ -13,36 +13,39 @@ class CalculatorScreen extends StatelessWidget {
   const CalculatorScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            flex: 9,
-            child: BlocBuilder<CalculatorBloc, CalculatorState>(
-                builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                          flex: 6, child: _inputuser(context, state.input)),
-                      const Gap(8),
-                      Expanded(
-                          flex: 2, child: _resultuser(context, state.result)),
-                    ]),
-              );
-            }),
-          ),
-          Expanded(
-            flex: 18,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: _keypad(context),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child: BlocBuilder<CalculatorBloc, CalculatorState>(
+                  builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                            flex: 6, child: _inputuser(context, state.input)),
+                        const Gap(8),
+                        Expanded(
+                            flex: 2, child: _resultuser(context, state.result)),
+                      ]),
+                );
+              }),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 18,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: _keypad(context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -55,7 +58,7 @@ class CalculatorScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: AutoSizeText(
-                  state.resultCalculator,
+                  formatMathExpression(state.resultCalculator),
                   minFontSize: 10,
                   style: Theme.of(context).textTheme.displayMedium,
                   textAlign: TextAlign.end,
@@ -87,7 +90,7 @@ class CalculatorScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Expanded(
-                child: AutoSizeText(state.input,
+                child: AutoSizeText(formatMathExpression(state.input),
                     textAlign: TextAlign.end,
                     textDirection: TextDirection.ltr,
                     minFontSize: 15,
@@ -549,5 +552,27 @@ class CalculatorScreen extends StatelessWidget {
         ),
       ),
     ]);
+  }
+
+  String formatMathExpression(String expression) {
+    return expression.replaceAllMapped(
+      RegExp(r'\d+'),
+      (Match match) {
+        var number = match.group(0)!;
+        return formatNumber(number);
+      },
+    );
+  }
+
+  String formatNumber(String number) {
+    var buffer = StringBuffer();
+    int len = number.length;
+    for (int i = 0; i < len; i++) {
+      if (i > 0 && (len - i) % 3 == 0) {
+        buffer.write(',');
+      }
+      buffer.write(number[i]);
+    }
+    return buffer.toString();
   }
 }

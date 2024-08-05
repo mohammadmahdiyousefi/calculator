@@ -11,6 +11,7 @@ import 'package:calculator/widgets/prepare_interstitial_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BmiScreen extends StatefulWidget {
   const BmiScreen({super.key});
@@ -35,8 +36,9 @@ class _BmiScreenState extends State<BmiScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localText = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: appbarwidget(context: context, titel: 'BMI'),
+      appBar: appbarwidget(context: context, titel: localText.bmi),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -59,7 +61,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             .labelMedium!
                             .copyWith(fontSize: 16),
                         decoration: InputDecoration(
-                            hintText: "Height",
+                            hintText: localText.heigth,
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
@@ -97,7 +99,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             .labelMedium!
                             .copyWith(fontSize: 16),
                         decoration: InputDecoration(
-                            hintText: "Weight",
+                            hintText: localText.weight,
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
@@ -137,7 +139,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             .labelMedium!
                             .copyWith(fontSize: 16),
                         decoration: InputDecoration(
-                            hintText: "Age",
+                            hintText: localText.age,
                             hintStyle: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
@@ -163,7 +165,8 @@ class _BmiScreenState extends State<BmiScreen> {
             ),
             Expanded(
               flex: 1,
-              child: _keypad(context),
+              child: Directionality(
+                  textDirection: TextDirection.ltr, child: _keypad(context)),
             )
           ],
         ),
@@ -327,6 +330,7 @@ class _BmiScreenState extends State<BmiScreen> {
 
   Future<void> showCustomDialog(
       BuildContext ctx, int age, double height, double weight) async {
+    final AppLocalizations localText = AppLocalizations.of(context)!;
     await showDialog(
       context: ctx,
       barrierLabel: "Barrier",
@@ -380,7 +384,7 @@ class _BmiScreenState extends State<BmiScreen> {
                                               Theme.of(context).primaryColor),
                                 ),
                                 Text(
-                                  state.bodystatus,
+                                  statusbody(localText, state.result),
                                   style: Theme.of(context)
                                       .textTheme
                                       .labelMedium!
@@ -416,12 +420,12 @@ class _BmiScreenState extends State<BmiScreen> {
                         ),
                         const Gap(24),
                         Text(
-                          "BMI categorise : ",
+                          "${localText.bmicategories} : ",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         const Gap(8),
                         Text(
-                          "Underweight = 18.5 <",
+                          "${localText.underweight} = 18.5 <",
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
@@ -429,7 +433,7 @@ class _BmiScreenState extends State<BmiScreen> {
                         ),
                         const Gap(8),
                         Text(
-                          "Healthy Weight = 18.5-24.9",
+                          "${localText.healthyweight} = 18.5-24.9",
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
@@ -437,7 +441,7 @@ class _BmiScreenState extends State<BmiScreen> {
                         ),
                         const Gap(8),
                         Text(
-                          "OverWeight = 25-29.9",
+                          "${localText.overweight} = 25-29.9",
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
@@ -445,7 +449,7 @@ class _BmiScreenState extends State<BmiScreen> {
                         ),
                         const Gap(8),
                         Text(
-                          "Obesity = <30",
+                          "${localText.obesity} = <30",
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
@@ -478,5 +482,17 @@ class _BmiScreenState extends State<BmiScreen> {
         );
       },
     );
+  }
+
+  String statusbody(AppLocalizations localText, double result) {
+    if (result < 18.5) {
+      return localText.underweight;
+    } else if (result < 25) {
+      return localText.healthyweight;
+    } else if (result < 30) {
+      return localText.overweight;
+    } else {
+      return localText.obesity;
+    }
   }
 }
